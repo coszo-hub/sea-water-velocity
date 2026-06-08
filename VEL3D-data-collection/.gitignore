@@ -1,0 +1,26 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore system files
+.DS_Store
+
+# Ignore test directory
+test/
+
+# Ignore file with OOI credentials
+.ooi_env
+*.env
+
+# Ignore contents of these directories
+testk/output/
+output/mseed/*
+output/mseed2dmc/*
+log/*
+log_mseed2dmc/*
+output/netcdf/*
+output/xml/*
+output/fixed_mseed/*
+output/mseed_to_fix/*
+output/fix_chan_name_loc_code/*
+output/bad_mseed/*

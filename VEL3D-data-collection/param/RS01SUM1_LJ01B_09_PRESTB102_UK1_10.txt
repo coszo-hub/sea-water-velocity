@@ -1,0 +1,32 @@
+##parameter file##
+
+# Southern Hydrate Ridge (Summit 1, HYS14)
+# Station Name: HYS14
+
+#Some parameters have been commented out because they are optional to include in the stationxml and I am unsure what values to use. MT
+
+cha = UK1                                                                       #Channel Name
+c_start = 2014-09-07T10:22:00                              #Channel_StartDate --> Deployment start dates
+c_end = 2017-08-11T00:30:00            			                        #Channel_EndDate --> Deployment end dates
+c_loc = 10                                                                      #Channel_LocationCode
+c_lat = 44.569218                                                               #Channel_Latitude
+c_lon = -125.148115                                                             #Channel_Longitude
+c_elev = -773                                                                   #Channel_Elevation
+c_dep = 0.0                                                                     #Channel_Depth
+c_az = 0.0                                                                      #Channel_Azimuth
+#c_dip = 0.0                                                                    #Channel_Dip
+#c_type = GEOPHYSICAL                                                           #Channel_type
+c_sample_rate = 0.066667                                                  #Channel_SampleRate
+#c_clockdrift =  0.0                                                            #Channel_ClockDrift
+#cal_unit = MICROSECOND                                                         #Channel_CalibrationUnits
+#cal_unit_descript = Period in microseconds	                                    #Channel_Calibration_units_description
+c_description = pressure_temp, Pressure Sensor Internal Temperature             #Channel_description 
+c_sensor = Tidal Seafloor Pressure (Tsunameter 2,000 psia): PREST Series B      #Channel_sensor_description
+c_id = ATAPL-69923-00001                                     #Sensor(UID) --> Two deployments
+r_value = 1.0				                                                    #Response_Sensitivity_Value --> For OOI data, this value is used to convert data units preferred by EarthScope
+r_frequency = 1.0				                                                #Response_Sensitivity_Frequency --> Update?
+r_input_units = C 				                                                #Response_Sensitivity_Output_Units
+r_input_description = degrees Celsius			                                #Response_Sensitivity_Output_Units_description
+r_output_units = C				                                                #Response_Sensitivity_Input_Units
+r_output_description = degrees Celsius                                          #Response_Sensitivity_Input_Units_description
+

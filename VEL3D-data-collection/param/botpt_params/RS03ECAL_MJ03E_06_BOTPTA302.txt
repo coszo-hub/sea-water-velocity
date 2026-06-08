@@ -1,0 +1,20 @@
+##parameter file##
+
+Path = /Users/mika/ooi-data-collection/ooi-data-collection-local-botpt-test/stationxml-seed-converter-2.1.3.jar
+#Path = /budnas/backups/OOI_project/stationxml-converter-1.0.10.jar
+#Path = /opt/dmc/lib/stationxml-converter.jar
+Net = OO 					#Network Name
+N_start =  2014-07-27T08:41:01 			#Network_StartDate
+N_end = None    			#Network_endDate
+#N_end = 2500-12-31T23:59:59    			#Network_endDate
+N_restatus = open                               #Network_RestrictedStatus
+Descript = Ocean Observatories Initiative	#Description
+Sta = AXEC2 					#Station Name
+S_start = 2014-07-27T08:41:01	 		#Station_StartDate
+S_end = None 			#Station_endDate
+#S_end = 2500-12-31T23:59:59 			#Station_endDate
+S_restatus = open                               #Station_RestrictedStatus
+S_lat = 45.93967 				#Station_Latitude
+S_lon = -129.9738 				#Station_Lontitude
+S_elev = -1519.0 				#Station_Elevation
+S_Site = RSN Axial East Caldera 2  		#Station_Site

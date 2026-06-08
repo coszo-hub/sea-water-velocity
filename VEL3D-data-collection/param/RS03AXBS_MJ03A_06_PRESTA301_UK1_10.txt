@@ -1,0 +1,31 @@
+##parameter file##
+
+# Axial Base Seafloor
+# Station Name: AXBA1
+
+#Some parameters have been commented out because they are optional to include in the stationxml and I am unsure what values to use. MT
+
+cha = UK1                                                                                       #Channel Name
+c_start = 2014-08-08T16:39:00; 2016-07-13T00:00:00; 2020-08-06T05:40:00; 2022-08-30T01:37:00    #Channel_StartDate --> Deployment start dates
+c_end = 2016-07-12T00:00:00; 2020-08-05T15:06:00; 2022-08-29T02:19:00; None             	    #Channel_EndDate --> Deployment end dates
+c_loc = 10                                                                                      #Channel_LocationCode
+c_lat = 45.820222                                                                               #Channel_Latitude
+c_lon = -129.736393                                                                             #Channel_Longitude
+c_elev = -2610                                                                                  #Channel_Elevation
+c_dep = 0.0                                                                                     #Channel_Depth
+c_az = 0.0                                                                                      #Channel_Azimuth
+#c_dip = 0.0                                                                                    #Channel_Dip
+c_type = GEOPHYSICAL                                                                            #Channel_type
+c_sample_rate = 0.066667; 0.066667; 0.066667; 0.066667                                          #Channel_SampleRate
+c_clockdrift =  0.0                                                                             #Channel_ClockDrift
+#cal_unit = MICROSECOND                                                                         #Channel_CalibrationUnits
+#cal_unit_descript = Period in microseconds	                                                    #Channel_Calibration_units_description
+c_description = pressure_temp, Pressure Sensor Internal Temperature                             #Channel_description 
+c_sensor = Tidal Seafloor Pressure (Tsunameter 6,000 psia): PREST Series A                      #Channel_sensor_description
+c_id = ATAPL-67639-00003; ATAPL-67639-00006; ATAPL-67639-00003; ATAPL-67639-00006               #Sensor(UID) --> Four deployments
+r_value = 1.0				                                                                    #Response_Sensitivity_Value --> For OOI data, this value is used to convert data units preferred by EarthScope
+r_frequency = 1.0				                                                                #Response_Sensitivity_Frequency --> Update?
+r_input_units = C 				                                                                #Response_Sensitivity_Output_Units
+r_input_description = degrees Celsius			                                                #Response_Sensitivity_Output_Units_description
+r_output_units = C				                                                                #Response_Sensitivity_Input_Units
+r_output_description = degrees Celsius                                                          #Response_Sensitivity_Input_Units_description

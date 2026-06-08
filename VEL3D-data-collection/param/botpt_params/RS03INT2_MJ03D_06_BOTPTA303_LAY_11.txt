@@ -1,0 +1,26 @@
+##parameter file##
+
+Cha = LAY                                       #Channel Name
+C_start = 2014-07-24T22:28:00                   #Channel_StartDate
+C_end = None                                    #Channel_EndDate
+C_loc = 11                                      #Channel_LocationCode
+C_lat = 45.9258                                 #Channel_Latitude
+C_lon = -129.9775                               #Channel_Longitude
+C_elev = -1529.0                                #Channel_Elevation
+C_Dep =  0.0                                    #Channel_Depth
+C_Az = 0.0                                      #Channel_Azimuth
+C_Dip = 0.0                                     #Channel_Dip
+C_type = GEOPHYSICAL                            #Channel_type
+C_sample_rate = 1.0                             #Channel_SampleRate
+C_clockdrift = 0.0                              #Channel_ClockDrift
+Cal_unit = A                                    #Channel_CalibrationUnits
+Cal_unit_descript = Amperes                     #Channel_Calibration_units_description
+C_description = lily_y_tilt, High-Resolution Y-Tilt                     #Channel_description
+C_sensor = Bottom Pressure and Tilt: BOTPT Series A #Channel_sensor_description
+C_id = ATAPL-58316-00002                  #Sensor(UID)
+R_Value = 1.0                                   #Response_Sensitivity_Value
+R_Frequency = 0.1                               #Response_Sensitivity_Frequency
+R_Inputunits =  MICRORADIANS                    #Response_Sensitivity_Input_Units
+R_Input_description = The Y-tilt magnitude (microradians). Positive Y-Tilt means the positive y-axis is in direction of downward tilt.   #Response_Sensitivity_Input_Units_description
+R_Outputunits = MICRORADIANS                    #Response_Sensitivity_Output_Units
+R_Output_description = The Y-tilt magnitude (microradians). Positive Y-Tilt means the positive y-axis is in direction of downward tilt.   #Response_Sensitivity_Output_Units_description

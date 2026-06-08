@@ -1,0 +1,63 @@
+# To load file: crontab crons_prest_seedlink_and_mseed2dmc.txt
+# To verify:    crontab -l
+# To remove:    crontab -r
+# Crontab runs scheduled jobs on UTC time.
+# PST: November - March  --> UTC - 8 hours
+# PDT: March - November  --> UTC - 7 hours
+PATH=/home/coszo/miniconda3/bin:/usr/local/bin:/usr/bin:/bin
+SHELL=/usr/bin/bash
+
+# ------------------------------------------------------------------
+# VM RESPONSIBILITY: live SeedLink path only.
+# Historical (miniseed2dmc) is done LOCALLY via
+# bin/backfill_mseed_from_nc.py and is NOT scheduled on the VM.
+# ------------------------------------------------------------------
+
+# ------------------------------------------------------------------
+# SEEDLINK & MAINTENANCE WINDOW — 10:00–10:30 AM PST (18:00–18:30 UTC)
+# - Seedlink runs are staggered
+# - Metadata, latency, and daily metrics-sync run in this window
+# ------------------------------------------------------------------
+
+### Seedlink jobs (staggered within window) ###
+
+# HYSB1 - 10:01 AM PST / 18:01 UTC
+1 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS01SLBS-MJ01A-06-PRESTA101 prest seedlink > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log/OOI_seedlink_HYSB1_$(/bin/date +\%Y\%m).log 2>&1
+
+# HYS14 - 10:06 AM PST / 18:06 UTC
+6 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS01SUM1-LJ01B-09-PRESTB102 prest seedlink > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log/OOI_seedlink_HYS14_$(/bin/date +\%Y\%m).log 2>&1
+
+# AXBA1 - 10:11 AM PST / 18:11 UTC
+11 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS03AXBS-MJ03A-06-PRESTA301 prest seedlink >> /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log/OOI_seedlink_AXBA1_$(/bin/date +\%Y\%m).log 2>&1
+
+### Metadata check (10:16 AM PST / 18:16 UTC) ###
+
+16 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh all all seedlink > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log/OOI_metadata.log 2>&1
+
+### Latency check (10:21 AM PST / 18:21 UTC) ###
+
+21 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/detect.py > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log/system.log 2>&1
+
+### Daily metrics sync to coszo-hub/Tidal-Seafloor-Pressure (10:35 AM PST / 18:35 UTC) ###
+
+35 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/sync_metrics.sh
+
+# ------------------------------------------------------------------
+# MINISEED2DMC — DISABLED ON VM (historical backfill is local-only)
+# Kept here as documentation of what the entries would look like if
+# ever re-enabled. The local script bin/backfill_mseed_from_nc.py
+# produces equivalent MiniSEEDs from saved NetCDFs without re-hitting
+# OOI from the VM.
+# ------------------------------------------------------------------
+
+### HYSB1 - RS01SLBS-MJ01A-06-PRESTA101  (DISABLED) ###
+# */2 0-17,19-23 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS01SLBS-MJ01A-06-PRESTA101 prest miniseed2dmc > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log_mseed2dmc/OOI_data_HYSB1_Lxx_$(/bin/date +\%Y\%m).log 2>&1
+# 30-59/2 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS01SLBS-MJ01A-06-PRESTA101 prest miniseed2dmc > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log_mseed2dmc/OOI_data_HYSB1_Lxx_$(/bin/date +\%Y\%m).log 2>&1
+
+### HYS14 - RS01SUM1-LJ01B-09-PRESTB102  (DISABLED) ###
+# */2 0-17,19-23 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS01SUM1-LJ01B-09-PRESTB102 prest miniseed2dmc > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log_mseed2dmc/OOI_data_HYS14_Lxx_$(/bin/date +\%Y\%m).log 2>&1
+# 30-59/2 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS01SUM1-LJ01B-09-PRESTB102 prest miniseed2dmc > /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log_mseed2dmc/OOI_data_HYS14_Lxx_$(/bin/date +\%Y\%m).log 2>&1
+
+### AXBA1 - RS03AXBS-MJ03A-06-PRESTA301  (DISABLED) ###
+# */2 0-17,19-23 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS03AXBS-MJ03A-06-PRESTA301 prest miniseed2dmc >> /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log_mseed2dmc/OOI_data_AXBA1_Lxx_$(/bin/date +\%Y\%m).log 2>&1
+# 30-59/2 18 * * * /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/bin/run_ooi_requests.sh RS03AXBS-MJ03A-06-PRESTA301 prest miniseed2dmc >> /home/coszo/Tidal-Seafloor-Pressure/PREST-data-collection/log_mseed2dmc/OOI_data_AXBA1_Lxx_$(/bin/date +\%Y\%m).log 2>&1

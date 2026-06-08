@@ -1,0 +1,20 @@
+##parameter file##
+
+# Axial Base Seafloor
+
+net = OO                                                                                        #Network Name
+n_start =  2014-01-01T00:00:00                                                                  #Network_StartDate
+n_end = None                                                                                    #Network_EndDate
+n_restatus = open			                                                                    #Network_RestrictedStatus
+descript = Ocean Observatories Initiative                                                       #Description
+sta = AXBA1                                                                                     #Station Name 
+s_start = 2014-08-08T16:39:00                                                                   #Station_StartDate --> First deployment date only, epochs are documented at the channel level
+s_restatus = open			                                                                    #Station_RestrictedStatus
+s_lat = 45.820222                                                                               #Station_Latitude
+s_lon = -129.736393                                                                             #Station_Lontitude
+s_elev = -2610                                                                                  #Station_Elevation
+s_site = RSN Axial Base 1                                                                       #Station_Site
+s_end = None                                                                                    #Station_endDate 
+metadata_channels = [UDO_10,UK1_10]			                                                    #Channel names --> Need channel names from all epochs
+channels = [UDO_10,UK1_10]			                                                            #Channel names
+data_types = {'UDO_10':'absolute_pressure','UK1_10':'pressure_temp'}                            #Data type from NetCDF header 

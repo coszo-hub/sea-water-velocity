@@ -1,0 +1,43 @@
+#!/bin/bash
+
+MAINDIR=/home/coszo/coszo-data-collection
+
+TESTDIR=$1
+
+if [ "x${TESTDIR}" == "x" ];then
+
+    echo "EXAMPLE: ./save_results_to_test 20260212_test_description"
+
+    exit 1;
+fi
+
+echo "Test Directory: $TESTDIR"
+
+# Make test directories
+mkdir -p ${MAINDIR}/test/${TESTDIR}/mseed
+mkdir -p ${MAINDIR}/test/${TESTDIR}/netcdf
+mkdir -p ${MAINDIR}/test/${TESTDIR}/log
+mkdir -p ${MAINDIR}/test/${TESTDIR}/xml
+
+# Move all mseed files in output/mseed to test/
+cd ${MAINDIR}/output/mseed
+mv *.mseed ${MAINDIR}/test/${TESTDIR}/mseed
+ls ${MAINDIR}/test/${TESTDIR}/mseed
+
+# Move all netcdf files in output/netcdf to test/
+cd ${MAINDIR}/output/netcdf
+mv *.nc ${MAINDIR}/test/${TESTDIR}/netcdf
+ls ${MAINDIR}/test/${TESTDIR}/netcdf
+
+# Move all log and gap log files from log/ to test/
+cd ${MAINDIR}/log/
+mv *.log ${MAINDIR}/test/${TESTDIR}/log
+ls ${MAINDIR}/test/${TESTDIR}/log
+
+cd ${MAINDIR}/run/
+mv gap* ${MAINDIR}/test/${TESTDIR}/log
+ls ${MAINDIR}/test/${TESTDIR}/log
+
+
+
+

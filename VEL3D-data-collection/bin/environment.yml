@@ -1,0 +1,14 @@
+# Create: conda env create -f environment.yml
+# Remove: conda remove --name <env_name> --all
+
+name: ooi_env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - numpy
+  - netcdf4
+  - obspy
+  - requests
+
+

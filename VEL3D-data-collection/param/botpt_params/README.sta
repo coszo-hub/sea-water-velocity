@@ -1,0 +1,4 @@
+#Check the number of stations
+RS03CCAL_MJ03F_05_BOTPTA301.txt:Sta = AXCC1                                     #Station Name
+RS03ECAL_MJ03E_06_BOTPTA302.txt:Sta = AXEC2 					#Station Name
+RS03INT2_MJ03D_06_BOTPTA303.txt:Sta = AXID1                                     #Station Name

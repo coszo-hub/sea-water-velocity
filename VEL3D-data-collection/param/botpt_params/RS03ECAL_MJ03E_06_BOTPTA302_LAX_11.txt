@@ -1,0 +1,26 @@
+##parameter file##
+
+Cha = LAX 					#Channel Name	
+C_start = 2014-07-27T08:41:01                   #Channel_StartDate
+C_end = None                                    #Channel_EndDate
+C_loc = 11					#Channel_LocationCode
+C_lat = 45.93986 				#Channel_Latitude
+C_lon = -129.97417 				#Channel_Longitude
+C_elev = -1519.0 				#Channel_Elevation
+C_Dep =  0.0 					#Channel_Depth
+C_Az = 0.0 					#Channel_Azimuth
+C_Dip = 0.0 					#Channel_Dip
+C_type = GEOPHYSICAL            		#Channel_type
+C_sample_rate = 1.0                             #Channel_SampleRate
+C_clockdrift = 0.0                              #Channel_ClockDrift
+Cal_unit = A                                    #Channel_CalibrationUnits
+Cal_unit_descript = Amperes                     #Channel_Calibration_units_description
+C_description = lily_x_tilt, High-Resolution X-Tilt                    #Channel_description
+C_sensor = Bottom Pressure and Tilt: BOTPT Series A #Channel_sensor_description
+C_id = ATAPL-58316-00004                  #Sensor(UID)
+R_Value = 1.0                                   #Response_Sensitivity_Value
+R_Frequency = 0.1                               #Response_Sensitivity_Frequency
+R_Inputunits =  MICRORADIANS                    #Response_Sensitivity_Input_Units
+R_Input_description =  The X-tilt magnitude (microradians). Positive X-Tilt means the positive x-axis is in direction of downward tilt. #Response_Sensitivity_Input_Units_description
+R_Outputunits = MICRORADIANS                    #Response_Sensitivity_Output_Units
+R_Output_description = The X-tilt magnitude (microradians). Positive X-Tilt means the positive x-axis is in direction of downward tilt. #Response_Sensitivity_Output_Units_description
