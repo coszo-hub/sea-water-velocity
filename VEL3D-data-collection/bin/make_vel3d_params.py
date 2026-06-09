@@ -11,7 +11,7 @@ Sources of truth:
   - Stream/vars/rate: OOI M2M metadata (vel3d_b_sample, 1 Hz, m/s science vars)
 
 Decisions (see OOI_channel_codes.md):
-  net=OO, loc=20, band=L (1 Hz), velocity codes LO2/LO1/LOZ, temp LKO,
+  net=OO, loc=20, band=L (1 Hz), velocity codes LOE/LON/LOZ, temp LKO,
   r_value=1.0 (units M/S; velocity already m/s, declination-corrected to true N).
 
 NOTE on c_end "None" mid-sequence: OOI sometimes returns no stop time for a
@@ -26,11 +26,11 @@ PARAM_DIR = os.path.join(os.path.dirname(__file__), "..", "param")
 # ── Channel definitions (uniform across all VEL3D-B deployments: all 1 Hz / L) ──
 # cha, netcdf_var, description, azimuth, dip, response units/desc
 CHANNELS = [
-    dict(cha="LO2", var="eastward_turbulent_velocity",
+    dict(cha="LOE", var="eastward_turbulent_velocity",
          desc="eastward_turbulent_velocity, Eastward Sea Water Velocity",
          az="90.0", dip="0.0",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="LO1", var="northward_turbulent_velocity",
+    dict(cha="LON", var="northward_turbulent_velocity",
          desc="northward_turbulent_velocity, Northward Sea Water Velocity",
          az="0.0", dip="0.0",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),

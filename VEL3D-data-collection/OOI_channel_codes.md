@@ -74,10 +74,13 @@ SEED channel = `[band][instrument][orientation]`.
 - **Temperature channel** `LKO` (`K`=Temperature, `O`=Outside).
 - **Units** m/s, `r_value = 1.0` (EarthScope/FDSN expectation for instrument code `O`).
 
-## Velocity orientation codes — DECISION: `LO2` / `LO1` / `LOZ`
+## Velocity orientation codes — DECISION: `LOE` / `LON` / `LOZ`
 
-Chosen scheme (user, 2026-06-09): **`LO2`** (east), **`LO1`** (north), **`LOZ`** (up),
-plus **`LKO`** seawater temp.
+Chosen scheme: **`LOE`** (east), **`LON`** (north), **`LOZ`** (up), plus **`LKO`**
+seawater temp. Directed by user's supervisor (2026-06-09), superseding the earlier
+interim choice of numeric `LO2`/`LO1`. This is consistent with the orientation
+investigation below: the OOI product is declination-corrected to **true** north, so
+the horizontals satisfy the "within 5° of true direction" rule for using `E`/`N`.
 
 ### Orientation investigation (is the horizontal within 5° of true?)
 The list's Notes say to use `E`/`N` only if the horizontal is within 5° of true
@@ -96,6 +99,5 @@ algorithm:
 
 **Conclusion:** the OOI product is **declination-corrected to true north** (the ≈ +15°
 Oregon declination is removed). It therefore *clears* the 5° rule by design, modulo the
-MAVS-4 compass accuracy (~±2°, not independently verified). So `LOE`/`LON` would be
-permissible — but we keep **`LO2`/`LO1`/`LOZ`** as the conservative, COSZO-consistent
-choice (does not assert per-deployment compass calibration).
+MAVS-4 compass accuracy (~±2°, not independently verified). On that basis the supervisor
+directed using the true-direction codes **`LOE`/`LON`/`LOZ`** (final decision above).

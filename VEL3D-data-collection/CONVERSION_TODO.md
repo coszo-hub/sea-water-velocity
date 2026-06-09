@@ -54,7 +54,7 @@ almost every change below:
       `RS03AXBS_MJ03A_12_VEL3DB301`) via `bin/make_vel3d_params.py`.
       (Old PREST param files still present — remove on user OK.)
 - [x] Replace the per-channel param files — **done**: 4 channels each
-      (`LO2`/`LO1`/`LOZ` velocity + `LKO` seawater temp), loc `20`, band `L`,
+      (`LOE`/`LON`/`LOZ` velocity + `LKO` seawater temp), loc `20`, band `L`,
       `c_sample_rate=1.0`, `r_value=1.0` M/S. Codes per `OOI_channel_codes.md`.
 - [x] Update `data_types = {...}` mappings — **done**: velocity components →
       `eastward/northward/upward_turbulent_velocity`, temp → `temperature`.

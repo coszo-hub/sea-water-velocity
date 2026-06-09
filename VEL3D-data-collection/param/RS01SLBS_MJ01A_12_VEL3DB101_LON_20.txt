@@ -3,7 +3,7 @@
 # Oregon Slope Base Seafloor
 # Station Name: HYSB1
 
-cha = LO1                                  #Channel Name
+cha = LON                                  #Channel Name
 c_start = 2014-09-13T00:00:01; 2016-07-17T07:30:00; 2024-08-10T04:01:00    #Channel_StartDate --> deployment start dates
 c_end = 2016-07-17T00:00:00; 2024-08-09T17:33:00; None    #Channel_EndDate --> deployment end dates
 c_loc = 20                                    #Channel_LocationCode
