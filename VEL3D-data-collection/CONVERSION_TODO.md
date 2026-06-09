@@ -30,8 +30,10 @@ almost every change below:
 - [ ] **Sample rate** for VEL3D (PREST is 0.066667 Hz = 15 s period).
 - [ ] **Output units + response sensitivity** (velocity is m/s; PREST converts
       PSI↔Pa via `r_value = 0.0001450377`).
-- [ ] Do we still need the `botpt_params/` material at all? (Likely **drop** — it
-      is pressure/tilt BOTPT config, unrelated to VEL3D.)
+- [x] Do we still need the `botpt_params/` material at all? **Dropped** — BOTPT
+      is out of scope for `sea-water-velocity` (user confirmed 2026-06-09).
+      `param/botpt_params/` and `run/botpt_endtimes/` deleted. Inert `lily`/`nano`
+      (BOTPT) code branches still remain in the live scripts — see §4 note.
 
 > Recommend answering §0 before doing the rest, since the param files and the
 > main-script branches depend on these values.
@@ -46,22 +48,26 @@ almost every change below:
 
 ## 2. Param files (`param/`)
 
-- [ ] Replace the three `RS..._PREST...` net/station param files with VEL3D
-      reference designators (net/station/lat/lon/elev/site, channel list,
-      `data_types` map).
-- [ ] Replace the per-channel param files (`*_UDO_10.txt`, `*_UK1_10.txt`, etc.)
-      with VEL3D channels: new `cha`, `c_loc`, `c_sample_rate`, `c_description`,
-      `c_sensor`, and the response block (`r_value`, `r_input_units`,
-      `r_output_units`, descriptions) for **velocity**, not pressure.
-- [ ] Update `data_types = {...}` mappings (currently
-      `'absolute_pressure'`, `'pressure_temp'`).
+- [x] Replace the three `RS..._PREST...` net/station param files with VEL3D
+      reference designators — **done**: created 3 VEL3D-B station files
+      (`RS01SLBS_MJ01A_12_VEL3DB101`, `RS01SUM1_LJ01B_12_VEL3DB104`,
+      `RS03AXBS_MJ03A_12_VEL3DB301`) via `bin/make_vel3d_params.py`.
+      (Old PREST param files still present — remove on user OK.)
+- [x] Replace the per-channel param files — **done**: 4 channels each
+      (`LO2`/`LO1`/`LOZ` velocity + `LKO` seawater temp), loc `20`, band `L`,
+      `c_sample_rate=1.0`, `r_value=1.0` M/S. Codes per `OOI_channel_codes.md`.
+- [x] Update `data_types = {...}` mappings — **done**: velocity components →
+      `eastward/northward/upward_turbulent_velocity`, temp → `temperature`.
+- [ ] **Code dep:** uncomment dip in `create_metadata.py` (~L152) so `LOZ`
+      vertical (`c_dip=-90`) is written to StationXML (currently ignored).
+- [ ] Verify chained `c_end` (AXBA1 dep2, HYS14 dep4 had no OOI stop time).
 - [ ] Create the gitignored run config `param/run_vel3d.txt`
       (the analogue of the VM's `run_prest.txt` — `deployment`, `time_interval`,
       `trunc_time`, `data_quality`, gap-algorithm choice, etc.). **Note:**
       `param/run_prest.txt` and `run_metadata.txt` are gitignored, so they were
       never in the repo — confirm their schema from the VM before recreating.
 - [ ] Update `param/.gitignore` (`run_prest.txt` → `run_vel3d.txt`).
-- [ ] Decide on `param/botpt_params/` — almost certainly delete for VEL3D.
+- [x] Decide on `param/botpt_params/` — **deleted** (BOTPT out of scope).
 
 ## 3. Main pipeline script (`bin/OOI_data_request_and_convert_mseed.py`)
 
@@ -76,6 +82,13 @@ almost every change below:
 - [ ] Search for any remaining literal `prest` / `pressure` assumptions.
 
 ## 4. Other `bin/` scripts referencing PREST/pressure
+
+> **BOTPT code branches still live here.** The config/state dirs are deleted, but
+> inert `lily`/`nano` (BOTPT) branches remain in `OOI_data_request_and_convert_mseed.py`
+> (stream_tag ~L205, ncml_url ~L322), `convert_mseed.py` (~L85, ~L166), and the
+> `'BOTPTA'` filter word in `OOI_metadata.py` (~L64). Remove these when the
+> prest→vel3d stream branches are rewritten in §3. Note `convert_mseed.py`'s
+> ncml block is BOTPT-only (no prest path), so it needs a real rewrite, not just deletion.
 
 Files that mention prest/pressure/botpt and need review:
 - [ ] `OOI_metadata.py`
@@ -105,7 +118,7 @@ Files that mention prest/pressure/botpt and need review:
 
 - [ ] Replace `endtime_<ref>_prest.txt` / `..._prest_mseed2dmc.txt` with the
       VEL3D reference designators + `vel3d` run name.
-- [ ] Drop `run/botpt_endtimes/` unless BOTPT is in scope (it isn't).
+- [x] Drop `run/botpt_endtimes/` — **deleted** (BOTPT out of scope).
 
 ## 7. README.md
 

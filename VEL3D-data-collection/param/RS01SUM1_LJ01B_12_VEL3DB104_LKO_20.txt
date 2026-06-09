@@ -1,0 +1,26 @@
+##parameter file##
+
+# Southern Hydrate Summit 1 Seafloor
+# Station Name: HYS14
+
+cha = LKO                                  #Channel Name
+c_start = 2014-09-09T00:27:00; 2016-07-24T04:21:00; 2017-08-11T23:00:00; 2018-06-26T17:30:00; 2019-06-25T13:52:10; 2024-08-21T17:15:00    #Channel_StartDate --> deployment start dates
+c_end = 2016-07-23T00:00:00; 2017-08-11T00:30:00; 2018-06-26T03:30:00; 2019-06-25T13:52:10; 2024-08-20T17:04:44; None    #Channel_EndDate --> deployment end dates
+c_loc = 20                                    #Channel_LocationCode
+c_lat = 44.569173                         #Channel_Latitude
+c_lon = -125.148073                       #Channel_Longitude
+c_elev = -777                              #Channel_Elevation
+c_dep = 0.0                                  #Channel_Depth
+c_az = 0.0                                #Channel_Azimuth (degrees E of N)
+c_dip = 0.0                              #Channel_Dip (degrees down from horizontal; NOTE create_metadata.py currently ignores dip)
+c_type = GEOPHYSICAL                         #Channel_type
+c_sample_rate = 1.0; 1.0; 1.0; 1.0; 1.0; 1.0    #Channel_SampleRate (Hz; 1 Hz confirmed)
+c_description = temperature, Seawater Temperature    #Channel_description
+c_sensor = 3-D Single Point Velocity Meter (Nobska MAVS-4): VEL3D Series B    #Channel_sensor_description
+c_id = ATAPL-67979-00001; ATAPL-67979-00006; ATAPL-67979-00004; ATAPL-67979-00002; ATAPL-67979-00002; ATAPL-67979-00004    #Sensor(UID) per deployment
+r_value = 1.0                                #Response_Sensitivity_Value (no unit conversion; already C)
+r_frequency = 1.0                            #Response_Sensitivity_Frequency
+r_input_units = C                            #Response_Sensitivity_Input_Units
+r_input_description = degrees Celsius        #Response_Sensitivity_Input_Units_description
+r_output_units = C                           #Response_Sensitivity_Output_Units
+r_output_description = degrees Celsius       #Response_Sensitivity_Output_Units_description
