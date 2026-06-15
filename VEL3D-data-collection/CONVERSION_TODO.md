@@ -35,7 +35,7 @@ almost every change below:
       (`vel3d_b_engineering` also exists but is timing/cal only — not collected.)
       **VEL3D-C: `vel3d_cd_velocity_data`** (method `streamed`, 8 Hz) for velocity
       (`vel3d_c_eastward/northward/upward_turbulent_velocity`), **plus a SECOND
-      stream `vel3d_cd_system_data`** (~18 s) for temperature
+      stream `vel3d_cd_system_data`** (1 Hz) for temperature
       (`temperature_centidegree`, centi-°C → ×0.01 → °C). Confirmed live from M2M
       2026-06-15. So §3 needs TWO stream branches, and VEL3D-C stations pull two
       streams. Per-channel stream is now recorded in the param files as `c_stream`
@@ -74,8 +74,9 @@ almost every change below:
       2026-06-15). (Old PREST param files still present — remove on user OK.)
 - [x] Replace the per-channel param files — **done**: 4 channels each.
       VEL3D-B: `LOE`/`LON`/`LOZ` velocity + `LKO` temp, band `L`, 1 Hz.
-      VEL3D-C: `MOE`/`MON`/`MOZ` velocity (band `M`, 8 Hz) + `UKO` temp
-      (band `U`, ~18 s). All loc `20`, `r_value=1.0`. Each channel file now
+      VEL3D-C: `MOE`/`MON`/`MOZ` velocity (band `M`, 8 Hz) + `LKO` temp
+      (band `L`, 1 Hz — rates verified from delivered data via the investigator's
+      Δt_true). All loc `20`, `r_value=1.0`. Each channel file now
       carries `c_stream`. Codes per `OOI_channel_codes.md`.
       **Validated:** `create_metadata.py CE04OSBP_LJ01C_07_VEL3DC107` builds a
       48-channel StationXML (4 chan × 12 deployments) that passes obspy `validate=True`.
@@ -102,7 +103,7 @@ almost every change below:
       Add a `vel3d` branch with the correct OOI stream name (from §0).
       - **VEL3D-B:** single stream `vel3d_b_sample`.
       - **VEL3D-C:** TWO streams — `vel3d_cd_velocity_data` (8 Hz velocity) AND
-        `vel3d_cd_system_data` (~18 s temperature). Prefer routing per channel via
+        `vel3d_cd_system_data` (1 Hz temperature). Prefer routing per channel via
         the new `c_stream` param key rather than one stream per run.
       - **VEL3D-C temp conversion:** `temperature_centidegree` is centi-°C; apply
         ×0.01 → °C in the unit-conversion step (line ~853). (Velocity is already L1

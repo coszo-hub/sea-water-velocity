@@ -64,15 +64,15 @@ SEED channel = `[band][instrument][orientation]`.
 > Endurance cabled benthic package, ~80 m. VEL3D **Series C** (Nortek), a
 > different sensor from the RSN VEL3D-B. Velocity streams at **8 Hz** (band `M`,
 > mid-period) in `vel3d_cd_velocity_data`; temperature is **not** in that stream —
-> it comes from `vel3d_cd_system_data` (`temperature_centidegree`, ~18 s → band
-> `U`). 12 deployments, ongoing. [IRIS MDA SHBP](https://ds.iris.edu/mda/OO/SHBP/)
+> it comes from `vel3d_cd_system_data` (`temperature_centidegree`, 1 Hz → band
+> `L`). 12 deployments, ongoing. [IRIS MDA SHBP](https://ds.iris.edu/mda/OO/SHBP/)
 
 | Instrument | Measurement | Reference Designator | Net | Sta | Loc | SEED Channel | Notes |
 |---|---|---|---|---|---|---|---|
 | **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`MOE`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
 | **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`MON`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
 | **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`MOZ`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`UKO`** | `temperature_centidegree` (×0.01 → °C), ~18 s, from `vel3d_cd_system_data` |
+| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`LKO`** | `temperature_centidegree` (×0.01 → °C), 1 Hz, from `vel3d_cd_system_data` |
 
 ---
 
@@ -87,7 +87,7 @@ SEED channel = `[band][instrument][orientation]`.
 | **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`MOE`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
 | **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`MON`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
 | **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`MOZ`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`UKO`** | `temperature_centidegree` (×0.01 → °C), ~18 s, from `vel3d_cd_system_data` |
+| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`LKO`** | `temperature_centidegree` (×0.01 → °C), 1 Hz, from `vel3d_cd_system_data` |
 
 ---
 
@@ -98,8 +98,7 @@ The band letter follows the channel's sample rate (per the FDSN/SEED band-code t
 | Sample rate | Period | Band | Used by |
 |---|---|---|---|
 | 8 Hz | 0.125 s | `M` (mid period, >1–10 Hz) | VEL3D-C velocity → `MOE/MON/MOZ` |
-| 1 Hz | 1 s | `L` (long period, ~1 Hz) | VEL3D-B velocity + temp → `LOE/LON/LOZ/LKO` |
-| ~0.056 Hz | ~18 s | `U` (ultra-long) | VEL3D-C temperature → `UKO` (matches PREST's 15 s `U` precedent) |
+| 1 Hz | 1 s | `L` (long period, ~1 Hz) | VEL3D-B velocity + temp → `LOE/LON/LOZ/LKO`; VEL3D-C temp → `LKO` |
 
 ---
 

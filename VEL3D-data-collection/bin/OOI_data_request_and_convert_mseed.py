@@ -5,6 +5,7 @@ import os
 import sys
 import time
 import urllib.request
+import urllib.error
 import xml.etree.cElementTree as ET
 import requests
 import datetime
@@ -37,6 +38,11 @@ _parser.add_argument("transfer_method", choices=["seedlink", "miniseed2dmc"])
 _parser.add_argument("--save-nc", action="store_true",
                      help="Save a local copy of the fetched NetCDF (manual / ad-hoc runs only; "
                           "the cron wrapper does not pass this flag).")
+_parser.add_argument("--stream", default=None,
+                     help="VEL3D only: process just this OOI stream (e.g. vel3d_cd_velocity_data "
+                          "or vel3d_cd_system_data). Required for multi-stream stations (VEL3D-C); "
+                          "single-stream stations (VEL3D-B, PREST) auto-detect and need no flag. "
+                          "When set, the endtime cursor is tracked per-stream.")
 
 try:
     _cli = _parser.parse_args()
@@ -50,6 +56,7 @@ reference_name_dash = _cli.reference_name
 run_name            = _cli.run_name
 transfer_method     = _cli.transfer_method
 cli_save_nc         = _cli.save_nc
+cli_stream          = _cli.stream
     
 reference_name_underscore = reference_name_dash.replace("-", "_") # Used in param file names
 
@@ -68,11 +75,32 @@ if transfer_method == 'seedlink':
     mseed_path = os.path.join(output_path, "mseed") # Data to be transferred by SeedLink via mseedscan
 elif transfer_method == 'miniseed2dmc':
     mseed_path = os.path.join(output_path, "mseed2dmc") # Data to be transferred via miniseed2dmc
+os.makedirs(mseed_path, exist_ok=True)  # ensure output dir exists (seedlink path)
 netcdf_path = os.path.join(output_path, "netcdf")  # Local copy of fetched NetCDFs
 diag_log_path = os.path.join(output_path, "diagnostics")  # Per-event diagnostic logs
 metrics_path  = os.path.join(output_path, "metrics")       # Per-day pipeline stats CSVs
 
 sys.path.insert(0, bin_path)
+
+# ── VEL3D stream helpers ───────────────────────────────────────────────────
+# VEL3D channels declare which OOI stream carries their variable via the
+# per-channel `c_stream` param. PREST/BOTPT params have no c_stream (returns
+# None). A VEL3D-C station spans two streams (velocity 8 Hz + system_data temp),
+# so it is processed one stream per invocation (selected with --stream).
+def _channel_stream(ref_underscore, chan):
+    try:
+        cp = read_param(os.path.join(param_path, f"{ref_underscore}_{chan.strip()}.txt"))
+        return cp.get("c_stream", [None])[0]
+    except Exception:
+        return None
+
+def _distinct_streams(ref_underscore, channels):
+    out = []
+    for ch in channels:
+        s = _channel_stream(ref_underscore, ch)
+        if s and s not in out:
+            out.append(s)
+    return out
 
 # ── Diagnostic event logger ────────────────────────────────────────────────
 # Appends one line per event to output/diagnostics/<event>_<station>_<run>.txt
@@ -152,6 +180,27 @@ try:
     # (kept for backwards compatibility; will be removed in Phase 4).
     save_netcdf = cli_save_nc or (int(run.get("save_netcdf", [0])[0]) == 1)
 
+    # ── Resolve VEL3D target stream ────────────────────────────────────────
+    # For VEL3D, the stream is read from the per-channel c_stream param (not the
+    # run name). Single-stream stations (VEL3D-B) auto-resolve; multi-stream
+    # stations (VEL3D-C) must pass --stream to pick one per invocation.
+    vel3d_run = 'vel3d' in run_name
+    target_stream = None
+    if vel3d_run:
+        _ns0 = read_param(os.path.join(param_path, reference_name_underscore + ".txt"))
+        _streams0 = _distinct_streams(reference_name_underscore, _ns0["channels"][0][1:-1].split(","))
+        if cli_stream:
+            if cli_stream not in _streams0:
+                raise SystemExit(f"--stream {cli_stream} not among station streams {_streams0}")
+            target_stream = cli_stream
+        elif len(_streams0) == 1:
+            target_stream = _streams0[0]
+        else:
+            raise SystemExit(
+                f"{reference_name_dash} has multiple streams {_streams0}; "
+                f"pass --stream <name> to select one per invocation.")
+        print(f"VEL3D target stream: {target_stream}")
+
     USERNAME = os.environ.get("OOI_USERNAME")
     TOKEN = os.environ.get("OOI_TOKEN")
 
@@ -161,10 +210,13 @@ try:
             "Set OOI_USERNAME and OOI_TOKEN in the environment."
         )
 
+    # Per-stream cursor when --stream is explicitly selected (VEL3D-C); each
+    # stream advances independently. Single-stream stations keep the legacy name.
+    _st_suffix = ("_" + target_stream) if (vel3d_run and cli_stream) else ""
     if transfer_method == 'seedlink':
-        endtime_file_name = "endtime_" + reference_name_dash + "_" + run_name + ".txt" 
+        endtime_file_name = "endtime_" + reference_name_dash + "_" + run_name + _st_suffix + ".txt"
     elif transfer_method == 'miniseed2dmc':
-        endtime_file_name = "endtime_" + reference_name_dash + "_" + run_name + "_mseed2dmc.txt"      
+        endtime_file_name = "endtime_" + reference_name_dash + "_" + run_name + _st_suffix + "_mseed2dmc.txt"
     file_end_time = UTCDateTime(open(os.path.join(run_path, endtime_file_name), "r").read()) # End time of previous data request
 
     # Get data request start time (end time of previous request)
@@ -199,7 +251,9 @@ try:
         data_url = run["data_url"][0]
 
         # Stream tag
-        if 'prest' in run_name:
+        if vel3d_run:
+            stream_tag = "streamed/" + target_stream + "?include_provenance=true&format=application/netcdf"
+        elif 'prest' in run_name:
             stream_tag = "streamed/" + run_name + "_real_time?include_provenance=true&format=application/netcdf"
         elif 'lily' in run_name or 'nano' in run_name:
             stream_tag = "streamed/botpt_" + run_name + "_sample?include_provenance=true&format=application/netcdf"
@@ -316,13 +370,27 @@ try:
                 complete = data_tag[key]
 
         if complete == "complete":
-            if 'prest' in run_name:
+            if vel3d_run:
+                ncml_url = "deployment%04i_%s-streamed-%s.ncml" % (deployment_id, reference_name_dash, target_stream)
+            elif 'prest' in run_name:
                 ncml_url = "deployment%04i_%s-streamed-%s_real_time.ncml" % (deployment_id, reference_name_dash, run_name)
             elif 'lily' in run_name or 'nano' in run_name:
                 ncml_url = "deployment%04i_%s-streamed-botpt_%s_sample.ncml" % (deployment_id, reference_name_dash, run_name)
             ncml_url = "/".join([response_url, ncml_url])
             print(ncml_url)
-            ncml = urllib.request.urlopen(ncml_url)
+            # The aggregated NCML can lag a few seconds behind status=complete
+            # (more so for large/high-rate requests). Retry on 404 before failing.
+            ncml = None
+            for _ncml_try in range(6):
+                try:
+                    ncml = urllib.request.urlopen(ncml_url)
+                    break
+                except urllib.error.HTTPError as _ncml_e:
+                    if _ncml_e.code == 404 and _ncml_try < 5:
+                        print(f"NCML not ready yet (404); retry {_ncml_try + 1}/5 in 10 s")
+                        time.sleep(10)
+                        continue
+                    raise
             tree = ET.ElementTree(file=ncml)
             ncml.close()
             root = tree.getroot()
@@ -529,7 +597,13 @@ try:
                         channel_ls_raw__alert = net_sta_param__alert[f"channels_{dep__alert}"][0]
                     else:
                         channel_ls_raw__alert = net_sta_param__alert["channels"][0]
-                    first_channel__alert = channel_ls_raw__alert[1:-1].split(",")[0].strip()
+                    _chs__alert = [c.strip() for c in channel_ls_raw__alert[1:-1].split(",")]
+                    # VEL3D: nominal rate must come from a channel ON the stream we
+                    # requested (velocity 8 Hz vs system_data temp ~18 s differ).
+                    if vel3d_run:
+                        _chs__alert = [c for c in _chs__alert
+                                       if _channel_stream(reference_name_underscore, c) == target_stream]
+                    first_channel__alert = _chs__alert[0]
                     channel_param_first__alert = read_param(
                         os.path.join(param_path, f"{reference_name_underscore}_{first_channel__alert}.txt"))
                     if "c_sample_rate" in channel_param_first__alert:
@@ -703,6 +777,13 @@ try:
             channel_ls = channel_ls_raw[1:-1].split(",")
             print(channel_ls)
 
+            # VEL3D: keep only channels carried by the stream we requested.
+            # (VEL3D-C velocity stream has MOE/MON/MOZ; system_data has UKO.)
+            if vel3d_run:
+                channel_ls = [c for c in channel_ls
+                              if _channel_stream(reference_name_underscore, c) == target_stream]
+                print(f"VEL3D channels for stream {target_stream}: {channel_ls}")
+
             # ── Per-day pipeline stats CSV row ─────────────────────────────
             # Append once per (date, station, run). Idempotent — re-runs of
             # the same window (e.g. after a transient failure) skip rewrite.
@@ -851,7 +932,10 @@ try:
                     }
                     
                     # Unit conversion to desired output units
-                    data_i_point = data_i_point / float(channel_param["r_value"][0])                   
+                    data_i_point = data_i_point / float(channel_param["r_value"][0])
+                    # VEL3D-C reports temperature in centi-degrees C; scale to deg C.
+                    if name == "temperature_centidegree":
+                        data_i_point = data_i_point * 0.01
 
                     # Set current time
                     # [CHATGPT FIX #4] Ensure ObsPy receives UTCDateTime, not string

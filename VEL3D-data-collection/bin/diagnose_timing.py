@@ -138,6 +138,7 @@ import time
 import argparse
 import datetime
 import urllib.request
+import urllib.error
 import xml.etree.cElementTree as ET
 
 import numpy as np
@@ -164,9 +165,11 @@ from convert_utc import utcdata1900
 
 # ── Stations ───────────────────────────────────────────────────────────────
 STATIONS = [
-    "RS01SLBS-MJ01A-06-PRESTA101",
-    "RS01SUM1-LJ01B-09-PRESTB102",
-    "RS03AXBS-MJ03A-06-PRESTA301",
+    "RS01SLBS-MJ01A-12-VEL3DB101",
+    "RS01SUM1-LJ01B-12-VEL3DB104",
+    "RS03AXBS-MJ03A-12-VEL3DB301",
+    "CE02SHBP-LJ01D-07-VEL3DC108",
+    "CE04OSBP-LJ01C-07-VEL3DC107",
 ]
 
 # ── Metrics CSV columns ─────────────────────────────────────────────────────
@@ -238,7 +241,7 @@ def load_credentials():
 
 
 # ── Deployment detection ─────────────────────────────────────────────────────
-def get_deployment_for_date(station, date, param_path):
+def get_deployment_for_date(station, date, param_path, stream=None):
     """
     Auto-detect which deployment covers `date` (UTCDateTime) for `station`.
 
@@ -268,6 +271,13 @@ def get_deployment_for_date(station, date, param_path):
         return sp_nominal, c_start, c_end
 
     def _first_pressure_chan(chan_list):
+        # VEL3D: pick the first channel carried by the requested stream
+        # (per the per-channel c_stream param). PREST: the pressure ("…DO…") channel.
+        if stream is not None:
+            for c in chan_list:
+                cp = read_param(os.path.join(param_path, f"{ref_underscore}_{c}.txt"))
+                if cp.get("c_stream", [None])[0] == stream:
+                    return c
         return next((c for c in chan_list if "DO" in c), chan_list[0])
 
     # ── Numbered deployments (channels_1, channels_2, …) ──────────────────
@@ -306,7 +316,7 @@ def get_deployment_for_date(station, date, param_path):
 
 # ── Fetch OOI timestamps ─────────────────────────────────────────────────────
 def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
-                        save_nc_dir=None):
+                        save_nc_dir=None, stream=None):
     """
     Fetch raw NetCDF timestamps for one 24-hour window from OOI M2M API.
 
@@ -331,6 +341,8 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
 
     url_designator = station.replace("-", "/", 2)
     run_name = "prest"
+    # VEL3D passes an explicit stream; PREST uses "<run>_real_time".
+    stream_path = stream if stream is not None else f"{run_name}_real_time"
     start_str = str(start_dt)
     end_str   = str(end_dt)
 
@@ -351,7 +363,7 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
 
     # Data request
     stream_tag = (
-        f"streamed/{run_name}_real_time?"
+        f"streamed/{stream_path}?"
         "include_provenance=true&format=application/netcdf"
     )
     data_req = "&".join([
@@ -391,10 +403,20 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     # Locate NetCDF via NCML
     ncml_name = (
         f"deployment{deployment_id:04d}_{station}"
-        f"-streamed-{run_name}_real_time.ncml"
+        f"-streamed-{stream_path}.ncml"
     )
     ncml_url = "/".join([response_url, ncml_name])
-    ncml     = urllib.request.urlopen(ncml_url)
+    # NCML can lag a few seconds behind status=complete; retry on 404.
+    ncml = None
+    for _ncml_try in range(6):
+        try:
+            ncml = urllib.request.urlopen(ncml_url)
+            break
+        except urllib.error.HTTPError as _ncml_e:
+            if _ncml_e.code == 404 and _ncml_try < 5:
+                time.sleep(10)
+                continue
+            raise
     root     = ET.ElementTree(file=ncml).getroot()
     ncml.close()
 

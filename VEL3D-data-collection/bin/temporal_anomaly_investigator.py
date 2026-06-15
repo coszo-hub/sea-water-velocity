@@ -377,9 +377,10 @@ def write_stats(s, station, date_str, out_dir):
 # ════════════════════════════════════════════════════════════════════════════
 # CSV helpers
 # ════════════════════════════════════════════════════════════════════════════
-def _metrics_csv_path(station):
+def _metrics_csv_path(station, stream=None):
     short = station.split("-")[0]
-    return os.path.join(OUT_ROOT, "metrics", f"{short}_variability.csv")
+    suffix = f"_{stream}" if stream else ""
+    return os.path.join(OUT_ROOT, "metrics", f"{short}{suffix}_variability.csv")
 
 
 def _load_existing_keys(csv_path):
@@ -457,14 +458,14 @@ def _row_from_stats(s, station, date_str, deployment, fig_generated):
 # Shared per-day worker
 # ════════════════════════════════════════════════════════════════════════════
 def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
-                 save_nc_dir=None, only_if_gaps=False):
+                 save_nc_dir=None, only_if_gaps=False, stream=None):
     """
     Fetch + compute + write for one (station, date). Returns True on success.
     """
     date_str = str(date)[:10]
 
     try:
-        dep_info = get_deployment_for_date(station, date, PARAM_PATH)
+        dep_info = get_deployment_for_date(station, date, PARAM_PATH, stream=stream)
     except ValueError as e:
         print(f"    skip — {e}")
         _append_row(csv_path, _no_data_row(station, date_str, 0, 0))
@@ -476,7 +477,7 @@ def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
     try:
         _, t_sec, utc_trim, _ = fetch_nc_timestamps(
             station, date, date + 86400.0, deployment, run,
-            save_nc_dir=save_nc_dir)
+            save_nc_dir=save_nc_dir, stream=stream)
     except Exception as e:
         print(f"    no data — {e}")
         _append_row(csv_path, _no_data_row(station, date_str, deployment, sp_nominal))
@@ -509,12 +510,12 @@ def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
 # Modes
 # ════════════════════════════════════════════════════════════════════════════
 def single_mode(args):
-    run = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+    run = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
     date = UTCDateTime(args.date + "T00:00:00Z")
     station = args.station[0] if isinstance(args.station, list) else args.station
     print(f"\n[single] {station}   {args.date}")
 
-    csv_path = _metrics_csv_path(station)
+    csv_path = _metrics_csv_path(station, args.stream)
     existing = _load_existing_keys(csv_path)
     if (station, args.date) in existing and not args.force:
         print("  already in CSV — re-running anyway to regenerate figure")
@@ -529,6 +530,7 @@ def single_mode(args):
         always_figure=True,
         save_nc_dir=(os.path.join(OUT_ROOT, "netcdf") if args.save_nc else None),
         only_if_gaps=args.only_gaps,
+        stream=args.stream,
     )
 
 
@@ -544,7 +546,7 @@ def _remove_row(csv_path, station, date_str):
 
 
 def collect_mode(args):
-    run      = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+    run      = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
     stations = args.station if args.station else STATIONS
     date     = UTCDateTime(args.start + "T00:00:00Z")
     end_date = UTCDateTime(args.end   + "T00:00:00Z")
@@ -559,7 +561,7 @@ def collect_mode(args):
 
         for station in stations:
             print(f"\n  [{station}]")
-            csv_path = _metrics_csv_path(station)
+            csv_path = _metrics_csv_path(station, args.stream)
             existing = _load_existing_keys(csv_path)
             if (station, date_str) in existing:
                 print(f"    skip — already in CSV")
@@ -572,14 +574,15 @@ def collect_mode(args):
                 save_nc_dir=(os.path.join(OUT_ROOT, "netcdf")
                              if args.save_nc else None),
                 only_if_gaps=args.only_gaps,
+                stream=args.stream,
             )
 
         date += 86400.0
 
 
 # ── plot mode ──────────────────────────────────────────────────────────────
-def _load_metrics(station):
-    csv_path = _metrics_csv_path(station)
+def _load_metrics(station, stream=None):
+    csv_path = _metrics_csv_path(station, stream)
     if not os.path.exists(csv_path):
         return []
     with open(csv_path, newline="") as f:
@@ -602,7 +605,7 @@ def plot_mode(args):
     # Load per-station data
     data = {}
     for st in stations:
-        rows = _load_metrics(st)
+        rows = _load_metrics(st, args.stream)
         rows = [r for r in rows if r["has_data"] == "True"]
         if not rows:
             continue
@@ -691,6 +694,10 @@ def main():
     parser.add_argument("--mode", choices=["single", "collect", "plot"], default="single")
     parser.add_argument("--station", nargs="*", default=None,
                         help="Station reference designator(s); defaults to all 3.")
+    parser.add_argument("--stream", default=None,
+                        help="VEL3D only: OOI stream to analyze (vel3d_cd_velocity_data, "
+                             "vel3d_cd_system_data, or vel3d_b_sample). Required for VEL3D-C "
+                             "per-stream timing; single-stream stations may omit it.")
     parser.add_argument("--date",  help="YYYY-MM-DD (single mode).")
     parser.add_argument("--start", help="YYYY-MM-DD (collect mode).")
     parser.add_argument("--end",   help="YYYY-MM-DD (collect mode).")

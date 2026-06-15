@@ -13,8 +13,11 @@ supported:
   Series C — Endurance Nortek "VEL3D Series C" (cabled benthic package).
              Velocity stream `vel3d_cd_velocity_data` at 8 Hz; temperature is
              NOT in it — it lives in `vel3d_cd_system_data` (temperature_centidegree,
-             ~18 s / 0.056 Hz). SEED band M (8 Hz): MOE/MON/MOZ velocity; band U
-             (~18 s) UKO temperature. Two streams per station.
+             1 Hz). SEED band M (8 Hz): MOE/MON/MOZ velocity; band L (1 Hz) LKO
+             temperature. Two streams per station. Rates VERIFIED from delivered
+             data via temporal_anomaly_investigator.py Δt_true (velocity 0.125 s,
+             temp 1.000 s; temp confirmed 1 Hz from 2016 through 2025, not the
+             ~18 s an early synchronous-API probe wrongly suggested).
 
 Sources of truth:
   - SEED codes/loc/net: OOI_channel_codes.md (Non-Tier 1 OOI Instrument Data Channel list)
@@ -67,7 +70,7 @@ CHANNELS_B = [
 ]
 
 # ── Series C channels: Nortek VEL3D-C. Velocity 8 Hz (band M) in
-#    vel3d_cd_velocity_data; temperature ~18 s (band U) in vel3d_cd_system_data. ──
+#    vel3d_cd_velocity_data; temperature 1 Hz (band L) in vel3d_cd_system_data. ──
 CHANNELS_C = [
     dict(cha="MOE", var="vel3d_c_eastward_turbulent_velocity",
          desc="vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity",
@@ -81,10 +84,10 @@ CHANNELS_C = [
          desc="vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity",
          az="0.0", dip="-90.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    # Temperature: source var temperature_centidegree (centi-degC; x0.01 -> degC in pipeline).
-    dict(cha="UKO", var="temperature_centidegree",
+    # Temperature: 1 Hz (band L), source var temperature_centidegree (centi-degC; x0.01 -> degC in pipeline).
+    dict(cha="LKO", var="temperature_centidegree",
          desc="temperature, Seawater Temperature (source temperature_centidegree, centi-degC; x0.01 -> degC)",
-         az="0.0", dip="0.0", rate="0.0555556", stream="vel3d_cd_system_data",
+         az="0.0", dip="0.0", rate="1.0", stream="vel3d_cd_system_data",
          r_in="C", r_in_d="degrees Celsius", r_out="C", r_out_d="degrees Celsius"),
 ]
 

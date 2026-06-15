@@ -3,7 +3,7 @@
 # Oregon Shelf Cabled Benthic Experiment Package
 # Station Name: SHBP
 
-cha = UKO                                  #Channel Name
+cha = LKO                                  #Channel Name
 c_start = 2014-09-10T15:43:00; 2015-08-02T05:30:00; 2016-07-22T22:50:00; 2017-09-10T14:30:00; 2018-06-30T02:30:00; 2019-06-23T03:36:00; 2020-08-25T17:34:05; 2021-08-23T19:27:00; 2022-08-19T05:55:00; 2023-08-22T14:50:00; 2024-08-19T14:55:00; 2025-08-28T15:17:00    #Channel_StartDate --> deployment start dates
 c_end = 2015-08-01T00:00:00; 2016-07-21T00:00:00; 2017-09-09T03:30:00; 2018-06-29T02:30:00; 2019-06-19T23:31:00; 2020-08-12T21:24:00; 2021-08-04T20:20:00; 2022-08-18T23:51:00; 2023-08-14T19:20:00; 2024-08-15T20:13:00; 2025-08-15T00:20:00; None    #Channel_EndDate --> deployment end dates
 c_loc = 20                                    #Channel_LocationCode
@@ -14,7 +14,7 @@ c_dep = 0.0                                  #Channel_Depth
 c_az = 0.0                                #Channel_Azimuth (degrees E of N)
 c_dip = 0.0                              #Channel_Dip (degrees down from horizontal)
 c_type = GEOPHYSICAL                         #Channel_type
-c_sample_rate = 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556; 0.0555556    #Channel_SampleRate (Hz)
+c_sample_rate = 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0; 1.0    #Channel_SampleRate (Hz)
 c_stream = vel3d_cd_system_data    #OOI stream carrying this channel's variable
 c_description = temperature, Seawater Temperature (source temperature_centidegree, centi-degC; x0.01 -> degC)    #Channel_description
 c_sensor = 3-D Single Point Velocity Meter (Nortek): VEL3D Series C    #Channel_sensor_description
