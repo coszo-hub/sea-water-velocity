@@ -2,7 +2,9 @@
 
 Authoritative reference for SEED network/station/location/channel codes for the
 OOI RCA seafloor instruments. Source: COSZO "Non-Tier 1 OOI Instrument Data
-Channel" list (provided by user). **VEL3D-B rows are the scope of this repo.**
+Channel" list (provided by user). **VEL3D rows are the scope of this repo** —
+the three RSN VEL3D-**B** (Nobska MAVS-4, 1 Hz) plus the two Endurance cabled
+VEL3D-**C** (Nortek, 8 Hz) at `SHBP`/`OSBP`.
 
 SEED channel = `[band][instrument][orientation]`.
 
@@ -54,6 +56,50 @@ SEED channel = `[band][instrument][orientation]`.
 | **3-D Single Point Velocity** | **Northward Vel (m/s)** | `RS03AXBS-MJ03A-12-VEL3DB301` | OO | AXBA1 | **20** | **`[L?]O1` / `[L?]ON`** | ⚠ orientation — see below |
 | **3-D Single Point Velocity** | **Upward Vel (m/s)** | `RS03AXBS-MJ03A-12-VEL3DB301` | OO | AXBA1 | **20** | **`[L?]OZ`** | Z if within 5° of true vertical |
 | **3-D Single Point Velocity** | **Seawater Temp (°C)** | `RS03AXBS-MJ03A-12-VEL3DB301` | OO | AXBA1 | **20** | **`[L?]KO`** | `K`=Temp, `O`=Outside |
+
+---
+
+## Endurance OR Shelf — Station `SHBP` ("Endurance OR Shelf Cabled Benthic")
+
+> Endurance cabled benthic package, ~80 m. VEL3D **Series C** (Nortek), a
+> different sensor from the RSN VEL3D-B. Velocity streams at **8 Hz** (band `M`,
+> mid-period) in `vel3d_cd_velocity_data`; temperature is **not** in that stream —
+> it comes from `vel3d_cd_system_data` (`temperature_centidegree`, ~18 s → band
+> `U`). 12 deployments, ongoing. [IRIS MDA SHBP](https://ds.iris.edu/mda/OO/SHBP/)
+
+| Instrument | Measurement | Reference Designator | Net | Sta | Loc | SEED Channel | Notes |
+|---|---|---|---|---|---|---|---|
+| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`MOE`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`MON`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`MOZ`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | SHBP | **20** | **`UKO`** | `temperature_centidegree` (×0.01 → °C), ~18 s, from `vel3d_cd_system_data` |
+
+---
+
+## Endurance OR Offshore — Station `OSBP` ("Endurance OR Offshore Cabled Benthic")
+
+> Endurance cabled benthic package, ~581 m. Same VEL3D **Series C** instrument and
+> stream layout as `SHBP` above. 12 deployments, ongoing.
+> [IRIS MDA OSBP](https://ds.iris.edu/mda/OO/OSBP/)
+
+| Instrument | Measurement | Reference Designator | Net | Sta | Loc | SEED Channel | Notes |
+|---|---|---|---|---|---|---|---|
+| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`MOE`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`MON`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`MOZ`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | OSBP | **20** | **`UKO`** | `temperature_centidegree` (×0.01 → °C), ~18 s, from `vel3d_cd_system_data` |
+
+---
+
+## SEED band code by sample rate (why VEL3D-B is `L` but VEL3D-C is `M`/`U`)
+
+The band letter follows the channel's sample rate (per the FDSN/SEED band-code table):
+
+| Sample rate | Period | Band | Used by |
+|---|---|---|---|
+| 8 Hz | 0.125 s | `M` (mid period, >1–10 Hz) | VEL3D-C velocity → `MOE/MON/MOZ` |
+| 1 Hz | 1 s | `L` (long period, ~1 Hz) | VEL3D-B velocity + temp → `LOE/LON/LOZ/LKO` |
+| ~0.056 Hz | ~18 s | `U` (ultra-long) | VEL3D-C temperature → `UKO` (matches PREST's 15 s `U` precedent) |
 
 ---
 

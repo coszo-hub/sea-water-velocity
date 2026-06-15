@@ -14,15 +14,33 @@ over from PREST and need changing.
 Before touching code, we need to nail down the VEL3D specifics. These drive
 almost every change below:
 
-- [ ] **Which VEL3D instruments / reference designators** do we collect?
-      (e.g. the OOI RCA VEL3D reference designators + their station nicknames).
-      PREST currently uses:
-      - `RS01SLBS-MJ01A-06-PRESTA101` (HYSB1)
-      - `RS01SUM1-LJ01B-09-PRESTB102` (HYS14)
-      - `RS03AXBS-MJ03A-06-PRESTA301` (AXBA1)
-- [ ] **OOI stream name(s)** for VEL3D (drives `stream_tag` + `ncml_url`,
+- [x] **Which VEL3D instruments / reference designators** do we collect?
+      **Answer — five current meters:**
+      VEL3D-**B** (Nobska MAVS-4, RSN, 1 Hz):
+      - `RS01SLBS-MJ01A-12-VEL3DB101` (HYSB1)
+      - `RS01SUM1-LJ01B-12-VEL3DB104` (HYS14)
+      - `RS03AXBS-MJ03A-12-VEL3DB301` (AXBA1)
+      VEL3D-**C** (Nortek, Endurance cabled benthic, 8 Hz) — added 2026-06-15:
+      - `CE02SHBP-LJ01D-07-VEL3DC108` (SHBP)
+      - `CE04OSBP-LJ01C-07-VEL3DC107` (OSBP)
+- [x] **OOI stream name(s)** for VEL3D (drives `stream_tag` + `ncml_url`,
       see §3). PREST uses `<run>_real_time`; BOTPT uses `botpt_<run>_sample`.
-      VEL3D will have its own stream name — confirm from the OOI data portal.
+      **VEL3D-B: `vel3d_b_sample`** (method `streamed`), confirmed from OOI
+      instrument metadata (Rutgers datareview for `RS01SLBS-MJ01A-12-VEL3DB101`).
+      Carries `eastward/northward/upward_turbulent_velocity` (PD878/879/880) +
+      `temperature` (PD440). NOTE: unlike PREST, the stream is a FIXED name, not
+      `<run>_real_time` — the §3 branch must hardcode `vel3d_b_sample`, e.g.
+      `stream_tag = "streamed/vel3d_b_sample?..."` and
+      `ncml = "deployment%04i_%s-streamed-vel3d_b_sample.ncml"`.
+      (`vel3d_b_engineering` also exists but is timing/cal only — not collected.)
+      **VEL3D-C: `vel3d_cd_velocity_data`** (method `streamed`, 8 Hz) for velocity
+      (`vel3d_c_eastward/northward/upward_turbulent_velocity`), **plus a SECOND
+      stream `vel3d_cd_system_data`** (~18 s) for temperature
+      (`temperature_centidegree`, centi-°C → ×0.01 → °C). Confirmed live from M2M
+      2026-06-15. So §3 needs TWO stream branches, and VEL3D-C stations pull two
+      streams. Per-channel stream is now recorded in the param files as `c_stream`
+      (added by `make_vel3d_params.py`) so the pipeline can route by channel
+      instead of hardcoding one stream per run.
 - [ ] **Channels & physical variables** VEL3D reports
       (eastward/northward/upward sea-water velocity, plus temp/heading/pitch/roll?).
       PREST reports `absolute_pressure` + `pressure_temp`.
@@ -49,24 +67,31 @@ almost every change below:
 ## 2. Param files (`param/`)
 
 - [x] Replace the three `RS..._PREST...` net/station param files with VEL3D
-      reference designators — **done**: created 3 VEL3D-B station files
-      (`RS01SLBS_MJ01A_12_VEL3DB101`, `RS01SUM1_LJ01B_12_VEL3DB104`,
-      `RS03AXBS_MJ03A_12_VEL3DB301`) via `bin/make_vel3d_params.py`.
-      (Old PREST param files still present — remove on user OK.)
-- [x] Replace the per-channel param files — **done**: 4 channels each
-      (`LOE`/`LON`/`LOZ` velocity + `LKO` seawater temp), loc `20`, band `L`,
-      `c_sample_rate=1.0`, `r_value=1.0` M/S. Codes per `OOI_channel_codes.md`.
+      reference designators — **done**: created **5** station files via
+      `bin/make_vel3d_params.py` — 3 VEL3D-B (`RS01SLBS_MJ01A_12_VEL3DB101`,
+      `RS01SUM1_LJ01B_12_VEL3DB104`, `RS03AXBS_MJ03A_12_VEL3DB301`) + 2 VEL3D-C
+      (`CE02SHBP_LJ01D_07_VEL3DC108`, `CE04OSBP_LJ01C_07_VEL3DC107`, added
+      2026-06-15). (Old PREST param files still present — remove on user OK.)
+- [x] Replace the per-channel param files — **done**: 4 channels each.
+      VEL3D-B: `LOE`/`LON`/`LOZ` velocity + `LKO` temp, band `L`, 1 Hz.
+      VEL3D-C: `MOE`/`MON`/`MOZ` velocity (band `M`, 8 Hz) + `UKO` temp
+      (band `U`, ~18 s). All loc `20`, `r_value=1.0`. Each channel file now
+      carries `c_stream`. Codes per `OOI_channel_codes.md`.
+      **Validated:** `create_metadata.py CE04OSBP_LJ01C_07_VEL3DC107` builds a
+      48-channel StationXML (4 chan × 12 deployments) that passes obspy `validate=True`.
 - [x] Update `data_types = {...}` mappings — **done**: velocity components →
       `eastward/northward/upward_turbulent_velocity`, temp → `temperature`.
-- [ ] **Code dep:** uncomment dip in `create_metadata.py` (~L152) so `LOZ`
-      vertical (`c_dip=-90`) is written to StationXML (currently ignored).
+- [x] **Code dep:** uncomment dip in `create_metadata.py` (~L152) so `LOZ`
+      vertical (`c_dip=-90`) is written to StationXML — **done**: added
+      `dip=float(channel_param["c_dip"][0])` to the `Channel(...)` constructor
+      (note: param key is `c_dip`, not the old commented `c_Dip`).
 - [ ] Verify chained `c_end` (AXBA1 dep2, HYS14 dep4 had no OOI stop time).
 - [ ] Create the gitignored run config `param/run_vel3d.txt`
       (the analogue of the VM's `run_prest.txt` — `deployment`, `time_interval`,
       `trunc_time`, `data_quality`, gap-algorithm choice, etc.). **Note:**
       `param/run_prest.txt` and `run_metadata.txt` are gitignored, so they were
       never in the repo — confirm their schema from the VM before recreating.
-- [ ] Update `param/.gitignore` (`run_prest.txt` → `run_vel3d.txt`).
+- [x] Update `param/.gitignore` (`run_prest.txt` → `run_vel3d.txt`) — **done**.
 - [x] Decide on `param/botpt_params/` — **deleted** (BOTPT out of scope).
 
 ## 3. Main pipeline script (`bin/OOI_data_request_and_convert_mseed.py`)
@@ -75,6 +100,13 @@ almost every change below:
       - `stream_tag` — line ~202 (`if 'prest' in run_name: ... _real_time`).
       - `ncml_url` — line ~319 (`deployment%04i_%s-streamed-%s_real_time.ncml`).
       Add a `vel3d` branch with the correct OOI stream name (from §0).
+      - **VEL3D-B:** single stream `vel3d_b_sample`.
+      - **VEL3D-C:** TWO streams — `vel3d_cd_velocity_data` (8 Hz velocity) AND
+        `vel3d_cd_system_data` (~18 s temperature). Prefer routing per channel via
+        the new `c_stream` param key rather than one stream per run.
+      - **VEL3D-C temp conversion:** `temperature_centidegree` is centi-°C; apply
+        ×0.01 → °C in the unit-conversion step (line ~853). (Velocity is already L1
+        m/s, no conversion.)
 - [ ] Verify channel-list / `data_types` handling works with VEL3D's
       multi-component channels (the per-deployment `channels_<dep>` /
       `data_types_<dep>` lookups around lines 698–765).

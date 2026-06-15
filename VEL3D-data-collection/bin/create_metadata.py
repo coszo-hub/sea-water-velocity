@@ -149,8 +149,7 @@ for i in range(len(cha_list)):
         )
 
         #Removed these parameters from the channel metadata because they are optional and Orest Kawka and I are not sure what values to use. MT
-        # - dip=(channel_param["c_Dip"][j]), 
-        # - types=channel_param["c_type"][j].split(","), 
+        # - types=channel_param["c_type"][j].split(","),
         # - clock_drift_in_seconds_per_sample=(channel_param["c_clockdrift"][j]),
         # - calibration_units=channel_param["Cal_unit"][j],
         # - calibration_units_description=channel_param["Cal_unit_descript"][j],
@@ -165,6 +164,7 @@ for i in range(len(cha_list)):
             elevation=(channel_param["c_elev"][0]),
             depth=(channel_param["c_dep"][0]),
             azimuth=(channel_param["c_az"][0]),
+            dip=float(channel_param["c_dip"][0]),
             sample_rate=(channel_param["c_sample_rate"][j]),
             description=channel_param["c_description"][0],
             comments=[

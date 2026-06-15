@@ -1,0 +1,27 @@
+##parameter file##
+
+# Oregon Offshore Cabled Benthic Experiment Package
+# Station Name: OSBP
+
+cha = MOE                                  #Channel Name
+c_start = 2014-08-15T00:12:00; 2015-08-03T22:00:00; 2016-07-22T22:50:00; 2017-08-10T16:00:00; 2018-06-25T00:00:00; 2019-06-23T22:52:00; 2020-08-19T02:23:26; 2021-08-23T22:54:08; 2022-08-20T02:22:00; 2023-08-29T00:50:00; 2024-08-22T15:10:00; 2025-08-28T03:38:00    #Channel_StartDate --> deployment start dates
+c_end = 2015-08-02T00:00:00; 2016-07-21T00:00:00; 2017-08-10T04:00:00; 2018-06-25T00:00:00; 2019-06-19T04:17:00; 2020-08-18T23:40:00; 2021-08-04T20:20:00; 2022-08-19T06:13:00; 2023-08-15T05:00:00; 2024-08-15T07:25:00; 2025-08-27T19:23:00; None    #Channel_EndDate --> deployment end dates
+c_loc = 20                                    #Channel_LocationCode
+c_lat = 44.369407                         #Channel_Latitude
+c_lon = -124.953627                       #Channel_Longitude
+c_elev = -581                              #Channel_Elevation
+c_dep = 0.0                                  #Channel_Depth
+c_az = 90.0                                #Channel_Azimuth (degrees E of N)
+c_dip = 0.0                              #Channel_Dip (degrees down from horizontal)
+c_type = GEOPHYSICAL                         #Channel_type
+c_sample_rate = 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0    #Channel_SampleRate (Hz)
+c_stream = vel3d_cd_velocity_data    #OOI stream carrying this channel's variable
+c_description = vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity    #Channel_description
+c_sensor = 3-D Single Point Velocity Meter (Nortek): VEL3D Series C    #Channel_sensor_description
+c_id = ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002    #Sensor(UID) per deployment
+r_value = 1.0                                #Response_Sensitivity_Value (no metadata scaling; already M/S)
+r_frequency = 1.0                            #Response_Sensitivity_Frequency
+r_input_units = M/S                            #Response_Sensitivity_Input_Units
+r_input_description = meters per second        #Response_Sensitivity_Input_Units_description
+r_output_units = M/S                           #Response_Sensitivity_Output_Units
+r_output_description = meters per second       #Response_Sensitivity_Output_Units_description
