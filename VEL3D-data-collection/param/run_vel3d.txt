@@ -1,0 +1,25 @@
+base_url = https://ooinet.oceanobservatories.org/api/m2m/12587/events/deployment/inv    # Base url for requesting deployment info
+data_url = https://ooinet.oceanobservatories.org/api/m2m/12576/sensor/inv               # Base url for requesting data
+save_netcdf = 0                                                                         # 1 to write a local copy of the NetCDF file; 0 to skip 
+gap = 1                                                                                 # 1 to open a gap file and 0 to close the gap file
+time_interval = 86400 #data length for requesting (24 hours)
+trunc_time = 0                                                                          # Allow ingestion time into the OOI database.
+data_endtime = NOW                                                                      # End time for requesting data. If you want to set current time, please define current time as "NOW". Else, give the UTCtime for end time (eq. 2009-12-31T12:23:34.5Z).
+max_cycle = 5				                                                            # The number of times to wait for data 
+delay = 50			                                                                    # Set the time for waiting for data	
+# channel = [LDO_01,LK1_01,UDO_01,UK1_01]			                                    # Channel names --> This info is now retrieved from the network/station parameter file.
+# data_type = {'LDO_01':'absolute_pressure', 'LK1_01':'pressure_temp','UDO_01':'absolute_pressure', 'UK1_01':'pressure_temp'}    # Data type from NetCDF header --> This info is now retrieved from the network/station parameter file.
+data_time = time			                                                            # Type of time
+http_server = downloads.oceanobservatories.org/async_results		                    # HTTPServer server, updated url - MT
+opendap_server = opendap.oceanobservatories.org/thredds/dodsC/ooi		                # OPENDAP server, updated url - MT	
+data_quality = D				                                                        # Data quality --> Update?
+dif_time_interval = 0.5			                                                        # Data time --> Unused?
+data_sp = 5                                                                             # If data samples > 5, then write a seed file. 
+rec_len = 512			                                                                # Record length
+sp_alert_abs_floor = 0.05                                                               # Send email if calculated sample period deviates from nominal by this amount (seconds (50 ms))
+sp_alert_rel_frac  = 0.05                                                               # Send email if calculated sample period deviates from nominal by this amount (5%)
+
+deployment = 12
+auto_diag = 0                                                                           # DEPRECATED — auto-diagnostic figure no longer generated on cron; will be removed in Phase 4.
+deploy_warn_days = 30                                                                   # Number of days away from end of deployment
+gap_algo = anomaly                                                                      # Gap detection algorithm: legacy (median Δt + adaptive threshold) | anomaly (OLS Δt_true + true_missing). Flipped to anomaly 2026-04-29.
