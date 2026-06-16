@@ -75,7 +75,8 @@ if transfer_method == 'seedlink':
     mseed_path = os.path.join(output_path, "mseed") # Data to be transferred by SeedLink via mseedscan
 elif transfer_method == 'miniseed2dmc':
     mseed_path = os.path.join(output_path, "mseed2dmc") # Data to be transferred via miniseed2dmc
-os.makedirs(mseed_path, exist_ok=True)  # ensure output dir exists (seedlink path)
+os.makedirs(mseed_path, exist_ok=True)  # ensure mseed output dir exists
+os.makedirs(log_path, exist_ok=True)    # ensure log dir exists (seedlink/mseed2dmc)
 netcdf_path = os.path.join(output_path, "netcdf")  # Local copy of fetched NetCDFs
 diag_log_path = os.path.join(output_path, "diagnostics")  # Per-event diagnostic logs
 metrics_path  = os.path.join(output_path, "metrics")       # Per-day pipeline stats CSVs
