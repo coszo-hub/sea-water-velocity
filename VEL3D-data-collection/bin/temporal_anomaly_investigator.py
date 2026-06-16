@@ -493,7 +493,9 @@ def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
     fig_generated = False
     want_figure = always_figure and (not only_if_gaps or s["n_gaps"] > 0)
     if want_figure:
-        fig_dir = os.path.join(fig_dir_base, f"{station}_{date_str}")
+        # Include stream so VEL3D-C velocity vs system_data figures don't collide.
+        tag = f"{station}_{stream}_{date_str}" if stream else f"{station}_{date_str}"
+        fig_dir = os.path.join(fig_dir_base, tag)
         make_per_day_figure(t_sec, s, station, date_str, fig_dir)
         write_stats(s, station, date_str, fig_dir)
         fig_generated = True
