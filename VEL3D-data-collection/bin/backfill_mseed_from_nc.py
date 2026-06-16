@@ -16,9 +16,14 @@ Outputs:
     output/metrics/<station>_<run>_pipeline_stats.csv  (optional, --append-stats)
 
 Usage:
+    # all VEL3D stations + every stream they carry (VEL3D-C does both streams):
     python bin/backfill_mseed_from_nc.py --start 2014-09-14 --end 2026-03-01
+    # one VEL3D-B station:
     python bin/backfill_mseed_from_nc.py --start 2025-01-01 --end 2025-01-07 \\
-        --station RS01SLBS-MJ01A-06-PRESTA101 --gap-algo anomaly --append-stats
+        --station RS01SLBS-MJ01A-12-VEL3DB101 --gap-algo anomaly --append-stats
+    # one VEL3D-C station, velocity stream only:
+    python bin/backfill_mseed_from_nc.py --start 2025-01-01 --end 2025-01-07 \\
+        --station CE02SHBP-LJ01D-07-VEL3DC108 --stream vel3d_cd_velocity_data
 """
 import argparse
 import csv
@@ -55,6 +60,28 @@ METRICS_FIELDS = [
     "n_gaps_raw", "jitter_unstable", "frac_maxabs",
     "n_gaps", "n_segments", "gap_total_missing_est",
 ]
+
+
+# ── VEL3D stream helpers (parity with OOI_data_request_and_convert_mseed.py) ──
+# Each VEL3D channel declares the OOI stream carrying its variable via the
+# per-channel `c_stream` param. VEL3D-B is single-stream (vel3d_b_sample);
+# VEL3D-C spans two (vel3d_cd_velocity_data 8 Hz + vel3d_cd_system_data 1 Hz),
+# so each station is backfilled one stream at a time.
+def _channel_stream(ref_under, chan):
+    try:
+        cp = read_param(os.path.join(PARAM_PATH, f"{ref_under}_{chan.strip()}.txt"))
+        return cp.get("c_stream", [None])[0]
+    except Exception:
+        return None
+
+
+def _distinct_streams(ref_under, channels):
+    out = []
+    for ch in channels:
+        s = _channel_stream(ref_under, ch)
+        if s and s not in out:
+            out.append(s)
+    return out
 
 
 def _daterange(start, end):
@@ -123,6 +150,9 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
             seg_start = ti[0]
             seg_end   = ti[-1]
             seg_data  = data_day[cursor:cursor + n_seg] / r_value
+            # VEL3D-C reports temperature in centi-degrees C; scale to deg C.
+            if data_var == "temperature_centidegree":
+                seg_data = seg_data * 0.01
             cursor   += n_seg
 
             stats = {
@@ -158,11 +188,11 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
 
 
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
-                metrics_csv, append_stats, skip_existing):
+                metrics_csv, append_stats, skip_existing, stream=None):
     date_str = str(date)[:10]
     gap_algo_requested = gap_algo
 
-    nc_path = find_nc_file(nc_dir, station, date_str)
+    nc_path = find_nc_file(nc_dir, station, date_str, stream=stream)
     if nc_path is None:
         print(f"  [{station}] {date_str}  skip — no NetCDF")
         return False
@@ -174,7 +204,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             return False
 
     try:
-        dep_info = get_deployment_for_date(station, date, PARAM_PATH)
+        dep_info = get_deployment_for_date(station, date, PARAM_PATH, stream=stream)
     except ValueError as e:
         print(f"  [{station}] {date_str}  skip — {e}")
         return False
@@ -186,6 +216,13 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
     chan_raw      = sta_param.get(f"channels_{deployment}",
                                   sta_param.get("channels"))[0]
     channels      = [c.strip() for c in chan_raw.strip("[]").split(",")]
+    # VEL3D-C: keep only the channels carried by the stream being backfilled
+    # (velocity → MOE/MON/MOZ, system_data → LKO). Single-stream stations keep all.
+    if stream is not None:
+        channels = [c for c in channels if _channel_stream(ref_under, c) == stream]
+        if not channels:
+            print(f"  [{station}] {date_str}  skip — no channels for stream {stream}")
+            return False
     dt_raw        = sta_param.get(f"data_types_{deployment}",
                                   sta_param.get("data_types"))[0]
     import ast
@@ -247,7 +284,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             _append_metrics_row(metrics_csv, {
                 "date":                     date_str,
                 "station":                  station,
-                "run":                      "prest",
+                "run":                      "vel3d",
                 "deployment":               deployment,
                 "algorithm":                actual_algo,
                 "algorithm_requested":      gap_algo_requested,
@@ -286,10 +323,14 @@ def main():
     p.add_argument("--end", help="End date YYYY-MM-DD")
     p.add_argument("--station", action="append",
                    help="Restrict to a station (repeat for multiple). "
-                        "Default: all 3 PREST stations.")
+                        "Default: all VEL3D stations.")
+    p.add_argument("--stream", default=None,
+                   help="Restrict to one OOI stream (e.g. vel3d_cd_velocity_data). "
+                        "Default: process every stream each station carries — "
+                        "VEL3D-C runs both velocity (8 Hz) and system_data temp (1 Hz).")
     p.add_argument("--gap-algo", choices=["legacy", "anomaly"], default="anomaly",
                    help="Gap detection algorithm. Default: anomaly "
-                        "(matches param/run_prest.txt as of 2026-04-29).")
+                        "(matches param/run_vel3d.txt).")
     p.add_argument("--nc-dir",     default=DEFAULT_NC_DIR)
     p.add_argument("--mseed-dir",  default=DEFAULT_MSEED,
                    help=f"MiniSEED output root (default: {DEFAULT_MSEED})")
@@ -297,7 +338,7 @@ def main():
                    help=f"Per-day stats CSV directory (default: {DEFAULT_METRICS})")
     p.add_argument("--append-stats", action="store_true",
                    help="Also append per-day stats rows to "
-                        "<metrics-dir>/<station>_prest_pipeline_stats.csv")
+                        "<metrics-dir>/<station>_vel3d_pipeline_stats.csv")
     p.add_argument("--no-skip", action="store_true",
                    help="Don't skip days that already have a metrics CSV row "
                         "(only meaningful with --append-stats).")
@@ -312,21 +353,36 @@ def main():
         dates = list(_daterange(args.start, args.end))
 
     stations = args.station if args.station else STATIONS
-    run = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+    run = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
 
     n_done = n_skipped = 0
     for station in stations:
-        metrics_csv = os.path.join(args.metrics_dir,
-                                   f"{station}_prest_pipeline_stats.csv")
-        for date in dates:
-            ok = process_day(station, date, run, args.gap_algo,
-                             args.nc_dir, args.mseed_dir,
-                             metrics_csv, args.append_stats,
-                             skip_existing=not args.no_skip)
-            if ok:
-                n_done += 1
-            else:
-                n_skipped += 1
+        ref_under = station.replace("-", "_")
+        sta_param = read_param(os.path.join(PARAM_PATH, f"{ref_under}.txt"))
+        all_chans = [c.strip() for c in sta_param["channels"][0].strip("[]").split(",")]
+        streams = _distinct_streams(ref_under, all_chans) or [None]
+        if args.stream:
+            if args.stream not in streams:
+                print(f"  [{station}] skip — stream {args.stream} not among {streams}")
+                continue
+            streams = [args.stream]
+        multi = len(streams) > 1
+
+        for stream in streams:
+            # Per-stream metrics CSV so VEL3D-C's two streams (different sp,
+            # same dates) don't collide on the (station, date) skip key.
+            sfx = f"_{stream}" if (stream and multi) else ""
+            metrics_csv = os.path.join(args.metrics_dir,
+                                       f"{station}{sfx}_vel3d_pipeline_stats.csv")
+            for date in dates:
+                ok = process_day(station, date, run, args.gap_algo,
+                                 args.nc_dir, args.mseed_dir,
+                                 metrics_csv, args.append_stats,
+                                 skip_existing=not args.no_skip, stream=stream)
+                if ok:
+                    n_done += 1
+                else:
+                    n_skipped += 1
 
     print(f"\nDone. Converted: {n_done}  Skipped: {n_skipped}")
 

@@ -79,15 +79,20 @@ from temporal_anomaly_investigator import (
 # ════════════════════════════════════════════════════════════════════════════
 # NetCDF discovery
 # ════════════════════════════════════════════════════════════════════════════
-def find_nc_file(nc_dir, station, date_str):
+def find_nc_file(nc_dir, station, date_str, stream=None):
     """Locate the saved NetCDF for (station, date).
 
     Tries server-filename convention first (e.g. anything containing both
     the station ref and the YYYYMMDD form of the date), then falls back to
-    the legacy investigator pattern <station>_<date>_deployment*.nc."""
+    the legacy investigator pattern <station>_<date>_deployment*.nc.
+
+    If `stream` is given, restrict matches to NetCDFs whose filename also
+    contains that stream name. VEL3D-C saves two NetCDFs per day (velocity
+    + system_data), so the stream is needed to pick the right one."""
     date_compact = date_str.replace("-", "")
+    stream_glob = f"*{stream}*" if stream else "*"
     candidates = (
-        sorted(glob.glob(os.path.join(nc_dir, f"*{station}*{date_compact}*.nc")))
+        sorted(glob.glob(os.path.join(nc_dir, f"*{station}*{stream_glob}{date_compact}*.nc")))
         or sorted(glob.glob(os.path.join(nc_dir, f"{station}_{date_str}_deployment*.nc")))
     )
     if not candidates:
