@@ -73,6 +73,15 @@ def load_rows(metrics_dir):
 
     rows = []
     for path in paths:
+        source_csv = os.path.basename(path)
+        # Each CSV holds one (station, stream); VEL3D-C stations have two
+        # streams (8 Hz velocity + 1 Hz system) under one reference designator,
+        # so the stream must enter the grouping key or their differing dt_true
+        # populations get pooled. Filename is "<STATION>_<stream>_variability.csv".
+        stream = source_csv
+        if stream.endswith("_variability.csv"):
+            stream = stream[: -len("_variability.csv")]
+        stream = stream.split("_", 1)[1] if "_" in stream else stream
         with open(path, newline="") as f:
             reader = csv.DictReader(f)
             for r in reader:
@@ -82,7 +91,8 @@ def load_rows(metrics_dir):
                 if dt_true is None:
                     continue
                 rows.append({
-                    "source_csv": os.path.basename(path),
+                    "source_csv": source_csv,
+                    "stream": stream,
                     "date": r["date"],
                     "station": r["station"],
                     "deployment": r["deployment"],
@@ -96,10 +106,10 @@ def load_rows(metrics_dir):
 
 
 def group_stats(rows):
-    """Median and MAD of dt_true per (station, deployment)."""
+    """Median and MAD of dt_true per (station, deployment, stream)."""
     by_group = defaultdict(list)
     for r in rows:
-        by_group[(r["station"], r["deployment"])].append(r["dt_true"])
+        by_group[(r["station"], r["deployment"], r["stream"])].append(r["dt_true"])
 
     stats = {}
     for key, values in by_group.items():
@@ -112,7 +122,7 @@ def group_stats(rows):
 def find_outliers(rows, stats, z_threshold, fg_threshold):
     flagged = []
     for r in rows:
-        key = (r["station"], r["deployment"])
+        key = (r["station"], r["deployment"], r["stream"])
         s = stats[key]
         med = s["median"]
         mad = s["mad"]
@@ -146,7 +156,7 @@ def find_outliers(rows, stats, z_threshold, fg_threshold):
 
 def write_report(flagged, out_path):
     fieldnames = [
-        "date", "station", "deployment", "source_csv",
+        "date", "station", "deployment", "stream", "source_csv",
         "dt_FG", "dt_true",
         "group_median_dt_true", "group_mad_dt_true", "group_n_days",
         "robust_z", "frac_dev_from_dt_FG",
@@ -185,19 +195,19 @@ def print_summary(flagged, stats, z_threshold, fg_threshold, out_path):
     if not flagged:
         return
 
-    # Per-(station, deployment) tally.
+    # Per-(station, deployment, stream) tally.
     tally = defaultdict(int)
     for r in flagged:
-        tally[(r["station"], r["deployment"])] += 1
+        tally[(r["station"], r["deployment"], r["stream"])] += 1
 
     print()
     print("Per-group counts (outlier_days / total_days_with_data):")
     for key in sorted(tally.keys()):
-        station, dep = key
+        station, dep, stream = key
         n_total = stats[key]["n"]
         med = stats[key]["median"]
         mad = stats[key]["mad"]
-        print(f"  {station}  dep={dep}: {tally[key]:5d} / {n_total:5d}   "
+        print(f"  {station}  dep={dep}  {stream}: {tally[key]:5d} / {n_total:5d}   "
               f"(median dt_true={med:.9f}s, MAD={mad:.3e}s)")
 
     print()
@@ -212,7 +222,7 @@ def print_summary(flagged, stats, z_threshold, fg_threshold, out_path):
         z_str = f"{z:+7.2f}" if z is not None else "    n/a"
         f_str = f"{f:.2e}" if f is not None else "    n/a"
         print(f"  {r['date']}  {r['station']}  dep={r['deployment']}  "
-              f"dt_true={r['dt_true']:.9f}s  z={z_str}  "
+              f"{r['stream']}  dt_true={r['dt_true']:.9f}s  z={z_str}  "
               f"frac_dev={f_str}  [{r['flag_reasons']}]")
 
 
