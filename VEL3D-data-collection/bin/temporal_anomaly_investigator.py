@@ -285,7 +285,9 @@ def make_per_day_figure(t_sec, s, station, date_str, out_dir):
     if di_C.size > 0:
         max_C = float(np.max(di_C))
         max_bins = 200
-        bw_C = max(bin_w, (max_C - 2.0) / max_bins)
+        # Base bin width is 0.1 (panel A); do NOT reuse `bin_w`, which panel B
+        # clobbers with a Freedman–Diaconis value that is None when iqr <= 0.
+        bw_C = max(0.1, (max_C - 2.0) / max_bins)
         bins_C = np.arange(2.0, max_C + bw_C, bw_C)
         ax.hist(di_C, bins=bins_C, color="#E53935", edgecolor="black", linewidth=0.8)
     else:
