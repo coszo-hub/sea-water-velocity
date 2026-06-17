@@ -20,6 +20,7 @@ log/*
 log_mseed2dmc/*
 output/netcdf/*
 output/xml/*
+!output/xml/OO_*.xml
 output/fixed_mseed/*
 output/mseed_to_fix/*
 output/fix_chan_name_loc_code/*

@@ -1,0 +1,2754 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<FDSNStationXML xmlns="http://www.fdsn.org/xml/station/1" schemaVersion="1.2">
+  <Source>COSZO</Source>
+  <Module>ObsPy 1.4.2</Module>
+  <ModuleURI>https://www.obspy.org</ModuleURI>
+  <Created>2026-06-17T01:00:06.530689Z</Created>
+  <Network code="OO" startDate="2014-01-01T00:00:00.000000Z" restrictedStatus="open">
+    <Description>Ocean Observatories Initiative</Description>
+    <Station code="OSBP" startDate="2014-08-15T00:12:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">44.369407</Latitude>
+      <Longitude unit="DEGREES">-124.953627</Longitude>
+      <Elevation unit="METERS">-581.0</Elevation>
+      <Site>
+        <Name>Endurance OR Offshore Cabled Benthic</Name>
+      </Site>
+      <Channel code="MOE" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOE" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+        <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MON" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+        <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="MOZ" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+        <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
+        <SampleRate>8.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>M/S</Name>
+              <Description>meters per second</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>M/S</Name>
+                <Description>meters per second</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">8.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00004</Value>
+          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00004">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+      <Channel code="LKO" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Comment>
+          <Value>ATOSU-69829-00002</Value>
+          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+        </Comment>
+        <Latitude unit="DEGREES">44.369407</Latitude>
+        <Longitude unit="DEGREES">-124.953627</Longitude>
+        <Elevation unit="METERS">-581.0</Elevation>
+        <Depth unit="METERS">0.0</Depth>
+        <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
+        <SampleRate>1.0</SampleRate>
+        <Sensor>
+          <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
+        </Sensor>
+        <Response>
+          <InstrumentSensitivity>
+            <Value>1.0</Value>
+            <Frequency>1.0</Frequency>
+            <InputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </InputUnits>
+            <OutputUnits>
+              <Name>C</Name>
+              <Description>degrees Celsius</Description>
+            </OutputUnits>
+          </InstrumentSensitivity>
+          <Stage number="1" resourceId="ATOSU-69829-00002">
+            <PolesZeros name="Stage01">
+              <InputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </InputUnits>
+              <OutputUnits>
+                <Name>C</Name>
+                <Description>degrees Celsius</Description>
+              </OutputUnits>
+              <PzTransferFunctionType>DIGITAL (Z-TRANSFORM)</PzTransferFunctionType>
+              <NormalizationFactor>1.0</NormalizationFactor>
+              <NormalizationFrequency unit="HERTZ">1.0</NormalizationFrequency>
+            </PolesZeros>
+            <Decimation>
+              <InputSampleRate unit="HERTZ">1.0</InputSampleRate>
+              <Factor>1</Factor>
+              <Offset>0</Offset>
+              <Delay unit="HERTZ">0.0</Delay>
+              <Correction unit="HERTZ">0.0</Correction>
+            </Decimation>
+            <StageGain>
+              <Value>1.0</Value>
+              <Frequency>1.0</Frequency>
+            </StageGain>
+          </Stage>
+        </Response>
+      </Channel>
+    </Station>
+  </Network>
+</FDSNStationXML>
