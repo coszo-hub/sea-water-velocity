@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """Render fig1_dt_true.png with outlier days marked as red vertical lines.
 
-Outliers are detected per (station, deployment) using the same logic as
+Outliers are detected per (stream, deployment) using the same logic as
 bin/find_dt_true_outliers.py: a day is flagged if its `dt_true` has either
   * |robust z| >= --z-threshold against the per-group median (MAD-scaled), or
   * |dt_true - dt_FG| / dt_FG >= --fg-threshold
+
+One panel is drawn per per-stream metrics CSV. VEL3D-C stations have two
+streams under one reference designator (8 Hz velocity + 1 Hz system), so
+they get one panel each rather than being pooled into a single station.
 
 Saves fig1_dt_true_outliers.png to output/temporal_anomaly/figures/summary/
 (plus per-year subdirs that already contain a fig1_dt_true.png).
@@ -15,6 +19,7 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime
+import glob
 import math
 import os
 from collections import defaultdict
@@ -29,12 +34,6 @@ REPO_ROOT   = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 METRICS_DIR = os.path.join(REPO_ROOT, "output", "temporal_anomaly", "metrics")
 SUMMARY_DIR = os.path.join(REPO_ROOT, "output", "temporal_anomaly",
                            "figures", "summary")
-STATIONS = (
-    "RS01SLBS-MJ01A-06-PRESTA101",
-    "RS01SUM1-LJ01B-09-PRESTB102",
-    "RS03AXBS-MJ03A-06-PRESTA301",
-)
-
 C_POINTS   = "#2196F3"
 C_FIT      = "#FF9800"
 C_NOMINAL  = "#9C27B0"
@@ -51,18 +50,26 @@ def _to_float(s):
     return v if math.isfinite(v) else math.nan
 
 
-def _station_key(station_full):
-    """RS01SLBS-MJ01A-06-PRESTA101 -> RS01SLBS (CSV file prefix)."""
-    return station_full.split("-", 1)[0]
+def discover_streams():
+    """One panel per per-stream variability CSV.
+
+    Returns a list of (label, path), one per
+    output/temporal_anomaly/metrics/<STATION>_<stream>_variability.csv.
+    The label is "<STATION>_<stream>". VEL3D-C stations yield two CSVs
+    (8 Hz velocity + 1 Hz system) and therefore two panels — never pooled.
+    """
+    out = []
+    for path in sorted(glob.glob(os.path.join(METRICS_DIR, "*_variability.csv"))):
+        label = os.path.basename(path)[: -len("_variability.csv")]
+        out.append((label, path))
+    return out
 
 
-def load_station_rows(station_full):
-    path = os.path.join(METRICS_DIR, f"{_station_key(station_full)}_variability.csv")
+def load_rows(path):
     if not os.path.exists(path):
         return []
     with open(path, newline="") as f:
-        rows = [r for r in csv.DictReader(f) if r.get("has_data") == "True"]
-    return rows
+        return [r for r in csv.DictReader(f) if r.get("has_data") == "True"]
 
 
 def _median(xs):
@@ -106,21 +113,21 @@ def _filter_rows(rows, year=None):
 
 
 def render(out_dir, z_threshold, fg_threshold, year=None, suffix=""):
-    per_station = {}
-    for st in STATIONS:
-        rows = _filter_rows(load_station_rows(st), year=year)
+    per_panel = {}
+    for label, path in discover_streams():
+        rows = _filter_rows(load_rows(path), year=year)
         if rows:
-            per_station[st] = rows
+            per_panel[label] = rows
 
-    if not per_station:
+    if not per_panel:
         print(f"[{out_dir}] no metrics — skipping")
         return
 
-    n = len(per_station)
+    n = len(per_panel)
     fig, axes = plt.subplots(n, 1, figsize=(14, 3.5 * n), dpi=140, squeeze=False)
 
     total_flagged = 0
-    for ax, (st, rows) in zip(axes[:, 0], per_station.items()):
+    for ax, (label, rows) in zip(axes[:, 0], per_panel.items()):
         dates    = [datetime.datetime.fromisoformat(r["date"]) for r in rows]
         dt_true  = np.array([_to_float(r["dt_true"]) for r in rows])
         dt_FG    = np.array([_to_float(r["dt_FG"])   for r in rows])
@@ -147,7 +154,7 @@ def render(out_dir, z_threshold, fg_threshold, year=None, suffix=""):
             ax.axhline(sp, color=C_NOMINAL, linestyle=":", linewidth=1,
                        label=f"sp_nominal = {sp:.6f}s")
 
-        ax.set_title(st, fontweight="bold")
+        ax.set_title(label, fontweight="bold")
         ax.set_ylabel("interval (s)")
         ax.legend(loc="best", fontsize=9, framealpha=0.9)
         ax.grid(alpha=0.3)
@@ -175,9 +182,9 @@ def main():
                    help="|robust z| threshold (default: 10000)")
     p.add_argument("--fg-threshold", type=float, default=5e-2,
                    help="|dt_true - dt_FG|/dt_FG threshold (default: 5e-2 = 5%%)")
-    p.add_argument("--years", nargs="*", default=["2015", "2022", "2023"],
-                   help="per-year subdirs to also render "
-                        "(default: 2015 2022 2023; pass empty to skip)")
+    p.add_argument("--years", nargs="*", default=[],
+                   help="per-year subdirs to also render in addition to the "
+                        "full range, e.g. --years 2025 (default: none)")
     args = p.parse_args()
 
     print(f"Thresholds: |z|>={args.z_threshold:g}, "
