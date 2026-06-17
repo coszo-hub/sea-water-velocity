@@ -118,6 +118,9 @@ The band letter follows the channel's sample rate (per the FDSN/SEED band-code t
 - **Network** `OO`; **Location code** `20`; **Band** `L` (1 Hz confirmed).
 - **Temperature channel** `LKO` (`K`=Temperature, `O`=Outside).
 - **Units** m/s, `r_value = 1.0` (EarthScope/FDSN expectation for instrument code `O`).
+- **Azimuth / Dip** — StationXML writes `Azimuth = 0.0` on every channel and omits
+  `Dip` entirely (no authoritative as-installed orientation). Matches the PREST
+  deliverable EarthScope already accepted. See the azimuth/dip decision below.
 
 ## Velocity orientation codes — DECISION: `LOE` / `LON` / `LOZ`
 
@@ -126,6 +129,30 @@ seawater temp. Directed by user's supervisor (2026-06-09), superseding the earli
 interim choice of numeric `LO2`/`LO1`. This is consistent with the orientation
 investigation below: the OOI product is declination-corrected to **true** north, so
 the horizontals satisfy the "within 5° of true direction" rule for using `E`/`N`.
+
+> The channel **codes** stay `LOE`/`LON`/`LOZ`. The decision above is only about
+> those three-letter codes — not the numeric `Azimuth`/`Dip` metadata fields, which
+> are governed by the separate decision immediately below.
+
+### Azimuth / Dip metadata — DECISION (2026-06-17): `Azimuth = 0`, no `Dip`
+
+Superseding the earlier interim metadata (`Azimuth = 90` on the East channel,
+`Dip = −90` on the vertical), the StationXML now writes **`Azimuth = 0.0` on every
+channel and no `<Dip>` element**, because we do **not** have authoritative
+as-installed orientation (compass heading / tilt) for the instruments. Directed by
+the user (2026-06-17).
+
+- Exactly matches the **PREST deliverable** EarthScope already accepted — its scalar
+  pressure/temp channels also carry `Azimuth = 0` and no `Dip`.
+- Mechanics: `c_az = 0.0` for all channels; `c_dip` is **commented out** in the
+  channel param files; `create_metadata.py` no longer writes `Dip`.
+- **Known tension:** the `E`/`Z` orientation codes nominally imply azimuth 90° /
+  vertical, so a strict FDSN code-vs-orientation check may warn. We accept this —
+  orientation is labelled by the *code* only, not asserted by value. If a strict
+  check ever rejects it, the fallback is numeric orientation codes
+  (`LO2`/`LO1`/`LO3`, `MO2`/`MO1`/`MO3`).
+- The declination / true-north investigation below still stands: it justifies the
+  `E`/`N` **codes**; it does not require asserting a numeric azimuth.
 
 ### Orientation investigation (is the horizontal within 5° of true?)
 The list's Notes say to use `E`/`N` only if the horizontal is within 5° of true

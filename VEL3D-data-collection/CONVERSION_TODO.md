@@ -82,10 +82,11 @@ almost every change below:
       48-channel StationXML (4 chan × 12 deployments) that passes obspy `validate=True`.
 - [x] Update `data_types = {...}` mappings — **done**: velocity components →
       `eastward/northward/upward_turbulent_velocity`, temp → `temperature`.
-- [x] **Code dep:** uncomment dip in `create_metadata.py` (~L152) so `LOZ`
-      vertical (`c_dip=-90`) is written to StationXML — **done**: added
-      `dip=float(channel_param["c_dip"][0])` to the `Channel(...)` constructor
-      (note: param key is `c_dip`, not the old commented `c_Dip`).
+- [x] **Code dep:** ~~uncomment dip in `create_metadata.py` so `LOZ` vertical gets
+      `Dip=-90`~~ — **REVERSED (2026-06-17).** Decision is now `Azimuth=0` on all
+      channels and **no `Dip`** (no authoritative orientation; matches PREST). `dip=`
+      removed from the `Channel(...)` constructor; `c_dip` commented out in params.
+      See `OOI_channel_codes.md` → "Azimuth / Dip metadata — DECISION (2026-06-17)".
 - [ ] Verify chained `c_end` (AXBA1 dep2, HYS14 dep4 had no OOI stop time).
 - [ ] Create the gitignored run config `param/run_vel3d.txt`
       (the analogue of the VM's `run_prest.txt` — `deployment`, `time_interval`,
