@@ -3,7 +3,7 @@
   <Source>COSZO</Source>
   <Module>ObsPy 1.4.2</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2026-06-17T20:58:37.092216Z</Created>
+  <Created>2026-06-17T21:09:46.923454Z</Created>
   <Network code="OO" startDate="2014-01-01T00:00:00.000000Z" restrictedStatus="open">
     <Description>Ocean Observatories Initiative</Description>
     <Station code="OSBP" startDate="2014-08-15T00:12:00.000000Z" restrictedStatus="open">
@@ -2030,7 +2030,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00004</Value>
           <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
@@ -2086,7 +2086,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00002</Value>
           <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
@@ -2142,7 +2142,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00004</Value>
           <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
@@ -2198,7 +2198,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00002</Value>
           <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
@@ -2254,7 +2254,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00004</Value>
           <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
@@ -2310,7 +2310,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00002</Value>
           <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
@@ -2366,7 +2366,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00004</Value>
           <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
@@ -2422,7 +2422,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00002</Value>
           <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
@@ -2478,7 +2478,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00004</Value>
           <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
@@ -2534,7 +2534,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00002</Value>
           <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
@@ -2590,7 +2590,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00004</Value>
           <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
@@ -2646,7 +2646,7 @@
         </Response>
       </Channel>
       <Channel code="LKO" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
-        <Description>temperature, Seawater Temperature (source temperature_centidegree, centi-degC</Description>
+        <Description>temperature, Seawater Temperature</Description>
         <Comment>
           <Value>ATOSU-69829-00002</Value>
           <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
