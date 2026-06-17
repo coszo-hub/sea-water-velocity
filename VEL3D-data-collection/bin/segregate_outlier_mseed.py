@@ -42,9 +42,11 @@ OUTLIER_CSV = os.path.join(REPO_ROOT, "output", "temporal_anomaly",
 
 # OOI reference designator → SEED station code (from param/ files).
 STATION_TO_SEED = {
-    "RS01SLBS-MJ01A-06-PRESTA101": "HYSB1",
-    "RS01SUM1-LJ01B-09-PRESTB102": "HYS14",
-    "RS03AXBS-MJ03A-06-PRESTA301": "AXBA1",
+    "RS01SLBS-MJ01A-12-VEL3DB101": "HYSB1",
+    "RS01SUM1-LJ01B-12-VEL3DB104": "HYS14",
+    "RS03AXBS-MJ03A-12-VEL3DB301": "AXBA1",
+    "CE02SHBP-LJ01D-07-VEL3DC108": "SHBP",
+    "CE04OSBP-LJ01C-07-VEL3DC107": "OSBP",
 }
 
 FNAME_RE = re.compile(
