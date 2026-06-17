@@ -1,9 +1,9 @@
 """
-gap_algorithms.py — shared gap-detection interface for the COSZO PREST pipeline.
+gap_algorithms.py — shared gap-detection interface for the COSZO VEL3D pipeline.
 
 Two pure functions return the same GapResult shape so the cron pipeline,
 testk smoke-test, and offline plotting tools can swap algorithms via a single
-config flag (`gap_algo` in run_prest.txt).
+config flag (`gap_algo` in run_vel3d.txt).
 
     detect_gaps_legacy  : robust median Δt + adaptive multiplier × sp threshold
                           (mirrors OOI_data_request_and_convert_mseed.py

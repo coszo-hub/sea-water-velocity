@@ -36,7 +36,7 @@ Usage
 
     # date range, one station, also convert to MiniSEED
     python bin/plot_from_netcdf.py --start 2019-01-01 --end 2019-01-07 \\
-        --station RS01SLBS-MJ01A-06-PRESTA101 --convert-mseed
+        --station RS01SLBS-MJ01A-12-VEL3DB101 --convert-mseed
 """
 
 import os
@@ -328,7 +328,7 @@ def main():
     parser.add_argument("--end",   help="YYYY-MM-DD (range end, inclusive).")
     parser.add_argument("--station", nargs="*", default=None,
                         help="Station reference designator(s); "
-                             "default = all 3 PREST stations.")
+                             "default = all 5 VEL3D stations.")
     parser.add_argument("--nc-dir",    default=DEFAULT_NC_DIR,
                         help=f"NetCDF input directory (default: {DEFAULT_NC_DIR})")
     parser.add_argument("--plot-dir",  default=DEFAULT_PLOT_DIR,
@@ -351,7 +351,7 @@ def main():
     if args.no_plot and not args.convert_mseed:
         parser.error("--no-plot with no --convert-mseed leaves nothing to do")
 
-    run = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+    run = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
     stations = args.station if args.station else STATIONS
 
     if args.date:

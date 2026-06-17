@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-diagnose_timing.py  —  COSZO OOI PREST timing diagnostics
+diagnose_timing.py  —  COSZO OOI VEL3D timing diagnostics
 ═══════════════════════════════════════════════════════════════════════════════
 
 SUMMARY
 ───────
-This script diagnoses timing quality of OOI PREST seafloor pressure data
-across three stations and over arbitrary date ranges.  It operates in three
+This script diagnoses timing quality of OOI VEL3D current-meter data
+across five stations and over arbitrary date ranges.  It operates in three
 modes selected with --mode:
 
   single  (default)
@@ -115,16 +115,16 @@ USAGE
 
   # Single day diagnostic
   conda run -n ooi_env python bin/diagnose_timing.py \\
-      --mode single --station RS01SLBS-MJ01A-06-PRESTA101 \\
+      --mode single --station RS01SLBS-MJ01A-12-VEL3DB101 \\
       --date 2020-07-01
 
-  # Batch collect over a date range (all 3 stations)
+  # Batch collect over a date range (all 5 stations)
   conda run -n ooi_env python bin/diagnose_timing.py \\
       --mode collect --start 2024-01-01 --end 2024-01-31
 
   # Collect for one station only
   conda run -n ooi_env python bin/diagnose_timing.py \\
-      --mode collect --station RS01SLBS-MJ01A-06-PRESTA101 \\
+      --mode collect --station RS01SLBS-MJ01A-12-VEL3DB101 \\
       --start 2024-01-01 --end 2024-01-31
 
   # Generate summary plots from collected metrics
@@ -272,7 +272,7 @@ def get_deployment_for_date(station, date, param_path, stream=None):
 
     def _first_pressure_chan(chan_list):
         # VEL3D: pick the first channel carried by the requested stream
-        # (per the per-channel c_stream param). PREST: the pressure ("…DO…") channel.
+        # (per the per-channel c_stream param).
         if stream is not None:
             for c in chan_list:
                 cp = read_param(os.path.join(param_path, f"{ref_underscore}_{c}.txt"))
@@ -988,7 +988,7 @@ def collect_mode(args):
     timestamps from OOI, run compute_stats, append to CSV, and optionally
     generate a per-day figure on anomaly.
     """
-    run      = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+    run      = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
     stations = args.station if args.station else STATIONS
 
     abs_floor = float(run.get("sp_alert_abs_floor", [0.05])[0])
@@ -1859,7 +1859,7 @@ def run_diagnostic(t_sec, sp_nominal, station, date_str, out_root=None):
     a sample-period alert are detected.  Accepts pre-fetched timestamps and
     runs the full compute_stats → make_figure → write_stats pipeline.
 
-    Note: sp_alert and alert_thr are re-derived here from run_prest.txt
+    Note: sp_alert and alert_thr are re-derived here from run_vel3d.txt
     defaults since the main pipeline does not pass them.
     """
     if out_root is None:
@@ -1904,10 +1904,10 @@ def main():
         if not args.date:
             parser.error("--date required for --mode single")
         station = (args.station[0] if args.station
-                   else "RS01SLBS-MJ01A-06-PRESTA101")
+                   else "RS01SLBS-MJ01A-12-VEL3DB101")
         date    = UTCDateTime(args.date + "T00:00:00Z")
 
-        run     = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+        run     = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
         dep_info = get_deployment_for_date(station, date, PARAM_PATH)
         deployment = dep_info["deployment"]
         sp_nominal = dep_info["sp_nominal"]

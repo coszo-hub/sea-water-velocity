@@ -59,10 +59,8 @@ for j in range(len(reference_id)):
 
     for i in range(len(sensor_list)):
 
-        # if json.dumps(sensorList[i]).find("BOTPTA") != -1:
-        # Modified to include tidal pressure data - MT
-        # 2026-06-15 MK: sea-water-velocity scope is VEL3D (B + C). Matches both
-        # VEL3DB/VEL3DC sensor strings; dropped BOTPTA/PREST (out of scope here).
+        # sea-water-velocity scope is VEL3D (B + C); matches both
+        # VEL3DB/VEL3DC sensor strings.
         if any(word in json.dumps(sensor_list[i]) for word in ['VEL3D']):
 
             file_name = json.dumps(sensor_list[i])

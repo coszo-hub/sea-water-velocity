@@ -2,7 +2,7 @@
 """
 temporal_anomaly_investigator.py
 ═══════════════════════════════════════════════════════════════════════════════
-Timestamp variability assessment for OOI PREST sensor timestamps.
+Timestamp variability assessment for OOI VEL3D sensor timestamps.
 
 Implements the procedure in
     Obsidian Vault/COSZO/timestamp_variability_assessment_plan.md
@@ -690,7 +690,7 @@ def plot_mode(args):
 # ════════════════════════════════════════════════════════════════════════════
 def main():
     parser = argparse.ArgumentParser(
-        description="Timestamp variability assessment for OOI PREST stations.",
+        description="Timestamp variability assessment for OOI VEL3D stations.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("--mode", choices=["single", "collect", "plot"], default="single")

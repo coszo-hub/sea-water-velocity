@@ -16,7 +16,7 @@ Output:
 
 Usage:
     python bin/compare_gap_algos.py --start 2025-01-22 --end 2025-01-26
-    python bin/compare_gap_algos.py --date 2025-01-24 --station RS01SLBS-MJ01A-06-PRESTA101
+    python bin/compare_gap_algos.py --date 2025-01-24 --station RS01SLBS-MJ01A-12-VEL3DB101
 """
 import argparse
 import csv
@@ -155,7 +155,7 @@ def main():
     p.add_argument("--end", help="End date YYYY-MM-DD")
     p.add_argument("--station", action="append",
                    help="Restrict to a station (repeat for multiple). "
-                        "Default: all 3 PREST stations.")
+                        "Default: all 5 VEL3D stations.")
     p.add_argument("--nc-dir",  default=DEFAULT_NC_DIR)
     p.add_argument("--out-dir", default=DEFAULT_OUT_DIR)
     p.add_argument("--force", action="store_true",
@@ -172,7 +172,7 @@ def main():
 
     stations = args.station if args.station else STATIONS
 
-    run = read_param(os.path.join(PARAM_PATH, "run_prest.txt"))
+    run = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
 
     n_processed = n_skipped_present = n_no_nc = n_match = n_differ = 0
 
