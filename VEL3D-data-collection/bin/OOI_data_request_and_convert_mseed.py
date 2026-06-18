@@ -253,11 +253,11 @@ try:
 
         # Stream tag
         if vel3d_run:
-            stream_tag = "streamed/" + target_stream + "?include_provenance=true&format=application/netcdf"
+            stream_tag = "streamed/" + target_stream + "?include_provenance=true&format=application/netcdf&email=None"
         elif 'prest' in run_name:
-            stream_tag = "streamed/" + run_name + "_real_time?include_provenance=true&format=application/netcdf"
+            stream_tag = "streamed/" + run_name + "_real_time?include_provenance=true&format=application/netcdf&email=None"
         elif 'lily' in run_name or 'nano' in run_name:
-            stream_tag = "streamed/botpt_" + run_name + "_sample?include_provenance=true&format=application/netcdf"
+            stream_tag = "streamed/botpt_" + run_name + "_sample?include_provenance=true&format=application/netcdf&email=None"
 
         # Deployment info
         url = "/".join([base_url, url_designator])
