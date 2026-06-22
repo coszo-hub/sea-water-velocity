@@ -1,2 +1,0 @@
-date,station,deployment,has_data,data_start,data_end,n_points,n_ideal,true_missing,sp_nominal,dt_FG,dt_true,t_i0_offset_s,n_gaps,gap_total_missing,n_gaps_raw,gap_total_missing_raw,jitter_mean_ms,jitter_std_ms,jitter_maxabs_ms,frac_mean,frac_std,frac_maxabs,jitter_unstable,max_abs_epsilon,figure_generated
-2025-09-01,CE04OSBP-LJ01C-07-VEL3DC107,12,True,2025-09-01T00:00:00Z,2025-09-01T23:59:59Z,86400,86400,0,17.999986,1.00036335,0.99999922,0.003175891,0,0,0,0,-0.0,3.405777,12.061353,-8.987304e-12,0.00340578,0.01206136,False,0.008844,True

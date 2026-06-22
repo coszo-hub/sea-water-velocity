@@ -24,4 +24,6 @@ output/xml/*
 output/fixed_mseed/*
 output/mseed_to_fix/*
 output/fix_chan_name_loc_code/*
-output/bad_mseed/*
+#output/temporal_anomaly/figures/per_day/*
+*.nc
+output/temporal_anomaly/netcdf/

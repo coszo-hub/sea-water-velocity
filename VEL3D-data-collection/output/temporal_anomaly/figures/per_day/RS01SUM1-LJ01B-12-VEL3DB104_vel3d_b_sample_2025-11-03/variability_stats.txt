@@ -1,0 +1,33 @@
+Timestamp Variability Assessment
+  station       : RS01SUM1-LJ01B-12-VEL3DB104
+  date          : 2025-11-03
+  n_points      : 86300
+  n_ideal       : 86401   (length of reconstructed ideal sample index)
+  data_start    : 2025-11-03T00:00:00Z
+  data_end      : 2025-11-03T23:59:59Z
+
+Sample interval
+  sp_nominal    : 1.000000 s
+  Δt_FG (median): 0.999921 s
+  Δt_true (OLS) : 0.999993 s
+  t_i0 (OLS)    : 0.004057 s   (relative to first sample)
+
+Gaps
+  true_missing       : 101  (= n_ideal − n_points; data-derived)
+  n_gaps (raw)       : 5  total missing (raw): 105
+  n_gaps (true)      : 5  total missing : 101 samples
+
+Jitter (ms)
+  mean           : 0.000000
+  std            : 3.651238
+  max|e|         : 27.356734
+
+Jitter (fraction of Δt_true)
+  mean           : 2.104920e-11
+  std            : 3.651264e-03
+  max|f|         : 2.735692e-02
+  (≈ 2.7357%)
+
+Consistency check
+  jitter_unstable: False   (frac_maxabs > 0.4)
+  max|ε_j|       : 0.028117   (deviation of Δi'_j from nearest integer)

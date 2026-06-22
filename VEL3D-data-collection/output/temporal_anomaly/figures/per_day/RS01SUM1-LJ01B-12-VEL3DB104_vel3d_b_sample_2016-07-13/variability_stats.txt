@@ -1,0 +1,33 @@
+Timestamp Variability Assessment
+  station       : RS01SUM1-LJ01B-12-VEL3DB104
+  date          : 2016-07-13
+  n_points      : 80878
+  n_ideal       : 86397   (length of reconstructed ideal sample index)
+  data_start    : 2016-07-13T00:00:00Z
+  data_end      : 2016-07-13T23:59:59Z
+
+Sample interval
+  sp_nominal    : 1.000000 s
+  Δt_FG (median): 0.999925 s
+  Δt_true (OLS) : 1.000039 s
+  t_i0 (OLS)    : -0.562494 s   (relative to first sample)
+
+Gaps
+  true_missing       : 5519  (= n_ideal − n_points; data-derived)
+  n_gaps (raw)       : 3  total missing (raw): 5519
+  n_gaps (true)      : 3  total missing : 5519 samples
+
+Jitter (ms)
+  mean           : -0.000000
+  std            : 250.312331
+  max|e|         : 622.894850
+
+Jitter (fraction of Δt_true)
+  mean           : -1.928296e-12
+  std            : 2.503027e-01
+  max|f|         : 6.228708e-01
+  (≈ 62.2871%)
+
+Consistency check
+  jitter_unstable: True   (frac_maxabs > 0.4)
+  max|ε_j|       : 0.336110   (deviation of Δi'_j from nearest integer)

@@ -1,0 +1,33 @@
+Timestamp Variability Assessment
+  station       : RS03AXBS-MJ03A-12-VEL3DB301
+  date          : 2023-08-01
+  n_points      : 85958
+  n_ideal       : 86394   (length of reconstructed ideal sample index)
+  data_start    : 2023-08-01T00:00:00Z
+  data_end      : 2023-08-01T23:59:59Z
+
+Sample interval
+  sp_nominal    : 1.000000 s
+  Δt_FG (median): 0.999798 s
+  Δt_true (OLS) : 1.000066 s
+  t_i0 (OLS)    : 0.001834 s   (relative to first sample)
+
+Gaps
+  true_missing       : 436  (= n_ideal − n_points; data-derived)
+  n_gaps (raw)       : 2  total missing (raw): 437
+  n_gaps (true)      : 2  total missing : 436 samples
+
+Jitter (ms)
+  mean           : 0.000000
+  std            : 0.772178
+  max|e|         : 2.541950
+
+Jitter (fraction of Δt_true)
+  mean           : 1.209378e-11
+  std            : 7.721273e-04
+  max|f|         : 2.541783e-03
+  (≈ 0.2542%)
+
+Consistency check
+  jitter_unstable: False   (frac_maxabs > 0.4)
+  max|ε_j|       : 0.115468   (deviation of Δi'_j from nearest integer)
