@@ -53,7 +53,7 @@ BASE_URL = "https://ooinet.oceanobservatories.org/api/m2m/12587/events/deploymen
 CHANNELS_B = [
     dict(cha="LOE", var="eastward_turbulent_velocity",
          desc="eastward_turbulent_velocity, Eastward Sea Water Velocity",
-         az="0.0", rate="1.0", stream="vel3d_b_sample",
+         az="90.0", rate="1.0", stream="vel3d_b_sample",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
     dict(cha="LON", var="northward_turbulent_velocity",
          desc="northward_turbulent_velocity, Northward Sea Water Velocity",
@@ -74,7 +74,7 @@ CHANNELS_B = [
 CHANNELS_C = [
     dict(cha="MOE", var="vel3d_c_eastward_turbulent_velocity",
          desc="vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity",
-         az="0.0", rate="8.0", stream="vel3d_cd_velocity_data",
+         az="90.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
     dict(cha="MON", var="vel3d_c_northward_turbulent_velocity",
          desc="vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity",
