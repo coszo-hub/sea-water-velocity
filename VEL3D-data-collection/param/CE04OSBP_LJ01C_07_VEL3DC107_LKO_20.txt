@@ -1,7 +1,7 @@
 ##parameter file##
 
 # Oregon Offshore Cabled Benthic Experiment Package
-# Station Name: OSBP
+# Station Name: CZOFF
 
 cha = LKO                                  #Channel Name
 c_start = 2014-08-15T00:12:00; 2015-08-03T22:00:00; 2016-07-22T22:50:00; 2017-08-10T16:00:00; 2018-06-25T00:00:00; 2019-06-23T22:52:00; 2020-08-19T02:23:26; 2021-08-23T22:54:08; 2022-08-20T02:22:00; 2023-08-29T00:50:00; 2024-08-22T15:10:00; 2025-08-28T03:38:00    #Channel_StartDate --> deployment start dates

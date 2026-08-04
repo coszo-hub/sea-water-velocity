@@ -1,7 +1,7 @@
 ##parameter file##
 
 # Oregon Shelf Cabled Benthic Experiment Package
-# Station Name: SHBP
+# Station Name: CZSHF
 
 cha = MOE                                  #Channel Name
 c_start = 2014-09-10T15:43:00; 2015-08-02T05:30:00; 2016-07-22T22:50:00; 2017-09-10T14:30:00; 2018-06-30T02:30:00; 2019-06-23T03:36:00; 2020-08-25T17:34:05; 2021-08-23T19:27:00; 2022-08-19T05:55:00; 2023-08-22T14:50:00; 2024-08-19T14:55:00; 2025-08-28T15:17:00    #Channel_StartDate --> deployment start dates
