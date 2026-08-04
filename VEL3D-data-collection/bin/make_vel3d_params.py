@@ -149,7 +149,7 @@ STATIONS = [
     # ── Endurance VEL3D Series C (added 2026-06-15; M2M deployment records) ──────
     dict(
         series="C",
-        refdes="CE02SHBP_LJ01D_07_VEL3DC108", sta="CZSHF",  # formerly SHBP (Oregon Shelf)
+        refdes="CE02SHBP_LJ01D_07_VEL3DC108", sta="CZSHF",
         site="Endurance OR Shelf Cabled Benthic", comment="Oregon Shelf Cabled Benthic Experiment Package",
         s_lat="44.637165", s_lon="-124.305849", s_elev="-81",
         deployments=[
@@ -169,7 +169,7 @@ STATIONS = [
     ),
     dict(
         series="C",
-        refdes="CE04OSBP_LJ01C_07_VEL3DC107", sta="CZOFF",  # formerly OSBP (Oregon Offshore)
+        refdes="CE04OSBP_LJ01C_07_VEL3DC107", sta="CZOFF",
         site="Endurance OR Offshore Cabled Benthic", comment="Oregon Offshore Cabled Benthic Experiment Package",
         s_lat="44.369407", s_lon="-124.953627", s_elev="-581",
         deployments=[

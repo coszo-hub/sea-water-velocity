@@ -4,7 +4,7 @@ Authoritative reference for SEED network/station/location/channel codes for the
 OOI RCA seafloor instruments. Source: COSZO "Non-Tier 1 OOI Instrument Data
 Channel" list (provided by user). **VEL3D rows are the scope of this repo** —
 the three RSN VEL3D-**B** (Nobska MAVS-4, 1 Hz) plus the two Endurance cabled
-VEL3D-**C** (Nortek, 8 Hz) at `CZSHF`/`CZOFF` (formerly `SHBP`/`OSBP`).
+VEL3D-**C** (Nortek, 8 Hz) at `CZSHF`/`CZOFF`.
 
 SEED channel = `[band][instrument][orientation]`.
 
@@ -59,7 +59,7 @@ SEED channel = `[band][instrument][orientation]`.
 
 ---
 
-## Endurance OR Shelf — Station `CZSHF` ("Endurance OR Shelf Cabled Benthic"; formerly `SHBP`)
+## Endurance OR Shelf — Station `CZSHF` ("Endurance OR Shelf Cabled Benthic")
 
 > Endurance cabled benthic package, ~80 m. VEL3D **Series C** (Nortek), a
 > different sensor from the RSN VEL3D-B. Velocity streams at **8 Hz** (band `M`,
@@ -76,7 +76,7 @@ SEED channel = `[band][instrument][orientation]`.
 
 ---
 
-## Endurance OR Offshore — Station `CZOFF` ("Endurance OR Offshore Cabled Benthic"; formerly `OSBP`)
+## Endurance OR Offshore — Station `CZOFF` ("Endurance OR Offshore Cabled Benthic")
 
 > Endurance cabled benthic package, ~581 m. Same VEL3D **Series C** instrument and
 > stream layout as `CZSHF` above. 12 deployments, ongoing.
