@@ -151,7 +151,6 @@ for i in range(len(cha_list)):
         )
 
         #Removed these parameters from the channel metadata because they are optional and Orest Kawka and I are not sure what values to use. MT
-        # - dip=float(channel_param["c_dip"][j]),   # omitted: no authoritative dip info for VEL3D
         # - types=channel_param["c_type"][j].split(","),
         # - clock_drift_in_seconds_per_sample=(channel_param["c_clockdrift"][j]),
         # - calibration_units=channel_param["Cal_unit"][j],
@@ -167,6 +166,7 @@ for i in range(len(cha_list)):
             elevation=(channel_param["c_elev"][0]),
             depth=(channel_param["c_dep"][0]),
             azimuth=(channel_param["c_az"][0]),
+            dip=float(channel_param["c_dip"][0]),
             sample_rate=(channel_param["c_sample_rate"][j]),
             description=channel_param["c_description"][0],
             comments=[

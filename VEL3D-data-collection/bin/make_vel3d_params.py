@@ -58,19 +58,19 @@ CONV_CENTIDEG = ("100.0", "temperature_centidegree is centi-degC; divide by 100 
 # ── Series B channels: Nobska MAVS-4, 1 Hz, all vars in vel3d_b_sample ──────────
 # cha, netcdf_var, description, azimuth, sample rate (Hz), stream, response units
 CHANNELS_B = [
-    dict(cha="LOE", var="eastward_turbulent_velocity",
+    dict(cha="LOE", dip="0.0", var="eastward_turbulent_velocity",
          desc="eastward_turbulent_velocity, Eastward Sea Water Velocity",
          az="90.0", rate="1.0", stream="vel3d_b_sample",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="LON", var="northward_turbulent_velocity",
+    dict(cha="LON", dip="0.0", var="northward_turbulent_velocity",
          desc="northward_turbulent_velocity, Northward Sea Water Velocity",
          az="0.0", rate="1.0", stream="vel3d_b_sample",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="LOZ", var="upward_turbulent_velocity",
+    dict(cha="LOZ", dip="-90.0", var="upward_turbulent_velocity",
          desc="upward_turbulent_velocity, Upward Sea Water Velocity",
          az="0.0", rate="1.0", stream="vel3d_b_sample",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="LKO", var="temperature",
+    dict(cha="LKO", dip="0.0", var="temperature",
          desc="temperature, Seawater Temperature",
          az="0.0", rate="1.0", stream="vel3d_b_sample",
          r_in="C", r_in_d="degrees Celsius", r_out="C", r_out_d="degrees Celsius"),
@@ -79,20 +79,20 @@ CHANNELS_B = [
 # ── Series C channels: Nortek VEL3D-C. Velocity 8 Hz (band M) in
 #    vel3d_cd_velocity_data; temperature 1 Hz (band L) in vel3d_cd_system_data. ──
 CHANNELS_C = [
-    dict(cha="MOE", var="vel3d_c_eastward_turbulent_velocity",
+    dict(cha="MOE", dip="0.0", var="vel3d_c_eastward_turbulent_velocity",
          desc="vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity",
          az="90.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="MON", var="vel3d_c_northward_turbulent_velocity",
+    dict(cha="MON", dip="0.0", var="vel3d_c_northward_turbulent_velocity",
          desc="vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity",
          az="0.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="MOZ", var="vel3d_c_upward_turbulent_velocity",
+    dict(cha="MOZ", dip="-90.0", var="vel3d_c_upward_turbulent_velocity",
          desc="vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity",
          az="0.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
     # Temperature: 1 Hz (band L), source var temperature_centidegree (centi-degC; conversion=100 -> degC).
-    dict(cha="LKO", var="temperature_centidegree",
+    dict(cha="LKO", dip="0.0", var="temperature_centidegree",
          desc="temperature, Seawater Temperature",
          az="0.0", rate="1.0", stream="vel3d_cd_system_data",
          r_in="C", r_in_d="degrees Celsius", r_out="C", r_out_d="degrees Celsius",
@@ -252,7 +252,7 @@ def write_channel_file(st, c):
         f.write(f"c_elev = {st['s_elev']}                              #Channel_Elevation\n")
         f.write(f"c_dep = 0.0                                  #Channel_Depth\n")
         f.write(f"c_az = {c['az']}                                #Channel_Azimuth (degrees E of N)\n")
-        f.write(f"#c_dip = 0.0                              #Channel_Dip (degrees down from horizontal) — omitted (no authoritative dip; PREST convention)\n")
+        f.write(f"c_dip = {c['dip']}                               #Channel_Dip (degrees down from horizontal; SEED convention: -90 = up, so Z channels get -90)\n")
         f.write(f"c_type = GEOPHYSICAL                         #Channel_type\n")
         f.write(f"c_sample_rate = {rates}    #Channel_SampleRate (Hz)\n")
         f.write(f"c_stream = {c['stream']}    #OOI stream carrying this channel's variable\n")

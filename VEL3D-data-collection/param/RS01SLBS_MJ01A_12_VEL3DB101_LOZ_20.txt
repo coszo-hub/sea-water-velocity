@@ -12,7 +12,7 @@ c_lon = -125.405266                       #Channel_Longitude
 c_elev = -2907                              #Channel_Elevation
 c_dep = 0.0                                  #Channel_Depth
 c_az = 0.0                                #Channel_Azimuth (degrees E of N)
-#c_dip = 0.0                              #Channel_Dip (degrees down from horizontal) — omitted (no authoritative dip; PREST convention)
+c_dip = -90.0                               #Channel_Dip (degrees down from horizontal; SEED convention: -90 = up, so Z channels get -90)
 c_type = GEOPHYSICAL                         #Channel_type
 c_sample_rate = 1.0; 1.0; 1.0    #Channel_SampleRate (Hz)
 c_stream = vel3d_b_sample    #OOI stream carrying this channel's variable

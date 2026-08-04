@@ -3,7 +3,7 @@
   <Source>COSZO</Source>
   <Module>ObsPy 1.5.0</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2026-08-04T00:56:00.848832Z</Created>
+  <Created>2026-08-04T21:31:29.236438Z</Created>
   <Network code="OO" startDate="2014-01-01T00:00:00.000000Z" restrictedStatus="open">
     <Description>Ocean Observatories Initiative</Description>
     <Station code="OSBP" startDate="2014-08-15T00:12:00.000000Z" restrictedStatus="open">
@@ -24,6 +24,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -80,6 +81,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -136,6 +138,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -192,6 +195,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -248,6 +252,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -304,6 +309,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -360,6 +366,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -416,6 +423,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -472,6 +480,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -528,6 +537,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -584,6 +594,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -640,6 +651,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -696,6 +708,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -752,6 +765,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -808,6 +822,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -864,6 +879,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -920,6 +936,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -976,6 +993,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1032,6 +1050,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1088,6 +1107,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1144,6 +1164,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1200,6 +1221,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1256,6 +1278,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1312,6 +1335,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1368,6 +1392,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1424,6 +1449,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1480,6 +1506,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1536,6 +1563,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1592,6 +1620,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1648,6 +1677,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1704,6 +1734,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1760,6 +1791,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1816,6 +1848,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1872,6 +1905,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1928,6 +1962,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -1984,6 +2019,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">-90.0</Dip>
         <SampleRate>8.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2040,6 +2076,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2096,6 +2133,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2152,6 +2190,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2208,6 +2247,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2264,6 +2304,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2320,6 +2361,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2376,6 +2418,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2432,6 +2475,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2488,6 +2532,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2544,6 +2589,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2600,6 +2646,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
@@ -2656,6 +2703,7 @@
         <Elevation unit="METERS">-581.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
+        <Dip unit="DEGREES">0.0</Dip>
         <SampleRate>1.0</SampleRate>
         <Sensor>
           <Description>3-D Single Point Velocity Meter (Nortek): VEL3D Series C</Description>
