@@ -3,25 +3,25 @@
   <Source>COSZO</Source>
   <Module>ObsPy 1.5.0</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2026-07-29T18:02:15.131934Z</Created>
+  <Created>2026-08-04T00:56:00.611075Z</Created>
   <Network code="OO" startDate="2014-01-01T00:00:00.000000Z" restrictedStatus="open">
     <Description>Ocean Observatories Initiative</Description>
-    <Station code="OSBP" startDate="2014-08-15T00:12:00.000000Z" restrictedStatus="open">
-      <Latitude unit="DEGREES">44.369407</Latitude>
-      <Longitude unit="DEGREES">-124.953627</Longitude>
-      <Elevation unit="METERS">-581.0</Elevation>
+    <Station code="SHBP" startDate="2014-09-10T15:43:00.000000Z" restrictedStatus="open">
+      <Latitude unit="DEGREES">44.637165</Latitude>
+      <Longitude unit="DEGREES">-124.305849</Longitude>
+      <Elevation unit="METERS">-81.0</Elevation>
       <Site>
-        <Name>Endurance OR Offshore Cabled Benthic</Name>
+        <Name>Endurance OR Shelf Cabled Benthic</Name>
       </Site>
-      <Channel code="MOE" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2014-09-10T15:43:00.000000Z" endDate="2015-08-01T00:00:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2014-09-10T15:43:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -41,7 +41,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -69,15 +69,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2015-08-02T05:30:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2015-08-02T05:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -97,7 +97,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -125,15 +125,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-09-09T03:30:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
+          <Value>ATOSU-69829-00003</Value>
           <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -153,7 +153,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -181,15 +181,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2017-09-10T14:30:00.000000Z" endDate="2018-06-29T02:30:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2017-09-10T14:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -209,7 +209,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -237,15 +237,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2018-06-30T02:30:00.000000Z" endDate="2019-06-19T23:31:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2018-06-30T02:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -265,7 +265,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -293,15 +293,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2019-06-23T03:36:00.000000Z" endDate="2020-08-12T21:24:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2019-06-23T03:36:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -321,7 +321,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -349,15 +349,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2020-08-25T17:34:05.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2020-08-25T17:34:05.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -377,7 +377,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -405,15 +405,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2021-08-23T19:27:00.000000Z" endDate="2022-08-18T23:51:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2021-08-23T19:27:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -433,7 +433,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -461,15 +461,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2022-08-19T05:55:00.000000Z" endDate="2023-08-14T19:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2022-08-19T05:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -489,7 +489,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -517,15 +517,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2023-08-22T14:50:00.000000Z" endDate="2024-08-15T20:13:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2023-08-22T14:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -545,7 +545,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -573,15 +573,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2024-08-19T14:55:00.000000Z" endDate="2025-08-15T00:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2024-08-19T14:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -601,7 +601,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -629,15 +629,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOE" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+      <Channel code="MOE" startDate="2025-08-28T15:17:00.000000Z" locationCode="20">
         <Description>vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2025-08-28T15:17:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">90.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -657,7 +657,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -685,15 +685,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2014-09-10T15:43:00.000000Z" endDate="2015-08-01T00:00:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2014-09-10T15:43:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -713,7 +713,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -741,15 +741,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2015-08-02T05:30:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2015-08-02T05:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -769,7 +769,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -797,15 +797,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-09-09T03:30:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
+          <Value>ATOSU-69829-00003</Value>
           <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -825,7 +825,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -853,15 +853,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2017-09-10T14:30:00.000000Z" endDate="2018-06-29T02:30:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2017-09-10T14:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -881,7 +881,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -909,15 +909,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2018-06-30T02:30:00.000000Z" endDate="2019-06-19T23:31:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2018-06-30T02:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -937,7 +937,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -965,15 +965,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2019-06-23T03:36:00.000000Z" endDate="2020-08-12T21:24:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2019-06-23T03:36:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -993,7 +993,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1021,15 +1021,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2020-08-25T17:34:05.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2020-08-25T17:34:05.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1049,7 +1049,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1077,15 +1077,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2021-08-23T19:27:00.000000Z" endDate="2022-08-18T23:51:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2021-08-23T19:27:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1105,7 +1105,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1133,15 +1133,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2022-08-19T05:55:00.000000Z" endDate="2023-08-14T19:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2022-08-19T05:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1161,7 +1161,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1189,15 +1189,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2023-08-22T14:50:00.000000Z" endDate="2024-08-15T20:13:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2023-08-22T14:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1217,7 +1217,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1245,15 +1245,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2024-08-19T14:55:00.000000Z" endDate="2025-08-15T00:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2024-08-19T14:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1273,7 +1273,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1301,15 +1301,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MON" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+      <Channel code="MON" startDate="2025-08-28T15:17:00.000000Z" locationCode="20">
         <Description>vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2025-08-28T15:17:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1329,7 +1329,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1357,15 +1357,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2014-09-10T15:43:00.000000Z" endDate="2015-08-01T00:00:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2014-09-10T15:43:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1385,7 +1385,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1413,15 +1413,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2015-08-02T05:30:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2015-08-02T05:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1441,7 +1441,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1469,15 +1469,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-09-09T03:30:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
+          <Value>ATOSU-69829-00003</Value>
           <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1497,7 +1497,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1525,15 +1525,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2017-09-10T14:30:00.000000Z" endDate="2018-06-29T02:30:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2017-09-10T14:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1553,7 +1553,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1581,15 +1581,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2018-06-30T02:30:00.000000Z" endDate="2019-06-19T23:31:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2018-06-30T02:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1609,7 +1609,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1637,15 +1637,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2019-06-23T03:36:00.000000Z" endDate="2020-08-12T21:24:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2019-06-23T03:36:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1665,7 +1665,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1693,15 +1693,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2020-08-25T17:34:05.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2020-08-25T17:34:05.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1721,7 +1721,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1749,15 +1749,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2021-08-23T19:27:00.000000Z" endDate="2022-08-18T23:51:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2021-08-23T19:27:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1777,7 +1777,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1805,15 +1805,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2022-08-19T05:55:00.000000Z" endDate="2023-08-14T19:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2022-08-19T05:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1833,7 +1833,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1861,15 +1861,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2023-08-22T14:50:00.000000Z" endDate="2024-08-15T20:13:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2023-08-22T14:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1889,7 +1889,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1917,15 +1917,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2024-08-19T14:55:00.000000Z" endDate="2025-08-15T00:20:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2024-08-19T14:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -1945,7 +1945,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -1973,15 +1973,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="MOZ" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+      <Channel code="MOZ" startDate="2025-08-28T15:17:00.000000Z" locationCode="20">
         <Description>vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2025-08-28T15:17:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>8.0</SampleRate>
@@ -2001,7 +2001,7 @@
               <Description>meters per second</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>M/S</Name>
@@ -2029,15 +2029,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2014-08-15T00:12:00.000000Z" endDate="2015-08-02T00:00:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2014-09-10T15:43:00.000000Z" endDate="2015-08-01T00:00:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2014-08-15T00:12:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2014-09-10T15:43:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2057,7 +2057,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2085,15 +2085,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2015-08-03T22:00:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2015-08-02T05:30:00.000000Z" endDate="2016-07-21T00:00:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2015-08-03T22:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2015-08-02T05:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2113,7 +2113,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2141,15 +2141,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-08-10T04:00:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2016-07-22T22:50:00.000000Z" endDate="2017-09-09T03:30:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
+          <Value>ATOSU-69829-00003</Value>
           <BeginEffectiveTime>2016-07-22T22:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2169,7 +2169,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2197,15 +2197,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2017-08-10T16:00:00.000000Z" endDate="2018-06-25T00:00:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2017-09-10T14:30:00.000000Z" endDate="2018-06-29T02:30:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2017-08-10T16:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2017-09-10T14:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2225,7 +2225,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2253,15 +2253,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2018-06-25T00:00:00.000000Z" endDate="2019-06-19T04:17:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2018-06-30T02:30:00.000000Z" endDate="2019-06-19T23:31:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2018-06-25T00:00:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2018-06-30T02:30:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2281,7 +2281,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2309,15 +2309,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2019-06-23T22:52:00.000000Z" endDate="2020-08-18T23:40:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2019-06-23T03:36:00.000000Z" endDate="2020-08-12T21:24:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2019-06-23T22:52:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2019-06-23T03:36:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2337,7 +2337,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2365,15 +2365,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2020-08-19T02:23:26.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2020-08-25T17:34:05.000000Z" endDate="2021-08-04T20:20:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2020-08-19T02:23:26.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2020-08-25T17:34:05.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2393,7 +2393,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2421,15 +2421,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2021-08-23T22:54:08.000000Z" endDate="2022-08-19T06:13:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2021-08-23T19:27:00.000000Z" endDate="2022-08-18T23:51:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2021-08-23T22:54:08.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2021-08-23T19:27:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2449,7 +2449,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2477,15 +2477,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2022-08-20T02:22:00.000000Z" endDate="2023-08-15T05:00:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2022-08-19T05:55:00.000000Z" endDate="2023-08-14T19:20:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2022-08-20T02:22:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2022-08-19T05:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2505,7 +2505,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2533,15 +2533,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2023-08-29T00:50:00.000000Z" endDate="2024-08-15T07:25:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2023-08-22T14:50:00.000000Z" endDate="2024-08-15T20:13:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2023-08-29T00:50:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2023-08-22T14:50:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2561,7 +2561,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2589,15 +2589,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2024-08-22T15:10:00.000000Z" endDate="2025-08-27T19:23:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2024-08-19T14:55:00.000000Z" endDate="2025-08-15T00:20:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00004</Value>
-          <BeginEffectiveTime>2024-08-22T15:10:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00003</Value>
+          <BeginEffectiveTime>2024-08-19T14:55:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2617,7 +2617,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00004">
+          <Stage number="1" resourceId="ATOSU-69829-00003">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>
@@ -2645,15 +2645,15 @@
           </Stage>
         </Response>
       </Channel>
-      <Channel code="LKO" startDate="2025-08-28T03:38:00.000000Z" locationCode="20">
+      <Channel code="LKO" startDate="2025-08-28T15:17:00.000000Z" locationCode="20">
         <Description>temperature, Seawater Temperature</Description>
         <Comment>
-          <Value>ATOSU-69829-00002</Value>
-          <BeginEffectiveTime>2025-08-28T03:38:00.000000Z</BeginEffectiveTime>
+          <Value>ATOSU-69829-00001</Value>
+          <BeginEffectiveTime>2025-08-28T15:17:00.000000Z</BeginEffectiveTime>
         </Comment>
-        <Latitude unit="DEGREES">44.369407</Latitude>
-        <Longitude unit="DEGREES">-124.953627</Longitude>
-        <Elevation unit="METERS">-581.0</Elevation>
+        <Latitude unit="DEGREES">44.637165</Latitude>
+        <Longitude unit="DEGREES">-124.305849</Longitude>
+        <Elevation unit="METERS">-81.0</Elevation>
         <Depth unit="METERS">0.0</Depth>
         <Azimuth unit="DEGREES">0.0</Azimuth>
         <SampleRate>1.0</SampleRate>
@@ -2673,7 +2673,7 @@
               <Description>degrees Celsius</Description>
             </OutputUnits>
           </InstrumentSensitivity>
-          <Stage number="1" resourceId="ATOSU-69829-00002">
+          <Stage number="1" resourceId="ATOSU-69829-00001">
             <PolesZeros name="Stage01">
               <InputUnits>
                 <Name>C</Name>

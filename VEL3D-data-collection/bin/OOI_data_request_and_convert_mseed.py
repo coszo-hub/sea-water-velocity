@@ -932,11 +932,9 @@ try:
                         "mseed": {"dataquality": run["data_quality"][0]},
                     }
                     
-                    # Unit conversion to desired output units
-                    data_i_point = data_i_point / float(channel_param["r_value"][0])
-                    # VEL3D-C reports temperature in centi-degrees C; scale to deg C.
-                    if name == "temperature_centidegree":
-                        data_i_point = data_i_point * 0.01
+                    # Unit conversion to desired output units (per-channel factor from the
+                    # param file: 1.0 = already in output units; 100.0 = centi-degC -> degC)
+                    data_i_point = data_i_point / float(channel_param["conversion"][0])
 
                     # Set current time
                     # [CHATGPT FIX #4] Ensure ObsPy receives UTCDateTime, not string

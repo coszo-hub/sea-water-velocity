@@ -106,9 +106,13 @@ almost every change below:
       - **VEL3D-C:** TWO streams — `vel3d_cd_velocity_data` (8 Hz velocity) AND
         `vel3d_cd_system_data` (1 Hz temperature). Prefer routing per channel via
         the new `c_stream` param key rather than one stream per run.
-      - **VEL3D-C temp conversion:** `temperature_centidegree` is centi-°C; apply
-        ×0.01 → °C in the unit-conversion step (line ~853). (Velocity is already L1
-        m/s, no conversion.)
+      - [x] **VEL3D-C temp conversion** — **done 2026-08-03**: adopted the
+        per-channel `conversion` param from coszo-data-collection. Every channel
+        file now carries `conversion` (1.0 = no change; 100.0 for
+        `temperature_centidegree`, centi-°C ÷ 100 → °C) and the pipeline,
+        `backfill_mseed_from_nc.py`, and `plot_from_netcdf.py` divide by it
+        (hardcoded ×0.01 branches removed). `create_metadata.py` synced to write
+        `output/xml/OO_<sta>_<loc>.xml` (station params now carry `loc = 20`).
 - [ ] Verify channel-list / `data_types` handling works with VEL3D's
       multi-component channels (the per-deployment `channels_<dep>` /
       `data_types_<dep>` lookups around lines 698–765).

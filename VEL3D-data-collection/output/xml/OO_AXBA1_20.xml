@@ -3,7 +3,7 @@
   <Source>COSZO</Source>
   <Module>ObsPy 1.5.0</Module>
   <ModuleURI>https://www.obspy.org</ModuleURI>
-  <Created>2026-07-29T18:02:14.735882Z</Created>
+  <Created>2026-08-04T00:56:00.425219Z</Created>
   <Network code="OO" startDate="2014-01-01T00:00:00.000000Z" restrictedStatus="open">
     <Description>Ocean Observatories Initiative</Description>
     <Station code="AXBA1" startDate="2014-08-08T17:11:00.000000Z" restrictedStatus="open">

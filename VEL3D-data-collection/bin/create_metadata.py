@@ -42,6 +42,8 @@ reference_name_underscore = sys.argv[1]
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 param_path = os.path.join(root_path, "param")
 bin_path = os.path.join(root_path, "bin")
+output_path = os.path.join(root_path, "output", "xml")
+os.makedirs(output_path, exist_ok=True)
 
 net_sta_param = read_param(os.path.join(param_path, reference_name_underscore + ".txt"))
 
@@ -218,9 +220,12 @@ for sta in stations:
 for s in net.stations:
     print("Station:", s.code, s.start_date, s.end_date, "channels:", len(s.channels))
 
+xml_filename = net_sta_param["net"][0] + "_" + net_sta_param["sta"][0] + "_" + net_sta_param["loc"][0] + ".xml"
+xml_filepath = os.path.join(output_path, xml_filename)
 inv.write(
-    net_sta_param["net"][0] + "_" + net_sta_param["sta"][0] + ".xml",
+    xml_filepath,
     format="STATIONXML",
     validate=True,
-)  # MT
+)
+print(f"Saved XML to {xml_filepath}")
 # inv.write(net_sta_param['Net'][0] + "_" + net_sta_param['Sta'][0] + ".xml", format="stationxml", validate=True)

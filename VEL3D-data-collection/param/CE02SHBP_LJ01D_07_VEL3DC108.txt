@@ -8,6 +8,7 @@ n_end = None                             #Network_EndDate
 n_restatus = open                        #Network_RestrictedStatus
 descript = Ocean Observatories Initiative #Description
 sta = SHBP                            #Station Name
+loc = 20                                    #Station Location Code (used in StationXML filename)
 s_start = 2014-09-10T15:43:00         #Station_StartDate --> first deployment; epochs documented at channel level
 s_restatus = open                        #Station_RestrictedStatus
 s_lat = 44.637165                     #Station_Latitude (representative; mean of deployments)

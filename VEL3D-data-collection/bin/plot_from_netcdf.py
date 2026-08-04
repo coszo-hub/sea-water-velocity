@@ -212,7 +212,7 @@ def convert_to_mseed(fh, utc_trim, start_idx, end_idx, station, date_str,
 
         chan_file = os.path.join(param_path, f"{ref_underscore}_{cha_key}.txt")
         channel_param = read_param(chan_file)
-        r_value = float(channel_param["r_value"][0])
+        conversion = float(channel_param["conversion"][0])
 
         cursor = 0
         for ti in segments:
@@ -221,7 +221,7 @@ def convert_to_mseed(fh, utc_trim, start_idx, end_idx, station, date_str,
                 continue
             seg_start = ti[0]
             seg_end   = ti[-1]
-            seg_data  = data_day[cursor:cursor + n_seg] / r_value
+            seg_data  = data_day[cursor:cursor + n_seg] / conversion
             cursor   += n_seg
 
             stats = {

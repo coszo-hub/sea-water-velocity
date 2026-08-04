@@ -140,7 +140,7 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
 
         chan_file     = os.path.join(PARAM_PATH, f"{ref_under}_{cha_key}.txt")
         channel_param = read_param(chan_file)
-        r_value       = float(channel_param["r_value"][0])
+        conversion    = float(channel_param["conversion"][0])
 
         cursor = 0
         for ti in segments:
@@ -149,10 +149,7 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
                 continue
             seg_start = ti[0]
             seg_end   = ti[-1]
-            seg_data  = data_day[cursor:cursor + n_seg] / r_value
-            # VEL3D-C reports temperature in centi-degrees C; scale to deg C.
-            if data_var == "temperature_centidegree":
-                seg_data = seg_data * 0.01
+            seg_data  = data_day[cursor:cursor + n_seg] / conversion
             cursor   += n_seg
 
             stats = {

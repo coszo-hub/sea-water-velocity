@@ -28,9 +28,12 @@ Sources of truth:
 
 Decisions (see OOI_channel_codes.md):
   net=OO, loc=20 (uniform across all five current meters). r_value=1.0 (velocity
-  is already L1 m/s, declination-corrected to true N). Series-C temperature source
-  variable `temperature_centidegree` is in centi-degrees C and must be scaled x0.01
-  -> degC in the pipeline (the StationXML output units are degC; see §3 TODO).
+  is already L1 m/s, declination-corrected to true N). Every channel carries an
+  explicit `conversion` factor which the pipeline DIVIDES the raw data by
+  (matching the PREST/coszo-data-collection convention): 1.0 for velocity and
+  Series-B temperature (already m/s / degC), 100.0 for Series-C temperature
+  (`temperature_centidegree`, centi-degC / 100 -> degC). The StationXML response
+  stays flat (r_value=1.0) because data are converted before MiniSEED is written.
 
 NOTE on c_end "None" mid-sequence: OOI sometimes returns no stop time for a
 non-final deployment. Where that happens we chain c_end to the next deployment's
@@ -47,6 +50,10 @@ LOC = "20"
 # OOI M2M deployment-inventory base, consumed by OOI_metadata.py as `base_url`
 # (it appends /{subsite}/{node}[/{sensor}[/{deployment}]]).
 BASE_URL = "https://ooinet.oceanobservatories.org/api/m2m/12587/events/deployment/inv"
+
+# Conversion factors: the pipeline divides raw data by `conv` (PREST convention).
+CONV_NONE = ("1.0", "Data already in output units; divide-by-1.0 keeps the pipeline uniform")
+CONV_CENTIDEG = ("100.0", "temperature_centidegree is centi-degC; divide by 100 --> degC")
 
 # ── Series B channels: Nobska MAVS-4, 1 Hz, all vars in vel3d_b_sample ──────────
 # cha, netcdf_var, description, azimuth, sample rate (Hz), stream, response units
@@ -84,11 +91,12 @@ CHANNELS_C = [
          desc="vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity",
          az="0.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    # Temperature: 1 Hz (band L), source var temperature_centidegree (centi-degC; x0.01 -> degC in pipeline).
+    # Temperature: 1 Hz (band L), source var temperature_centidegree (centi-degC; conversion=100 -> degC).
     dict(cha="LKO", var="temperature_centidegree",
          desc="temperature, Seawater Temperature",
          az="0.0", rate="1.0", stream="vel3d_cd_system_data",
-         r_in="C", r_in_d="degrees Celsius", r_out="C", r_out_d="degrees Celsius"),
+         r_in="C", r_in_d="degrees Celsius", r_out="C", r_out_d="degrees Celsius",
+         conv=CONV_CENTIDEG),
 ]
 
 SENSOR_B = "3-D Single Point Velocity Meter (Nobska MAVS-4): VEL3D Series B"
@@ -209,6 +217,7 @@ def write_station_file(st):
         f.write(f"n_restatus = open                        #Network_RestrictedStatus\n")
         f.write(f"descript = Ocean Observatories Initiative #Description\n")
         f.write(f"sta = {st['sta']}                            #Station Name\n")
+        f.write(f"loc = {LOC}                                    #Station Location Code (used in StationXML filename)\n")
         f.write(f"s_start = {deps[0][0]}         #Station_StartDate --> first deployment; epochs documented at channel level\n")
         f.write(f"s_restatus = open                        #Station_RestrictedStatus\n")
         f.write(f"s_lat = {st['s_lat']}                     #Station_Latitude (representative; mean of deployments)\n")
@@ -251,6 +260,8 @@ def write_channel_file(st, c):
         f.write(f"c_sensor = {sensor}    #Channel_sensor_description\n")
         f.write(f"c_id = {ids}    #Sensor(UID) per deployment\n")
         f.write(f"r_value = 1.0                                #Response_Sensitivity_Value (no metadata scaling; already {c['r_out']})\n")
+        conv, conv_note = c.get("conv", CONV_NONE)
+        f.write(f"conversion = {conv}                              #{conv_note}\n")
         f.write(f"r_frequency = 1.0                            #Response_Sensitivity_Frequency\n")
         f.write(f"r_input_units = {c['r_in']}                            #Response_Sensitivity_Input_Units\n")
         f.write(f"r_input_description = {c['r_in_d']}        #Response_Sensitivity_Input_Units_description\n")
