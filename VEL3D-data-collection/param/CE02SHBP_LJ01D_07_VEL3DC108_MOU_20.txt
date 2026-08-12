@@ -1,15 +1,15 @@
 ##parameter file##
 
-# Oregon Offshore Cabled Benthic Experiment Package
-# Station Name: CZOFF
+# Oregon Shelf Cabled Benthic Experiment Package
+# Station Name: CZSHF
 
-cha = MOE                                  #Channel Name
-c_start = 2014-08-15T00:12:00; 2015-08-03T22:00:00; 2016-07-22T22:50:00; 2017-08-10T16:00:00; 2018-06-25T00:00:00; 2019-06-23T22:52:00; 2020-08-19T02:23:26; 2021-08-23T22:54:08; 2022-08-20T02:22:00; 2023-08-29T00:50:00; 2024-08-22T15:10:00; 2025-08-28T03:38:00    #Channel_StartDate --> deployment start dates
-c_end = 2015-08-02T00:00:00; 2016-07-21T00:00:00; 2017-08-10T04:00:00; 2018-06-25T00:00:00; 2019-06-19T04:17:00; 2020-08-18T23:40:00; 2021-08-04T20:20:00; 2022-08-19T06:13:00; 2023-08-15T05:00:00; 2024-08-15T07:25:00; 2025-08-27T19:23:00; None    #Channel_EndDate --> deployment end dates
+cha = MOU                                  #Channel Name
+c_start = 2014-09-10T15:43:00; 2015-08-02T05:30:00; 2016-07-22T22:50:00; 2017-09-10T14:30:00; 2018-06-30T02:30:00; 2019-06-23T03:36:00; 2020-08-25T17:34:05; 2021-08-23T19:27:00; 2022-08-19T05:55:00; 2023-08-22T14:50:00; 2024-08-19T14:55:00; 2025-08-28T15:17:00    #Channel_StartDate --> deployment start dates
+c_end = 2015-08-01T00:00:00; 2016-07-21T00:00:00; 2017-09-09T03:30:00; 2018-06-29T02:30:00; 2019-06-19T23:31:00; 2020-08-12T21:24:00; 2021-08-04T20:20:00; 2022-08-18T23:51:00; 2023-08-14T19:20:00; 2024-08-15T20:13:00; 2025-08-15T00:20:00; None    #Channel_EndDate --> deployment end dates
 c_loc = 20                                    #Channel_LocationCode
-c_lat = 44.369407                         #Channel_Latitude
-c_lon = -124.953627                       #Channel_Longitude
-c_elev = -581                              #Channel_Elevation
+c_lat = 44.637165                         #Channel_Latitude
+c_lon = -124.305849                       #Channel_Longitude
+c_elev = -81                              #Channel_Elevation
 c_dep = 0.0                                  #Channel_Depth
 c_az = 90.0                                #Channel_Azimuth (degrees E of N)
 c_dip = 0.0                               #Channel_Dip (degrees down from horizontal; SEED convention: -90 = up, so Z channels get -90)
@@ -18,7 +18,7 @@ c_sample_rate = 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0; 8.0    #C
 c_stream = vel3d_cd_velocity_data    #OOI stream carrying this channel's variable
 c_description = vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity    #Channel_description
 c_sensor = 3-D Single Point Velocity Meter (Nortek): VEL3D Series C    #Channel_sensor_description
-c_id = ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002; ATOSU-69829-00004; ATOSU-69829-00002    #Sensor(UID) per deployment
+c_id = ATOSU-69829-00003; ATOSU-69829-00001; ATOSU-69829-00003; ATOSU-69829-00001; ATOSU-69829-00003; ATOSU-69829-00001; ATOSU-69829-00003; ATOSU-69829-00001; ATOSU-69829-00003; ATOSU-69829-00001; ATOSU-69829-00003; ATOSU-69829-00001    #Sensor(UID) per deployment
 r_value = 1.0                                #Response_Sensitivity_Value (no metadata scaling; already M/S)
 conversion = 1.0                              #Data already in output units; divide-by-1.0 keeps the pipeline uniform
 r_frequency = 1.0                            #Response_Sensitivity_Frequency

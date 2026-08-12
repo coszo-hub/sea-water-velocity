@@ -37,7 +37,7 @@ The download pipeline still has only the PREST/BOTPT stream branches.
 1. **VEL3D download branch** in `bin/OOI_data_request_and_convert_mseed.py`:
    - Route each channel to its stream via the param `c_stream` key:
      - VEL3D-B → single stream `vel3d_b_sample`.
-     - VEL3D-C → two streams: `vel3d_cd_velocity_data` (MOE/MON/MOZ, 8 Hz) and
+     - VEL3D-C → two streams: `vel3d_cd_velocity_data` (MOU/MOV/MOW, 8 Hz) and
        `vel3d_cd_system_data` (UKO temp, ~18 s).
    - `stream_tag` (~L202) and `ncml_url` (~L319): build per-stream instead of the
      hardcoded `*_real_time`.
@@ -73,7 +73,7 @@ Then flatten for transfer: `bin/flatten_mseed2dmc.sh`.
 
 - Actual NetCDF MB/day and miniSEED MB/day per station (replace §1 estimates).
 - `obspy.read` a few mseed: confirm sample rate (8 Hz velocity, ~0.0556 Hz temp),
-  channel codes (MOE/MON/MOZ/UKO), units sane (velocity ~±m/s, temp ~°C — the
+  channel codes (MOU/MOV/MOW/UKO), units sane (velocity ~±m/s, temp ~°C — the
   ÷100 working).
 - `output/metrics/<station>_vel3d_pipeline_stats.csv` — gaps, sp deviation, etc.
 - Optionally run `bin/temporal_anomaly_investigator.py` over the week to produce

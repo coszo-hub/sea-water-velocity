@@ -69,9 +69,9 @@ SEED channel = `[band][instrument][orientation]`.
 
 | Instrument | Measurement | Reference Designator | Net | Sta | Loc | SEED Channel | Notes |
 |---|---|---|---|---|---|---|---|
-| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`MOE`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`MON`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`MOZ`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`MOU`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`MOV`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`MOW`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
 | **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE02SHBP-LJ01D-07-VEL3DC108` | OO | CZSHF | **20** | **`LKO`** | `temperature_centidegree` (×0.01 → °C), 1 Hz, from `vel3d_cd_system_data` |
 
 ---
@@ -84,9 +84,9 @@ SEED channel = `[band][instrument][orientation]`.
 
 | Instrument | Measurement | Reference Designator | Net | Sta | Loc | SEED Channel | Notes |
 |---|---|---|---|---|---|---|---|
-| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOE`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MON`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOZ`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOU`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOV`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOW`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
 | **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`LKO`** | `temperature_centidegree` (×0.01 → °C), 1 Hz, from `vel3d_cd_system_data` |
 
 ---
@@ -97,7 +97,7 @@ The band letter follows the channel's sample rate (per the FDSN/SEED band-code t
 
 | Sample rate | Period | Band | Used by |
 |---|---|---|---|
-| 8 Hz | 0.125 s | `M` (mid period, >1–10 Hz) | VEL3D-C velocity → `MOE/MON/MOZ` |
+| 8 Hz | 0.125 s | `M` (mid period, >1–10 Hz) | VEL3D-C velocity → `MOU/MOV/MOW` |
 | 1 Hz | 1 s | `L` (long period, ~1 Hz) | VEL3D-B velocity + temp → `LOE/LON/LOZ/LKO`; VEL3D-C temp → `LKO` |
 
 ---
@@ -121,6 +121,16 @@ The band letter follows the channel's sample rate (per the FDSN/SEED band-code t
 - **Azimuth / Dip** — StationXML writes `Azimuth = 0.0` on every channel and omits
   `Dip` entirely (no authoritative as-installed orientation). Matches the PREST
   deliverable EarthScope already accepted. See the azimuth/dip decision below.
+
+## VEL3D-C orientation codes — DECISION (2026-08-12): `MOU` / `MOV` / `MOW`
+
+For the two Nortek VEL3D-C stations (`CZSHF`, `CZOFF`) we cannot verify the
+"within 5° of true direction / true vertical" rule that the `E`/`N`/`Z` codes
+assert, so the velocity channels use the SEED nonstandard-orientation codes
+**`MOU`** (u, east-ish), **`MOV`** (v, north-ish), **`MOW`** (w, up-ish).
+Temperature stays `LKO`. The RSN VEL3D-B stations keep `LOE`/`LON`/`LOZ` per the
+declination investigation below (that investigation covered the Nobska product
+functions only, not the Nortek).
 
 ## Velocity orientation codes — DECISION: `LOE` / `LON` / `LOZ`
 

@@ -3,7 +3,7 @@
 # Oregon Offshore Cabled Benthic Experiment Package
 # Station Name: CZOFF
 
-cha = MOZ                                  #Channel Name
+cha = MOW                                  #Channel Name
 c_start = 2014-08-15T00:12:00; 2015-08-03T22:00:00; 2016-07-22T22:50:00; 2017-08-10T16:00:00; 2018-06-25T00:00:00; 2019-06-23T22:52:00; 2020-08-19T02:23:26; 2021-08-23T22:54:08; 2022-08-20T02:22:00; 2023-08-29T00:50:00; 2024-08-22T15:10:00; 2025-08-28T03:38:00    #Channel_StartDate --> deployment start dates
 c_end = 2015-08-02T00:00:00; 2016-07-21T00:00:00; 2017-08-10T04:00:00; 2018-06-25T00:00:00; 2019-06-19T04:17:00; 2020-08-18T23:40:00; 2021-08-04T20:20:00; 2022-08-19T06:13:00; 2023-08-15T05:00:00; 2024-08-15T07:25:00; 2025-08-27T19:23:00; None    #Channel_EndDate --> deployment end dates
 c_loc = 20                                    #Channel_LocationCode

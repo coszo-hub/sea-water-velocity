@@ -13,7 +13,7 @@ supported:
   Series C — Endurance Nortek "VEL3D Series C" (cabled benthic package).
              Velocity stream `vel3d_cd_velocity_data` at 8 Hz; temperature is
              NOT in it — it lives in `vel3d_cd_system_data` (temperature_centidegree,
-             1 Hz). SEED band M (8 Hz): MOE/MON/MOZ velocity; band L (1 Hz) LKO
+             1 Hz). SEED band M (8 Hz): MOU/MOV/MOW velocity (U/V/W nonstandard-orientation codes; as-installed orientation unverified); band L (1 Hz) LKO
              temperature. Two streams per station. Rates VERIFIED from delivered
              data via temporal_anomaly_investigator.py Δt_true (velocity 0.125 s,
              temp 1.000 s; temp confirmed 1 Hz from 2016 through 2025, not the
@@ -79,15 +79,15 @@ CHANNELS_B = [
 # ── Series C channels: Nortek VEL3D-C. Velocity 8 Hz (band M) in
 #    vel3d_cd_velocity_data; temperature 1 Hz (band L) in vel3d_cd_system_data. ──
 CHANNELS_C = [
-    dict(cha="MOE", dip="0.0", var="vel3d_c_eastward_turbulent_velocity",
+    dict(cha="MOU", dip="0.0", var="vel3d_c_eastward_turbulent_velocity",
          desc="vel3d_c_eastward_turbulent_velocity, Eastward Sea Water Velocity",
          az="90.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="MON", dip="0.0", var="vel3d_c_northward_turbulent_velocity",
+    dict(cha="MOV", dip="0.0", var="vel3d_c_northward_turbulent_velocity",
          desc="vel3d_c_northward_turbulent_velocity, Northward Sea Water Velocity",
          az="0.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),
-    dict(cha="MOZ", dip="-90.0", var="vel3d_c_upward_turbulent_velocity",
+    dict(cha="MOW", dip="-90.0", var="vel3d_c_upward_turbulent_velocity",
          desc="vel3d_c_upward_turbulent_velocity, Upward Sea Water Velocity",
          az="0.0", rate="8.0", stream="vel3d_cd_velocity_data",
          r_in="M/S", r_in_d="meters per second", r_out="M/S", r_out_d="meters per second"),

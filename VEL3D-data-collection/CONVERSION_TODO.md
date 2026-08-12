@@ -74,7 +74,7 @@ almost every change below:
       2026-06-15). (Old PREST param files still present — remove on user OK.)
 - [x] Replace the per-channel param files — **done**: 4 channels each.
       VEL3D-B: `LOE`/`LON`/`LOZ` velocity + `LKO` temp, band `L`, 1 Hz.
-      VEL3D-C: `MOE`/`MON`/`MOZ` velocity (band `M`, 8 Hz) + `LKO` temp
+      VEL3D-C: `MOU`/`MOV`/`MOW` velocity (band `M`, 8 Hz) + `LKO` temp
       (band `L`, 1 Hz — rates verified from delivered data via the investigator's
       Δt_true). All loc `20`, `r_value=1.0`. Each channel file now
       carries `c_stream`. Codes per `OOI_channel_codes.md`.

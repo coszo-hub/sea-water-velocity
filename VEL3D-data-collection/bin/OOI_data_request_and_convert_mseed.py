@@ -779,7 +779,7 @@ try:
             print(channel_ls)
 
             # VEL3D: keep only channels carried by the stream we requested.
-            # (VEL3D-C velocity stream has MOE/MON/MOZ; system_data has LKO.)
+            # (VEL3D-C velocity stream has MOU/MOV/MOW; system_data has LKO.)
             if vel3d_run:
                 channel_ls = [c for c in channel_ls
                               if _channel_stream(reference_name_underscore, c) == target_stream]

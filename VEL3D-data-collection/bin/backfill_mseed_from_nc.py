@@ -214,7 +214,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                                   sta_param.get("channels"))[0]
     channels      = [c.strip() for c in chan_raw.strip("[]").split(",")]
     # VEL3D-C: keep only the channels carried by the stream being backfilled
-    # (velocity → MOE/MON/MOZ, system_data → LKO). Single-stream stations keep all.
+    # (velocity → MOU/MOV/MOW, system_data → LKO). Single-stream stations keep all.
     if stream is not None:
         channels = [c for c in channels if _channel_stream(ref_under, c) == stream]
         if not channels:
