@@ -81,13 +81,16 @@ SEED channel = `[band][instrument][orientation]`.
 > Endurance cabled benthic package, ~581 m. Same VEL3D **Series C** instrument and
 > stream layout as `CZSHF` above. 12 deployments, ongoing.
 > [IRIS MDA CZOFF](https://ds.iris.edu/mda/OO/CZOFF/)
+>
+> **Location code `21`** for the current instrument (2026-08-13 decision);
+> `20` is reserved for a future replacement instrument at this site.
 
 | Instrument | Measurement | Reference Designator | Net | Sta | Loc | SEED Channel | Notes |
 |---|---|---|---|---|---|---|---|
-| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOU`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOV`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`MOW`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
-| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **20** | **`LKO`** | `temperature_centidegree` (×0.01 → °C), 1 Hz, from `vel3d_cd_system_data` |
+| **3-D Single Point Velocity** | **Eastward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **21** | **`MOU`** | `vel3d_c_eastward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Northward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **21** | **`MOV`** | `vel3d_c_northward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Upward Vel (m/s)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **21** | **`MOW`** | `vel3d_c_upward_turbulent_velocity`, 8 Hz |
+| **3-D Single Point Velocity** | **Seawater Temp (°C)** | `CE04OSBP-LJ01C-07-VEL3DC107` | OO | CZOFF | **21** | **`LKO`** | `temperature_centidegree` (×0.01 → °C), 1 Hz, from `vel3d_cd_system_data` |
 
 ---
 

@@ -17,12 +17,13 @@ channel codes:
 Velocity channels are eastward / northward / upward turbulent velocity (M/S):
 `LOE`/`LON`/`LOZ` on Series B, `MOU`/`MOV`/`MOW` on Series C (U/V/W nonstandard-orientation
 codes — as-installed orientation unverified). `LKO` is the instrument temperature
-reading. `_20` is the SEED location code.
+reading. The suffix (`_20`, or `_21` at CZOFF) is the SEED location code —
+CZOFF's current instrument uses `21`; `20` is reserved for its future replacement.
 
 | Reference | Site | OO Net.Sta | Series (rate) | Velocity / temp channels |
 |---|---|---|---|---|
 | `CE02SHBP-LJ01D-07-VEL3DC108` | Endurance OR Shelf Cabled Benthic | `OO.CZSHF` | C — Nortek (8 Hz) | `MOU_20`, `MOV_20`, `MOW_20`, `LKO_20` |
-| `CE04OSBP-LJ01C-07-VEL3DC107` | Endurance OR Offshore Cabled Benthic | `OO.CZOFF` | C — Nortek (8 Hz) | `MOU_20`, `MOV_20`, `MOW_20`, `LKO_20` |
+| `CE04OSBP-LJ01C-07-VEL3DC107` | Endurance OR Offshore Cabled Benthic | `OO.CZOFF` | C — Nortek (8 Hz) | `MOU_21`, `MOV_21`, `MOW_21`, `LKO_21` |
 | `RS01SLBS-MJ01A-12-VEL3DB101` | RSN Hydrate Slope Base | `OO.HYSB1` | B — Nobska MAVS-4 (1 Hz) | `LOE_20`, `LON_20`, `LOZ_20`, `LKO_20` |
 | `RS01SUM1-LJ01B-12-VEL3DB104` | RSN Hydrate Summit 1-4 | `OO.HYS14` | B — Nobska MAVS-4 (1 Hz) | `LOE_20`, `LON_20`, `LOZ_20`, `LKO_20` |
 | `RS03AXBS-MJ03A-12-VEL3DB301` | RSN Axial Base | `OO.AXBA1` | B — Nobska MAVS-4 (1 Hz) | `LOE_20`, `LON_20`, `LOZ_20`, `LKO_20` |

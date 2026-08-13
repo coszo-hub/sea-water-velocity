@@ -27,7 +27,8 @@ Sources of truth:
       (B: vel3d_b_sample, 1 Hz; C: vel3d_cd_velocity_data 8 Hz + vel3d_cd_system_data)
 
 Decisions (see OOI_channel_codes.md):
-  net=OO, loc=20 (uniform across all five current meters). r_value=1.0 (velocity
+  net=OO. loc=20 for all stations except CZOFF, whose current instrument is
+  loc=21 (loc=20 is reserved for the future replacement instrument there). r_value=1.0 (velocity
   is already L1 m/s, declination-corrected to true N). Every channel carries an
   explicit `conversion` factor which the pipeline DIVIDES the raw data by
   (matching the PREST/coszo-data-collection convention): 1.0 for velocity and
@@ -169,7 +170,7 @@ STATIONS = [
     ),
     dict(
         series="C",
-        refdes="CE04OSBP_LJ01C_07_VEL3DC107", sta="CZOFF",
+        refdes="CE04OSBP_LJ01C_07_VEL3DC107", sta="CZOFF", loc="21",
         site="Endurance OR Offshore Cabled Benthic", comment="Oregon Offshore Cabled Benthic Experiment Package",
         s_lat="44.369407", s_lon="-124.953627", s_elev="-581",
         deployments=[
@@ -203,10 +204,11 @@ def resolve_ends(deps):
 
 def write_station_file(st):
     deps = resolve_ends(st["deployments"])
+    loc = st.get("loc", LOC)
     channels = SERIES[st["series"]]["channels"]
-    chans = [f"{c['cha']}_{LOC}" for c in channels]
+    chans = [f"{c['cha']}_{loc}" for c in channels]
     chan_list = "[" + ",".join(chans) + "]"
-    data_types = "{" + ",".join(f"'{c['cha']}_{LOC}':'{c['var']}'" for c in channels) + "}"
+    data_types = "{" + ",".join(f"'{c['cha']}_{loc}':'{c['var']}'" for c in channels) + "}"
     path = os.path.join(PARAM_DIR, st["refdes"] + ".txt")
     with open(path, "w") as f:
         f.write("##parameter file##\n\n")
@@ -217,7 +219,7 @@ def write_station_file(st):
         f.write(f"n_restatus = open                        #Network_RestrictedStatus\n")
         f.write(f"descript = Ocean Observatories Initiative #Description\n")
         f.write(f"sta = {st['sta']}                            #Station Name\n")
-        f.write(f"loc = {LOC}                                    #Station Location Code (used in StationXML filename)\n")
+        f.write(f"loc = {loc}                                    #Station Location Code (used in StationXML filename)\n")
         f.write(f"s_start = {deps[0][0]}         #Station_StartDate --> first deployment; epochs documented at channel level\n")
         f.write(f"s_restatus = open                        #Station_RestrictedStatus\n")
         f.write(f"s_lat = {st['s_lat']}                     #Station_Latitude (representative; mean of deployments)\n")
@@ -233,12 +235,13 @@ def write_station_file(st):
 
 def write_channel_file(st, c):
     deps = resolve_ends(st["deployments"])
+    loc = st.get("loc", LOC)
     sensor = SERIES[st["series"]]["sensor"]
     starts = "; ".join(d[0] for d in deps)
     ends = "; ".join((d[1] if d[1] else "None") for d in deps)
     ids = "; ".join(d[2] for d in deps)
     rates = "; ".join(c["rate"] for _ in deps)
-    path = os.path.join(PARAM_DIR, f"{st['refdes']}_{c['cha']}_{LOC}.txt")
+    path = os.path.join(PARAM_DIR, f"{st['refdes']}_{c['cha']}_{loc}.txt")
     with open(path, "w") as f:
         f.write("##parameter file##\n\n")
         f.write(f"# {st['comment']}\n")
@@ -246,7 +249,7 @@ def write_channel_file(st, c):
         f.write(f"cha = {c['cha']}                                  #Channel Name\n")
         f.write(f"c_start = {starts}    #Channel_StartDate --> deployment start dates\n")
         f.write(f"c_end = {ends}    #Channel_EndDate --> deployment end dates\n")
-        f.write(f"c_loc = {LOC}                                    #Channel_LocationCode\n")
+        f.write(f"c_loc = {loc}                                    #Channel_LocationCode\n")
         f.write(f"c_lat = {st['s_lat']}                         #Channel_Latitude\n")
         f.write(f"c_lon = {st['s_lon']}                       #Channel_Longitude\n")
         f.write(f"c_elev = {st['s_elev']}                              #Channel_Elevation\n")
