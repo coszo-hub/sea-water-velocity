@@ -2,7 +2,8 @@
 
 OOI RCA Tier-3 3-D single-point current-meter (VEL3D) data collection: retrieval,
 validation, conversion to MiniSEED / StationXML, and staging for SeedLink
-(near-real-time) or miniseed2dmc (historical backfill). Sibling of
+(near-real-time) or the EarthScope Dropoff system (historical backfill;
+replaces the retired miniseed2dmc client). Sibling of
 [`absolute-seafloor-pressure`](https://github.com/coszo-hub/absolute-seafloor-pressure) (PREST);
 same internal layout and pipeline.
 
@@ -59,7 +60,8 @@ sea-water-velocity/
     ├── testk/                     ← smoke-test scripts
     └── output/                    ← runtime working tree
         ├── mseed/                  ← seedlink MiniSEEDs (contents NOT tracked)
-        ├── mseed2dmc/<YEAR>/       ← backfill MiniSEEDs (contents NOT tracked)
+        ├── mseed2dmc/<YEAR>/       ← backfill MiniSEEDs pending drop-off (NOT tracked)
+        ├── mseed2dmc_sent/<YEAR>/  ← MiniSEEDs archived after upload (NOT tracked)
         ├── xml/                    ← StationXML (only OO_*.xml TRACKED)
         ├── netcdf/                 ← optional raw .nc audit copies (NOT tracked)
         ├── metrics/                ← per-run pipeline_stats CSVs (TRACKED)
@@ -87,8 +89,30 @@ SeedLink + metadata + latency + metrics-sync window, mirroring the PREST sibling
 ### Historical — local backfill
 
 `bin/backfill_mseed_from_nc.py` walks saved NetCDFs and produces MiniSEEDs in
-`output/mseed2dmc/<YEAR>/`, byte-compatible with the cron pipeline. miniseed2dmc cron
-entries are commented out — historical backfill is local-only.
+`output/mseed2dmc/<YEAR>/`, byte-compatible with the cron pipeline.
+
+### Drop-off to EarthScope (replaces miniseed2dmc)
+
+EarthScope's cloud **Dropoff** system supersedes the old miniseed2dmc client
+(the inherited miniseed2dmc cron entries stay commented out). One-time setup on
+the drop-off machine: `pip install earthscope-cli` (in `ooi_env` via
+`bin/environment.yml`), then `es login` (device-code flow; tokens persist and
+auto-refresh). Workflow:
+
+```
+# if the staged files predate the 2026-08 code renames (CZSHF/CZOFF, U/V/W, loc 21):
+python bin/fix_staged_mseed_codes.py --dry-run     # preview header/filename fixes
+python bin/fix_staged_mseed_codes.py
+
+bin/dropoff_earthscope.sh mseed --dry-run          # preview upload set
+bin/dropoff_earthscope.sh mseed --archive          # upload; move sent files to mseed2dmc_sent/
+bin/dropoff_earthscope.sh xml                      # upload the five StationXMLs
+bin/dropoff_earthscope.sh status                   # server-side validation summary
+```
+
+Uploads land under the `vel3d/mseed/` and `vel3d/stationxml/` prefixes of the
+account's dropoff space and are validated server-side
+(RECEIVED → … → ACCEPTED, or FAILED with a message).
 
 ### Daily metrics sync
 

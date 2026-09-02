@@ -16,8 +16,10 @@ test/
 testk/output/
 output/mseed/*
 output/mseed2dmc/*
+output/mseed2dmc_sent/*
 log/*
 log_mseed2dmc/*
+log_dropoff/*
 output/netcdf/*
 output/xml/*
 !output/xml/OO_*.xml

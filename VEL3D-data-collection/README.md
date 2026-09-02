@@ -124,7 +124,8 @@ Persistent pipeline state:
 | Transfer method | MiniSEED output | Logs and gap files |
 |-----------------|------------------|-------------------|
 | seedlink        | output/mseed/    | log/              |
-| miniseed2dmc    | output/mseed2dmc/<YEAR>/ | log_mseed2dmc/ |
+| miniseed2dmc (retired) | output/mseed2dmc/<YEAR>/ | log_mseed2dmc/ |
+| EarthScope Dropoff (`bin/dropoff_earthscope.sh`) | uploads output/mseed2dmc/<YEAR>/, archives to output/mseed2dmc_sent/ | log_dropoff/ |
 
 Gap files (`gap_<reference>_<run>.txt`, when enabled) are written to the **same log directory** as the corresponding run.
 

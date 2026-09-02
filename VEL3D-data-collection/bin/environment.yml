@@ -10,5 +10,9 @@ dependencies:
   - netcdf4
   - obspy
   - requests
+  - pip
+  - pip:
+      # EarthScope Dropoff CLI (`es`) — cloud drop-off replacing miniseed2dmc
+      - earthscope-cli
 
 
