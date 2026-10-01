@@ -364,7 +364,7 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     # Data request
     stream_tag = (
         f"streamed/{stream_path}?"
-        "include_provenance=true&format=application/netcdf"
+        "include_provenance=true&format=application/netcdf&email=none"
     )
     data_req = "&".join([
         "/".join([data_url, url_designator, stream_tag]),
