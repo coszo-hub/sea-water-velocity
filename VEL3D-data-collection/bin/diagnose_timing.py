@@ -383,11 +383,12 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     ])
     print(f"  Data URL: {data_req[:120]}…")
     resp = requests.get(data_req, auth=(username, token))
+    # OOI answers a genuinely empty window with HTTP 404 + JSON body
+    # {"message": {"status": "No data for request"}} — check before raising.
+    if "No data for request" in resp.text:
+        raise NoDataError("OOI returned 'No data for request'.")
     resp.raise_for_status()
     _check_server_up(resp)
-
-    if "No data for request" in str(resp.json()):
-        raise NoDataError("OOI returned 'No data for request'.")
     if "allURLs" not in resp.json():
         raise RuntimeError(f"Unexpected response: {resp.json()}")
 
