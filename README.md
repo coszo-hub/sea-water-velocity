@@ -111,10 +111,11 @@ python bin/backfill_mseed_from_nc.py --source goldcopy --variability \
 
 EarthScope's cloud **Dropoff** system supersedes the old miniseed2dmc client
 (the inherited miniseed2dmc cron entries stay commented out). One-time setup on
-the drop-off machine: install the CLI into the existing env
-(`conda env update -n ooi_env -f bin/environment.yml`, or
-`conda run -n ooi_env pip install earthscope-cli`), then `es login`
-(device-code flow; tokens persist and auto-refresh). Workflow:
+the drop-off machine: install the CLI in its own env
+(`conda create -n earthscope python=3.11 && conda run -n earthscope pip install earthscope-cli`;
+the script also finds it in `ooi_env`), then `conda run -n earthscope es login`
+(device-code flow; tokens persist and auto-refresh). Uploads run 16 files in
+parallel (`DROPOFF_CONCURRENCY` to change). Workflow:
 
 ```
 # if the staged files predate the 2026-08 code renames (CZSHF/CZOFF, U/V/W, loc 21):

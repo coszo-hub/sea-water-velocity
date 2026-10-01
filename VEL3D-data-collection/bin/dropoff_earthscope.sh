@@ -28,6 +28,8 @@
 #   bin/dropoff_earthscope.sh list [prefix]        list uploaded objects (default prefix vel3d/)
 #   bin/dropoff_earthscope.sh history <key>        upload history for one object key
 #
+# Parallel uploads: DROPOFF_CONCURRENCY (default 16; es CLI default is 3).
+#
 # Destination layout in the dropoff space (override with DROPOFF_PREFIX):
 #   vel3d/mseed/<staged relative path>      e.g. vel3d/mseed/2016/OO.CZSHF.20.MOU...mseed
 #   vel3d/stationxml/OO_<STA>_<LOC>.xml
@@ -43,10 +45,13 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 MSEED_DIR="$REPO_ROOT/output/mseed2dmc"
 XML_DIR="$REPO_ROOT/output/xml"
 PREFIX="${DROPOFF_PREFIX:-vel3d}"
+# Files uploaded in parallel (es default 3). Hundreds of thousands of small
+# MiniSEED files upload much faster with more in flight.
+CONCURRENCY="${DROPOFF_CONCURRENCY:-16}"
 LOG_DIR="$REPO_ROOT/log_dropoff"
 LOCK_FILE="$LOG_DIR/.dropoff.lock"
 
-usage() { sed -n '2,38p' "$0" | sed 's/^# \{0,1\}//'; }
+usage() { awk 'NR>1 && /^#/ {sub(/^# ?/, ""); print; next} NR>1 {exit}' "$0"; }
 
 # ---------- Resolve the es CLI ----------
 resolve_es() {
@@ -54,9 +59,19 @@ resolve_es() {
         echo "$ES_BIN"
     elif command -v es >/dev/null 2>&1; then
         command -v es
-    elif command -v conda >/dev/null 2>&1 \
-            && conda run -n ooi_env es --version >/dev/null 2>&1; then
-        echo "conda run --no-capture-output -n ooi_env es"
+    elif command -v conda >/dev/null 2>&1; then
+        # Dedicated `earthscope` env first (keeps ooi_env untouched), then ooi_env.
+        local base env
+        base="$(conda info --base 2>/dev/null)"
+        for env in earthscope ooi_env; do
+            if [[ -x "$base/envs/$env/bin/es" ]]; then
+                echo "$base/envs/$env/bin/es"
+                return
+            fi
+        done
+        echo "FATAL: 'es' CLI not found in conda envs earthscope/ooi_env." >&2
+        echo "       Install with: conda create -n earthscope python=3.11 && conda run -n earthscope pip install earthscope-cli" >&2
+        exit 1
     else
         echo "FATAL: 'es' CLI not found. Install with: pip install earthscope-cli" >&2
         echo "       (or set ES_BIN=/path/to/es)" >&2
@@ -121,7 +136,8 @@ case "$mode" in
         find "$MSEED_DIR" -type f ! -name ".*" > "$manifest"
         n_manifest=$(wc -l < "$manifest" | tr -d ' ')
         log "mseed: uploading $n_manifest file(s) from $MSEED_DIR to ${PREFIX}/mseed/"
-        $ES dropoff upload -c miniseed -r -s "$MSEED_DIR/" -d "${PREFIX}/mseed/" 2>&1 | tee -a "$LOG_FILE" "$upload_out"
+        $ES dropoff upload -c miniseed -r --object-concurrency "$CONCURRENCY" \
+            -s "$MSEED_DIR/" -d "${PREFIX}/mseed/" 2>&1 | tee -a "$LOG_FILE" "$upload_out"
         log "mseed: upload command finished; verify with: $0 status"
         # `es dropoff upload` exits 0 even when SOME files fail its client-side
         # validation (non-zero only if ALL fail); those files are skipped, not
