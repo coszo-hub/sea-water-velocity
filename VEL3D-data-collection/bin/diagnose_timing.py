@@ -134,6 +134,7 @@ USAGE
 import os
 import sys
 import csv
+import re
 import time
 import argparse
 import datetime
@@ -161,7 +162,6 @@ OUT_ROOT   = os.path.join(REPO_ROOT, "output", "diagnostics")
 sys.path.insert(0, BIN_PATH)
 
 from read_param  import read_param
-from convert_utc import utcdata1900
 
 # ── Stations ───────────────────────────────────────────────────────────────
 STATIONS = [
@@ -344,6 +344,10 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     max_cycle  = int(run["max_cycle"][0])
     delay      = int(run["delay"][0])
     data_time  = run["data_time"][0]
+    # Status polling: check every poll_interval s until poll_timeout s. Both
+    # optional in the run file; fallback = the old max_cycle × delay budget.
+    poll_interval = float(run.get("poll_interval", [delay])[0])
+    poll_timeout  = float(run.get("poll_timeout", [(max_cycle + 1) * delay])[0])
 
     url_designator = station.replace("-", "/", 2)
     run_name = "prest"
@@ -390,16 +394,19 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     response_url = resp.json()["allURLs"][1]
     status_url   = "/".join([response_url, "status.json"])
 
-    # Poll for completion
-    print(f"  Polling (max {max_cycle} × {delay}s)…")
-    for attempt in range(1, max_cycle + 2):
-        time.sleep(delay)
+    # Poll for completion (status.json is 404 until OOI finishes the build)
+    print(f"  Polling every {poll_interval:g}s (timeout {poll_timeout:g}s)…")
+    t_req = time.monotonic()
+    while True:
+        time.sleep(poll_interval)
         status = requests.get(status_url)
-        print(f"    attempt {attempt}: HTTP {status.status_code}")
+        waited = time.monotonic() - t_req
         if status.status_code == 200:
+            print(f"    ready after {waited:.0f}s")
             break
-    else:
-        raise RuntimeError("Data request did not complete in time.")
+        if waited >= poll_timeout:
+            raise RuntimeError(f"Data request did not complete in {waited:.0f}s "
+                               f"(last HTTP {status.status_code}).")
 
     data_tag = status.json()
     complete = next((v for v in data_tag.values() if isinstance(v, str)), None)
@@ -456,16 +463,23 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
             raise
         print(f"  Saved {os.path.getsize(local_nc)} bytes")
 
-    fh = Dataset(opendap_url)
-    t  = fh.variables[data_time][:]
+    # Read time from the local copy when we just downloaded it (avoids pulling
+    # the same time vector a second time over OPeNDAP).
+    fh = Dataset(local_nc if save_nc_dir is not None else opendap_url)
+    try:
+        t = np.asarray(fh.variables[data_time][:], dtype=float)
+    finally:
+        fh.close()
     print(f"  Raw sample count: {len(t)}")
 
-    utc_list  = [UTCDateTime(str(utcdata1900(float(x)))) for x in t]
-    start_idx = np.searchsorted(utc_list, start_dt, "left")
-    end_idx   = np.searchsorted(utc_list, end_dt,   "right")
+    # 1900-epoch seconds → integer Unix µs (same µs rounding utcdata1900 did),
+    # vectorized: per-sample UTCDateTime(str(datetime)) took ~7 s per 8 Hz day.
+    unix_us   = np.round((t - 2208988800.0) * 1e6).astype(np.int64)
+    start_idx = np.searchsorted(unix_us, start_dt.ns // 1000, "left")
+    end_idx   = np.searchsorted(unix_us, end_dt.ns // 1000,   "right")
 
-    t_raw    = np.array(t[start_idx:end_idx], dtype=float)
-    utc_trim = utc_list[start_idx:end_idx]
+    t_raw    = t[start_idx:end_idx]
+    utc_trim = [UTCDateTime(ns=int(us) * 1000) for us in unix_us[start_idx:end_idx]]
     if len(t_raw) == 0:
         raise NoDataError("NetCDF has no samples inside the requested window.")
     print(f"  Trimmed to window: {len(t_raw)} samples  "
@@ -474,6 +488,136 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     t0    = float(t_raw[0])
     t_sec = t_raw - t0
     return t_raw, t_sec, utc_trim, deployment_id
+
+
+# ── OOI gold copy (pre-built NetCDF on the Data Explorer THREDDS) ────────────
+# The M2M async API builds every request on demand and can take >30 min for one
+# 8 Hz VEL3D-C day. OOI also publishes the same streams pre-built ("gold copy"),
+# readable directly over OPeNDAP with no request queue, and OPeNDAP lets us pull
+# only the variables we need (time + 3 velocities ≈ 22 MB per 8 Hz day vs
+# ~270 MB for the whole file). Coverage caveat: the gold-copy VEL3D-C
+# system_data files carry timestamps only (no temperature_centidegree), so the
+# C-series LKO channel still has to come from M2M.
+GOLDCOPY_THREDDS = "https://thredds.dataexplorer.oceanobservatories.org/thredds"
+GOLDCOPY_ROOT    = "ooigoldcopy/public"
+_GC_FNAME_RE = re.compile(r"_(\d{8}T\d{6}(?:\.\d+)?)-(\d{8}T\d{6}(?:\.\d+)?)\.nc$")
+_gc_catalog_cache = {}   # (station, stream) -> [(start, end, urlPath), ...]
+_gc_time_cache    = {}   # urlPath -> np.int64 Unix µs (small LRU: a day spans ≤2 files)
+
+
+class GoldCopyMissingVariable(RuntimeError):
+    """The gold-copy files for this stream lack a variable we need."""
+
+
+def _gc_get(url, retries=3):
+    for attempt in range(retries):
+        try:
+            r = requests.get(url, timeout=120)
+            r.raise_for_status()
+            return r.text
+        except requests.RequestException:
+            if attempt == retries - 1:
+                raise
+            time.sleep(5 * (attempt + 1))
+
+
+def _gc_parse_stamp(s):
+    return UTCDateTime(s[:4] + "-" + s[4:6] + "-" + s[6:11] + ":" + s[11:13] + ":" + s[13:])
+
+
+def goldcopy_files(station, stream):
+    """Sorted [(start, end, urlPath)] of gold-copy NetCDFs for station + stream.
+
+    Scans every gold-copy folder for the station (VEL3D-C keeps system_data
+    files inside the velocity_data folder) and keeps files whose name carries
+    `-streamed-<stream>_`. Start/end come from the filename."""
+    key = (station, stream)
+    if key in _gc_catalog_cache:
+        return _gc_catalog_cache[key]
+    top = _gc_get(f"{GOLDCOPY_THREDDS}/catalog/{GOLDCOPY_ROOT}/catalog.xml")
+    folders = sorted(set(re.findall(
+        r'xlink:href="(' + re.escape(station) + r'-streamed-[^"/]+)/catalog\.xml"', top)))
+    files = []
+    for folder in folders:
+        cat = _gc_get(f"{GOLDCOPY_THREDDS}/catalog/{GOLDCOPY_ROOT}/{folder}/catalog.xml")
+        for url_path in re.findall(r'urlPath="([^"]+\.nc)"', cat):
+            name = url_path.rsplit("/", 1)[-1]
+            m = _GC_FNAME_RE.search(name)
+            if f"-streamed-{stream}_" in name and m:
+                files.append((_gc_parse_stamp(m.group(1)), _gc_parse_stamp(m.group(2)), url_path))
+    files.sort(key=lambda f: f[0])
+    _gc_catalog_cache[key] = files
+    return files
+
+
+class GoldCopyDay:
+    """Minimal stand-in for an open netCDF4.Dataset: `.variables[name][:]`
+    returns the day's (already trimmed) array, so code written against
+    read_nc_day()'s handle works unchanged."""
+    def __init__(self, variables):
+        self.variables = variables
+
+    def close(self):
+        pass
+
+
+def read_goldcopy_day(station, stream, date, run, variables=()):
+    """Read one 24 h window [date, date+86400] from the gold copy.
+
+    Returns (fh, utc_trim, t_raw, start_idx, end_idx) — same contract as
+    plot_from_netcdf.read_nc_day(), with fh a GoldCopyDay whose arrays are
+    already trimmed (start_idx=0, end_idx=n). Gold-copy files are not
+    midnight-aligned, so a day is stitched from every overlapping file and
+    duplicate boundary samples are dropped. Only `time` + `variables` are
+    transferred. Raises NoDataError if no samples fall in the window;
+    network/OPeNDAP errors propagate (transient — retry later)."""
+    data_time = run["data_time"][0]
+    start_dt, end_dt = date, date + 86400.0
+    lo_us, hi_us = start_dt.ns // 1000, end_dt.ns // 1000
+
+    parts_t, parts_v = [], {v: [] for v in variables}
+    for f_start, f_end, url_path in goldcopy_files(station, stream):
+        if f_start > end_dt or f_end < start_dt:
+            continue
+        ds = Dataset(f"{GOLDCOPY_THREDDS}/dodsC/{url_path}")
+        try:
+            missing = [v for v in variables if v not in ds.variables]
+            if missing:
+                raise GoldCopyMissingVariable(
+                    f"gold copy {stream} has no {missing} — use the M2M/local-NetCDF path")
+            if url_path not in _gc_time_cache:
+                t_all = np.asarray(ds.variables[data_time][:], dtype=float)
+                if len(_gc_time_cache) >= 4:
+                    _gc_time_cache.pop(next(iter(_gc_time_cache)))
+                _gc_time_cache[url_path] = (t_all, np.round(
+                    (t_all - 2208988800.0) * 1e6).astype(np.int64))
+            t_all, us_all = _gc_time_cache[url_path]
+            i0 = int(np.searchsorted(us_all, lo_us, "left"))
+            i1 = int(np.searchsorted(us_all, hi_us, "right"))
+            if i1 <= i0:
+                continue
+            parts_t.append((t_all[i0:i1], us_all[i0:i1]))
+            for v in variables:
+                a = ds.variables[v][i0:i1]           # OPeNDAP fetches only this slice
+                a = a.filled(np.nan) if isinstance(a, np.ma.MaskedArray) else np.asarray(a)
+                parts_v[v].append(np.asarray(a, dtype=float))
+        finally:
+            ds.close()
+
+    if not parts_t:
+        raise NoDataError(f"gold copy has no {stream} samples for {str(date)[:10]}")
+    t_raw = np.concatenate([p[0] for p in parts_t])
+    us    = np.concatenate([p[1] for p in parts_t])
+    data  = {v: np.concatenate(parts_v[v]) for v in variables}
+    order = np.argsort(us, kind="stable")
+    keep  = np.concatenate([[True], np.diff(us[order]) > 0])   # drop file-boundary duplicates
+    idx   = order[keep]
+    t_raw, us = t_raw[idx], us[idx]
+    data  = {v: a[idx] for v, a in data.items()}
+    utc_trim = [UTCDateTime(ns=int(x) * 1000) for x in us]
+    print(f"  gold copy: {len(t_raw)} samples from {len(parts_t)} file(s)  "
+          f"({utc_trim[0]} → {utc_trim[-1]})")
+    return GoldCopyDay(data), utc_trim, t_raw, 0, len(t_raw)
 
 
 # ── Diagnostic computation ───────────────────────────────────────────────────

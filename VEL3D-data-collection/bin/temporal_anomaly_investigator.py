@@ -53,6 +53,7 @@ from diagnose_timing import (
     load_credentials,
     get_deployment_for_date,
     fetch_nc_timestamps,
+    read_goldcopy_day,
     NoDataError,
 )
 
@@ -461,41 +462,53 @@ def _row_from_stats(s, station, date_str, deployment, fig_generated):
 # Shared per-day worker
 # ════════════════════════════════════════════════════════════════════════════
 def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
-                 save_nc_dir=None, only_if_gaps=False, stream=None):
+                 save_nc_dir=None, only_if_gaps=False, stream=None,
+                 source="m2m"):
     """
-    Fetch + compute + write for one (station, date). Returns True on success.
+    Fetch + compute + write for one (station, date).
+
+    Returns the CSV row (a final result, data or confirmed no-data), or None
+    when the day failed transiently and should be retried. The row is
+    appended to csv_path unless csv_path is None (parallel collect: the
+    parent process does the CSV writes).
     """
+    def _emit(row):
+        if csv_path is not None:
+            _append_row(csv_path, row)
+        return row
+
     date_str = str(date)[:10]
 
     try:
         dep_info = get_deployment_for_date(station, date, PARAM_PATH, stream=stream)
     except ValueError as e:
         print(f"    skip — {e}")
-        _append_row(csv_path, _no_data_row(station, date_str, 0, 0))
-        return False
+        return _emit(_no_data_row(station, date_str, 0, 0))
 
     deployment = dep_info["deployment"]
     sp_nominal = dep_info["sp_nominal"]
 
     try:
-        _, t_sec, utc_trim, _ = fetch_nc_timestamps(
-            station, date, date + 86400.0, deployment, run,
-            save_nc_dir=save_nc_dir, stream=stream)
+        if source == "goldcopy":
+            _, utc_trim, t_raw, _, _ = read_goldcopy_day(station, stream, date, run)
+            t_sec = t_raw - float(t_raw[0])
+        else:
+            _, t_sec, utc_trim, _ = fetch_nc_timestamps(
+                station, date, date + 86400.0, deployment, run,
+                save_nc_dir=save_nc_dir, stream=stream)
     except NoDataError as e:
         # OOI confirmed the gap: record it so collect mode never re-requests.
         print(f"    no data — {e}")
-        _append_row(csv_path, _no_data_row(station, date_str, deployment, sp_nominal))
-        return False
+        return _emit(_no_data_row(station, date_str, deployment, sp_nominal))
     except Exception as e:
         # Transient/unknown (timeout, HTTP error, disk full, …): write no row,
         # so the next collect run retries this day instead of skipping it.
         print(f"    FAILED (will retry on next run) — {type(e).__name__}: {e}")
-        return False
+        return None
 
     if len(t_sec) < 2:
         print(f"    too few points ({len(t_sec)})")
-        _append_row(csv_path, _no_data_row(station, date_str, deployment, sp_nominal))
-        return False
+        return _emit(_no_data_row(station, date_str, deployment, sp_nominal))
 
     s = compute_variability(t_sec, sp_nominal, utc_trim=utc_trim)
 
@@ -511,10 +524,10 @@ def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
     elif always_figure and only_if_gaps:
         print(f"    no gaps (n_gaps=0) — skipping figure")
 
-    _append_row(csv_path, _row_from_stats(s, station, date_str, deployment, fig_generated))
+    row = _emit(_row_from_stats(s, station, date_str, deployment, fig_generated))
     print(f"    n={s['n']}  Δt_FG={s['dt_FG']:.6f}s  Δt_true={s['dt_true']:.6f}s  "
           f"gaps={s['n_gaps']}  σ={s['sigma_ms']:.3f}ms  max|e|={s['emax_ms']:.3f}ms")
-    return True
+    return row
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -542,6 +555,7 @@ def single_mode(args):
         save_nc_dir=(os.path.join(OUT_ROOT, "netcdf") if args.save_nc else None),
         only_if_gaps=args.only_gaps,
         stream=args.stream,
+        source=args.source,
     )
 
 
@@ -556,12 +570,51 @@ def _remove_row(csv_path, station, date_str):
         writer.writerows(rows)
 
 
+def _collect_worker(station, date, run, stream, save_nc_dir, only_gaps, source):
+    """Process-pool task: run one (station, date) with stdout captured, so
+    parallel days print as whole blocks instead of interleaved lines.
+    Returns (station, date_str, row-or-None, captured_output)."""
+    import io
+    import contextlib
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        row = _process_day(
+            station, date, run,
+            fig_dir_base=os.path.join(OUT_ROOT, "figures", "per_day"),
+            csv_path=None,                     # parent writes the CSV
+            always_figure=True,
+            save_nc_dir=save_nc_dir,
+            only_if_gaps=only_gaps,
+            stream=stream,
+            source=source,
+        )
+    return station, str(date)[:10], row, buf.getvalue()
+
+
+def _sort_csv(csv_path):
+    """Parallel collect appends rows in completion order; restore date order."""
+    if not os.path.exists(csv_path):
+        return
+    with open(csv_path, newline="") as f:
+        rows = list(csv.DictReader(f))
+    rows.sort(key=lambda r: (r["date"], r["station"]))
+    with open(csv_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
 def collect_mode(args):
     run      = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
     stations = args.station if args.station else STATIONS
     date     = UTCDateTime(args.start + "T00:00:00Z")
     end_date = UTCDateTime(args.end   + "T00:00:00Z")
     total    = int((end_date - date) / 86400.0) + 1
+    save_nc_dir = os.path.join(OUT_ROOT, "netcdf") if args.save_nc else None
+
+    if args.workers > 1:
+        _collect_parallel(args, run, stations, date, end_date, save_nc_dir)
+        return
 
     day_num = 0
     while date <= end_date:
@@ -582,13 +635,70 @@ def collect_mode(args):
                 fig_dir_base=os.path.join(OUT_ROOT, "figures", "per_day"),
                 csv_path=csv_path,
                 always_figure=True,
-                save_nc_dir=(os.path.join(OUT_ROOT, "netcdf")
-                             if args.save_nc else None),
+                save_nc_dir=save_nc_dir,
                 only_if_gaps=args.only_gaps,
                 stream=args.stream,
+                source=args.source,
             )
 
         date += 86400.0
+
+
+def _collect_parallel(args, run, stations, date, end_date, save_nc_dir):
+    """Keep up to --workers OOI requests in flight at once. OOI builds async
+    requests concurrently, so wall time is ~(days / workers) × build time
+    instead of days × build time. Same skip/retry semantics as serial mode."""
+    from concurrent.futures import ProcessPoolExecutor, as_completed
+
+    existing = {sta: _load_existing_keys(_metrics_csv_path(sta, args.stream))
+                for sta in stations}
+    tasks = []
+    while date <= end_date:
+        date_str = str(date)[:10]
+        for station in stations:
+            if (station, date_str) not in existing[station]:
+                tasks.append((station, date))
+        date += 86400.0
+    if not tasks:
+        print("  nothing to do — every (station, date) already in CSV")
+        return
+
+    print(f"  {len(tasks)} day(s) to fetch, {args.workers} in parallel")
+    counts = {"ok": 0, "no_data": 0, "retry": 0}
+    touched = set()
+    pool = ProcessPoolExecutor(max_workers=args.workers)
+    try:
+        futures = {pool.submit(_collect_worker, sta, d, run, args.stream,
+                               save_nc_dir, args.only_gaps, args.source): (sta, str(d)[:10])
+                   for sta, d in tasks}
+        for i, fut in enumerate(as_completed(futures), 1):
+            station, date_str = futures[fut]
+            print(f"\n{'='*60}\n  [{i}/{len(tasks)}]  {station}  {date_str}")
+            try:
+                _, _, row, out = fut.result()
+            except Exception as e:
+                # Unexpected crash inside one day: don't take down the batch.
+                print(f"    FAILED (will retry on next run) — {type(e).__name__}: {e}")
+                counts["retry"] += 1
+                continue
+            print(out, end="")
+            if row is None:
+                counts["retry"] += 1
+                continue
+            csv_path = _metrics_csv_path(station, args.stream)
+            _append_row(csv_path, row)
+            touched.add(csv_path)
+            counts["ok" if row["has_data"] else "no_data"] += 1
+    except KeyboardInterrupt:
+        print("\n  interrupted — cancelling queued days (finished rows are saved)")
+        pool.shutdown(wait=False, cancel_futures=True)
+        raise
+    finally:
+        pool.shutdown(wait=True)
+        for p in touched:
+            _sort_csv(p)
+    print(f"\n  done: {counts['ok']} with data, {counts['no_data']} confirmed no-data, "
+          f"{counts['retry']} failed (re-run the same command to retry)")
 
 
 # ── plot mode ──────────────────────────────────────────────────────────────
@@ -717,11 +827,22 @@ def main():
     parser.add_argument("--save-nc", action="store_true",
                         help="Also download the raw NetCDF file for each "
                              "fetched day into output/temporal_anomaly/netcdf/.")
+    parser.add_argument("--source", choices=["m2m", "goldcopy"], default="m2m",
+                        help="m2m: OOI async request per day (default). goldcopy: read "
+                             "timestamps from OOI's pre-built gold copy over OPeNDAP — "
+                             "no request queue; needs --stream; --save-nc is ignored. "
+                             "Gold copy has VEL3D-C velocity and all VEL3D-B; C temperature "
+                             "(vel3d_cd_system_data) timestamps exist there too.")
+    parser.add_argument("--workers", type=int, default=1,
+                        help="collect mode: number of days requested from OOI "
+                             "in parallel (default 1 = serial).")
     parser.add_argument("--only-gaps", action="store_true",
                         help="Only generate the per-day 4-panel figure when "
                              "n_gaps > 0 (post wall-clock correction). "
                              "CSV row is still written every day.")
     args = parser.parse_args()
+    if args.source == "goldcopy" and not args.stream:
+        parser.error("--source goldcopy needs --stream (e.g. vel3d_b_sample)")
 
     if args.mode == "single":
         if not args.date or not args.station:

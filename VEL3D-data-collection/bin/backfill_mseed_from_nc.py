@@ -40,7 +40,8 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(REPO_ROOT, "bin"))
 
 from read_param import read_param
-from diagnose_timing import STATIONS, get_deployment_for_date
+from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_day,
+                             NoDataError, GoldCopyMissingVariable)
 from plot_from_netcdf import find_nc_file, read_nc_day
 from gap_algorithms import detect_gaps
 
@@ -185,14 +186,16 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
 
 
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
-                metrics_csv, append_stats, skip_existing, stream=None):
+                metrics_csv, append_stats, skip_existing, stream=None,
+                source="local"):
     date_str = str(date)[:10]
     gap_algo_requested = gap_algo
 
-    nc_path = find_nc_file(nc_dir, station, date_str, stream=stream)
-    if nc_path is None:
-        print(f"  [{station}] {date_str}  skip — no NetCDF")
-        return False
+    if source == "local":
+        nc_path = find_nc_file(nc_dir, station, date_str, stream=stream)
+        if nc_path is None:
+            print(f"  [{station}] {date_str}  skip — no NetCDF")
+            return False
 
     if append_stats and skip_existing:
         existing = _load_existing_keys(metrics_csv)
@@ -249,7 +252,21 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         except Exception as e_b:
             print(f"  [{station}] {date_str}  boundary parse failed (non-fatal): {e_b}")
 
-    fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
+    if source == "goldcopy":
+        try:
+            fh, utc_trim, t_raw, start_idx, end_idx = read_goldcopy_day(
+                station, stream, date, run,
+                variables=[datatypes[c] for c in channels])
+        except NoDataError as e:
+            print(f"  [{station}] {date_str}  skip — {e}")
+            return False
+        except GoldCopyMissingVariable:
+            raise                    # whole stream unusable — stop, don't skip day by day
+        except Exception as e:
+            print(f"  [{station}] {date_str}  FAILED (re-run to retry) — {type(e).__name__}: {e}")
+            return False
+    else:
+        fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
     if len(utc_trim) < 2:
         print(f"  [{station}] {date_str}  skip — only {len(utc_trim)} samples")
         fh.close()
@@ -328,6 +345,11 @@ def main():
     p.add_argument("--gap-algo", choices=["legacy", "anomaly"], default="anomaly",
                    help="Gap detection algorithm. Default: anomaly "
                         "(matches param/run_vel3d.txt).")
+    p.add_argument("--source", choices=["local", "goldcopy"], default="local",
+                   help="local: saved NetCDFs in --nc-dir (default). goldcopy: read "
+                        "straight from OOI's pre-built gold copy over OPeNDAP — no M2M "
+                        "queue, nothing stored. Gold copy lacks VEL3D-C temperature "
+                        "(vel3d_cd_system_data), so use local for that stream.")
     p.add_argument("--nc-dir",     default=DEFAULT_NC_DIR)
     p.add_argument("--mseed-dir",  default=DEFAULT_MSEED,
                    help=f"MiniSEED output root (default: {DEFAULT_MSEED})")
@@ -372,10 +394,15 @@ def main():
             metrics_csv = os.path.join(args.metrics_dir,
                                        f"{station}{sfx}_vel3d_pipeline_stats.csv")
             for date in dates:
-                ok = process_day(station, date, run, args.gap_algo,
-                                 args.nc_dir, args.mseed_dir,
-                                 metrics_csv, args.append_stats,
-                                 skip_existing=not args.no_skip, stream=stream)
+                try:
+                    ok = process_day(station, date, run, args.gap_algo,
+                                     args.nc_dir, args.mseed_dir,
+                                     metrics_csv, args.append_stats,
+                                     skip_existing=not args.no_skip, stream=stream,
+                                     source=args.source)
+                except GoldCopyMissingVariable as e:
+                    print(f"  [{station}] skip stream {stream} — {e}")
+                    break
                 if ok:
                     n_done += 1
                 else:

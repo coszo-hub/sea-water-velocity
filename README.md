@@ -91,6 +91,24 @@ SeedLink + metadata + latency + metrics-sync window, mirroring the PREST sibling
 `bin/backfill_mseed_from_nc.py` walks saved NetCDFs and produces MiniSEEDs in
 `output/mseed2dmc/<YEAR>/`, byte-compatible with the cron pipeline.
 
+With `--source goldcopy` it instead reads OOI's pre-built **gold copy**
+(`thredds.dataexplorer.oceanobservatories.org`, `ooigoldcopy/public/`) over
+OPeNDAP — no M2M request queue, only the needed variables transferred
+(~6 s per 8 Hz day), nothing stored but the MiniSEED. `temporal_anomaly_investigator.py
+--source goldcopy --stream <s>` does the same for the timing CSVs (add
+`--workers N` to run days in parallel). Use it for all VEL3D-B data and VEL3D-C
+velocity; the gold-copy VEL3D-C `system_data` files have no temperature, so the
+C-series `LKO` channel still comes from M2M (`--save-nc` + default `--source local`).
+
+```
+python bin/temporal_anomaly_investigator.py --mode collect --source goldcopy \
+    --station CE02SHBP-LJ01D-07-VEL3DC108 --stream vel3d_cd_velocity_data \
+    --start 2014-09-10 --end 2026-06-16 --only-gaps --workers 4
+python bin/backfill_mseed_from_nc.py --source goldcopy \
+    --station CE02SHBP-LJ01D-07-VEL3DC108 --stream vel3d_cd_velocity_data \
+    --start 2014-09-10 --end 2026-06-16
+```
+
 ### Drop-off to EarthScope (replaces miniseed2dmc)
 
 EarthScope's cloud **Dropoff** system supersedes the old miniseed2dmc client
