@@ -9,7 +9,7 @@ The COSZO Data Collection Package automates retrieval, validation, conversion, a
 
 Tier‑3 data are data from cabled offshore instruments sampled at **8 Hz or less** and **not diverted by the U.S. Navy**.
 
-This package is derived from the original *ooi‑data‑collection* system provided to COSZO by EarthScope Data Services (formerly IRIS DMC). That legacy system targeted direct BUD/BATS ingestion, which is no longer used. The current pipeline stages data locally for downstream transfer via **SeedLink** (near‑real‑time) or **miniseed2dmc** (historical backfill).
+This package is derived from the original *ooi‑data‑collection* system provided to COSZO by EarthScope Data Services (formerly IRIS DMC). That legacy system targeted direct BUD/BATS ingestion, which is no longer used. The current pipeline stages data locally for downstream transfer via **SeedLink** (near‑real‑time) or the **EarthScope Dropoff** system (historical backfill, via `bin/dropoff_earthscope.sh`; replaces the retired miniseed2dmc client).
 
 ---
 

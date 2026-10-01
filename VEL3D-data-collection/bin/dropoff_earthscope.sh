@@ -22,7 +22,7 @@
 #                    upload output/mseed2dmc/ (recursive, category miniseed);
 #                    --archive moves uploaded files to output/mseed2dmc_sent/
 #                    so the staging dir acts as a queue and re-runs are
-#                    incremental
+#                    incremental (only if ALL staged files uploaded)
 #   bin/dropoff_earthscope.sh xml   [--dry-run]    upload output/xml/OO_*.xml (category stationxml)
 #   bin/dropoff_earthscope.sh status               summary of both vel3d/ prefixes
 #   bin/dropoff_earthscope.sh list [prefix]        list uploaded objects (default prefix vel3d/)
@@ -116,10 +116,28 @@ case "$mode" in
         # --archive moves only these files, so anything staged mid-upload
         # stays queued for the next run.
         manifest="$(mktemp)"
+        upload_out="$(mktemp)"
+        trap 'rmdir "$LOCK_FILE"; rm -f "$manifest" "$upload_out"' EXIT
         find "$MSEED_DIR" -type f ! -name ".*" > "$manifest"
-        log "mseed: uploading $n_files file(s) from $MSEED_DIR to ${PREFIX}/mseed/"
-        $ES dropoff upload -c miniseed -r -s "$MSEED_DIR/" -d "${PREFIX}/mseed/" 2>&1 | tee -a "$LOG_FILE"
+        n_manifest=$(wc -l < "$manifest" | tr -d ' ')
+        log "mseed: uploading $n_manifest file(s) from $MSEED_DIR to ${PREFIX}/mseed/"
+        $ES dropoff upload -c miniseed -r -s "$MSEED_DIR/" -d "${PREFIX}/mseed/" 2>&1 | tee -a "$LOG_FILE" "$upload_out"
         log "mseed: upload command finished; verify with: $0 status"
+        # `es dropoff upload` exits 0 even when SOME files fail its client-side
+        # validation (non-zero only if ALL fail); those files are skipped, not
+        # uploaded. So archive only when its summary line ("Summary: S/T files
+        # succeeded, F failed") shows every manifest file went up. Otherwise
+        # leave the whole staging dir in place — re-uploading a key is safe.
+        succeeded=$(sed -n 's/.*Summary: \([0-9]*\)\/[0-9]* files succeeded.*/\1/p' "$upload_out" | tail -1)
+        if [[ -z "$succeeded" ]]; then
+            log "mseed: WARNING could not parse upload summary"
+        elif [[ "$succeeded" -ne "$n_manifest" ]]; then
+            log "mseed: WARNING only $succeeded of $n_manifest file(s) uploaded — see errors above"
+        fi
+        if [[ $ARCHIVE -eq 1 && "$succeeded" != "$n_manifest" ]]; then
+            log "mseed: NOT archiving; staging dir left intact. Fix/remove the failed file(s) and re-run."
+            exit 1
+        fi
         if [[ $ARCHIVE -eq 1 ]]; then
             SENT_DIR="$REPO_ROOT/output/mseed2dmc_sent"
             moved=0
@@ -131,7 +149,6 @@ case "$mode" in
             done < "$manifest"
             log "mseed: archived $moved file(s) to $SENT_DIR (staging dir is now the pending queue)"
         fi
-        rm -f "$manifest"
         ;;
     xml)
         shopt -s nullglob

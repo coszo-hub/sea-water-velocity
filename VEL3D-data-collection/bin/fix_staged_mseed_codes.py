@@ -76,6 +76,12 @@ def main():
 
             new_fname = ".".join([net, new_sta, new_loc, new_cha] + parts[4:])
             rel = os.path.relpath(dirpath, args.dir)
+            if os.path.exists(os.path.join(dirpath, new_fname)):
+                # A current-coded copy already exists (e.g. re-backfilled
+                # after the renames) — don't clobber it; resolve by hand.
+                print(f"WARN: target exists, skipping: {rel}/{fname} -> {new_fname}")
+                n_skipped += 1
+                continue
             print(f"{rel}/{fname}\n  -> {rel}/{new_fname}")
             n_fixed += 1
             if args.dry_run:

@@ -95,20 +95,26 @@ SeedLink + metadata + latency + metrics-sync window, mirroring the PREST sibling
 
 EarthScope's cloud **Dropoff** system supersedes the old miniseed2dmc client
 (the inherited miniseed2dmc cron entries stay commented out). One-time setup on
-the drop-off machine: `pip install earthscope-cli` (in `ooi_env` via
-`bin/environment.yml`), then `es login` (device-code flow; tokens persist and
-auto-refresh). Workflow:
+the drop-off machine: install the CLI into the existing env
+(`conda env update -n ooi_env -f bin/environment.yml`, or
+`conda run -n ooi_env pip install earthscope-cli`), then `es login`
+(device-code flow; tokens persist and auto-refresh). Workflow:
 
 ```
 # if the staged files predate the 2026-08 code renames (CZSHF/CZOFF, U/V/W, loc 21):
 python bin/fix_staged_mseed_codes.py --dry-run     # preview header/filename fixes
 python bin/fix_staged_mseed_codes.py
 
+bin/dropoff_earthscope.sh xml                      # StationXML first, so metadata is in place
 bin/dropoff_earthscope.sh mseed --dry-run          # preview upload set
 bin/dropoff_earthscope.sh mseed --archive          # upload; move sent files to mseed2dmc_sent/
-bin/dropoff_earthscope.sh xml                      # upload the five StationXMLs
 bin/dropoff_earthscope.sh status                   # server-side validation summary
 ```
+
+`--archive` only moves files when the CLI's summary reports every staged file
+uploaded. `es dropoff upload` exits 0 even if some files fail its client-side
+validation, so on any shortfall the staging dir is left intact (re-uploading a
+key is safe) and the script exits non-zero.
 
 Uploads land under the `vel3d/mseed/` and `vel3d/stationxml/` prefixes of the
 account's dropoff space and are validated server-side
