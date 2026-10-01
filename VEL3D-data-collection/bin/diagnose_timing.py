@@ -280,6 +280,11 @@ def get_deployment_for_date(station, date, param_path, stream=None):
                     return c
         return next((c for c in chan_list if "DO" in c), chan_list[0])
 
+    # A deployment that starts partway through `date` (e.g. the first day, or
+    # after a recovery gap) does not cover midnight; fall back to it so that
+    # day's data isn't skipped.
+    starts_today = []
+
     # ── Numbered deployments (channels_1, channels_2, …) ──────────────────
     dep = 1
     while True:
@@ -292,10 +297,14 @@ def get_deployment_for_date(station, date, param_path, stream=None):
         sp_nominal, c_start, c_end = _parse_pressure_chan_file(chan_file, epoch_idx=0)
         if date >= c_start and (c_end is None or date < c_end):
             return {"deployment": dep, "sp_nominal": sp_nominal, "channels": chans}
+        if date <= c_start < date + 86400.0:
+            starts_today.append({"deployment": dep, "sp_nominal": sp_nominal, "channels": chans})
         dep += 1
 
     # ── Epoch list (single `channels` key, semicolon-separated dates) ─────
     if "channels" not in sta_param:
+        if starts_today:
+            return starts_today[0]
         raise ValueError(
             f"No deployment found for {station} on {date}: "
             "neither channels_N nor channels key present.")
@@ -308,7 +317,11 @@ def get_deployment_for_date(station, date, param_path, stream=None):
         sp_nominal, c_start, c_end = _parse_pressure_chan_file(chan_file, epoch_idx=i)
         if date >= c_start and (c_end is None or date < c_end):
             return {"deployment": i + 1, "sp_nominal": sp_nominal, "channels": chans}
+        if date <= c_start < date + 86400.0:
+            starts_today.append({"deployment": i + 1, "sp_nominal": sp_nominal, "channels": chans})
 
+    if starts_today:
+        return starts_today[0]
     raise ValueError(
         f"No deployment found for {station} on {date}. "
         "Date may be outside all deployment windows.")
