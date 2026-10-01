@@ -36,8 +36,8 @@ Per-station deployment count and span, with sample rate. Full per-deployment epo
 
 | Station | Series | Deployments | First start | Status | Sample rate |
 |---|---|---|---|---|---|
-| `OO.CZSHF` | C | 12 | 2014-09-10 | ongoing | 8 Hz |
-| `OO.CZOFF` | C | 12 | 2014-08-15 | ongoing | 8 Hz |
+| `OO.CZSHF` | C | 13 | 2014-09-10 | ongoing | 8 Hz |
+| `OO.CZOFF` | C | 13 | 2014-08-15 | ongoing | 8 Hz |
 | `OO.HYSB1` | B | 3 | 2014-09-13 | ongoing | 1 Hz |
 | `OO.HYS14` | B | 6 | 2014-09-09 | ongoing | 1 Hz |
 | `OO.AXBA1` | B | 3 | 2014-08-08 | ongoing | 1 Hz |
