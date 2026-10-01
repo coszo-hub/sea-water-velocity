@@ -124,10 +124,13 @@ def _append_metrics_row(csv_path, row):
 
 def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
                           channels, datatypes, net_sta_param, run,
-                          gap_result, mseed_dir, segmenting="timing"):
+                          gap_result, mseed_dir, segmenting="timing", min_piece_s=None):
     """One MiniSEED file per (channel × contiguous segment). Mirrors the cron
     pipeline's write block. `segmenting` picks where traces break — see
-    gap_algorithms.mseed_segments ('gaps' = original behaviour)."""
+    gap_algorithms.mseed_segments ('gaps' = original behaviour). Traces
+    shorter than `min_piece_s` seconds are not written (fragments); longer
+    traces on the same day are. Returns (files_written, traces_dropped,
+    samples_dropped) — drop counts per channel."""
     mseed_ext    = run.get("mseed_file_ext", [".mseed"])[0]
     data_quality = run.get("data_quality", ["D"])[0]
     rec_len      = int(run["rec_len"][0])
@@ -145,6 +148,9 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
             t_start = utc_trim[0] + st0
             seg_times.append((str(t_start), str(t_start + (len(ti) - 1) / sr)))
     ref_under = station.replace("-", "_")
+    keep = [min_piece_s is None or len(ti) / sr >= min_piece_s for ti in segments]
+    n_drop = sum(1 for k in keep if not k)
+    s_drop = sum(len(ti) for ti, k in zip(segments, keep) if not k)
 
     written = 0
     for cha_key in channels:
@@ -163,12 +169,14 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
         conversion    = float(channel_param["conversion"][0])
 
         cursor = 0
-        for ti, (seg_start, seg_end) in zip(segments, seg_times):
+        for ti, (seg_start, seg_end), k in zip(segments, seg_times, keep):
             n_seg = len(ti)
             if n_seg == 0:
                 continue
             seg_data  = data_day[cursor:cursor + n_seg] / conversion
             cursor   += n_seg
+            if not k:                    # fragment shorter than min_piece_s
+                continue
 
             stats = {
                 "network":       net_sta_param["net"][0],
@@ -199,13 +207,13 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
             st.write(write_path, format="MSEED", reclen=rec_len)
             written += 1
 
-    return written
+    return written, n_drop, s_drop
 
 
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
                 source="local", variability=None, segmenting="timing",
-                min_piece_minutes=None):
+                min_piece_s=None):
     """variability: None, or {"csv": path, "done": set of (station, date)} —
     also write the temporal_anomaly_investigator CSV row (+ figure when the
     day has gaps) from the same pulled data. A day already in that CSV is
@@ -312,36 +320,24 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         gap_result = detect_gaps(gap_algo, t_sec, sp_nominal=sp_nominal,
                                  req_duration=86400.0)
 
-        # Fragmented-day rule: if the day's typical (median) trace is shorter
-        # than --min-piece-minutes, write no MiniSEED (it would be thousands of
-        # tiny files and is not submitted); log the day instead. The
-        # variability CSV row is still written below.
-        if min_piece_minutes:
-            splits, _ = mseed_segments(segmenting, t_sec, gap_result)
-            piece_n = np.diff([0] + list(splits) + [len(t_sec)])
-            median_piece_s = float(np.median(piece_n)) * gap_result.sp
-            if median_piece_s < 60.0 * min_piece_minutes:
-                frag_log = os.path.join(os.path.dirname(os.path.abspath(mseed_dir)),
-                                        "outlier", "fragmented_days.csv")
-                os.makedirs(os.path.dirname(frag_log), exist_ok=True)
-                new = not os.path.exists(frag_log)
-                with open(frag_log, "a") as f:
-                    if new:
-                        f.write("station,stream,date,n_points,traces_per_channel,median_piece_s\n")
-                    f.write(f"{station},{stream},{date_str},{len(t_sec)},{len(piece_n)},{median_piece_s:.1f}\n")
-                print(f"  [{station}] {date_str}  skip MiniSEED — fragmented: {len(piece_n)} traces/ch, "
-                      f"median piece {median_piece_s:.0f}s < {min_piece_minutes:g} min (logged)")
-                if variability is not None:
-                    vs = compute_variability(t_sec, sp_nominal, utc_trim=utc_trim)
-                    _append_variability_row(variability["csv"], _row_from_stats(
-                        vs, station, date_str, deployment, False))
-                    variability["done"].add((station, date_str))
-                return False
-
-        n_written = _write_mseed_segments(
+        n_written, n_drop, s_drop = _write_mseed_segments(
             fh, utc_trim, t_raw, start_idx, end_idx, station,
             channels, datatypes, sta_param, run, gap_result, mseed_dir,
-            segmenting=segmenting)
+            segmenting=segmenting, min_piece_s=min_piece_s)
+        if n_drop:
+            # Log fragments not written: <mseed-dir>/../outlier/dropped_pieces.csv
+            drop_log = os.path.join(os.path.dirname(os.path.abspath(mseed_dir)),
+                                    "outlier", "dropped_pieces.csv")
+            os.makedirs(os.path.dirname(drop_log), exist_ok=True)
+            new = not os.path.exists(drop_log)
+            with open(drop_log, "a") as f:
+                if new:
+                    f.write("station,stream,date,n_points,traces_per_channel,"
+                            "traces_dropped,samples_dropped,min_piece_s\n")
+                f.write(f"{station},{stream},{date_str},{len(t_sec)},"
+                        f"{n_written // max(1, len(channels)) + n_drop},{n_drop},{s_drop},{min_piece_s:g}\n")
+            print(f"      dropped {n_drop} trace(s)/ch shorter than {min_piece_s:g}s "
+                  f"({s_drop} samples, {100.0 * s_drop / len(t_sec):.2f}% of the day)")
 
         actual_algo = gap_result.diagnostics.get("algorithm", gap_algo)
         print(f"  [{station}] {date_str}  algo={actual_algo}  "
@@ -433,10 +429,10 @@ def main():
                         "timestamps leave the regular grid by > ½ sample, so every sample stays "
                         "within ½ sample of OOI's recorded time. gaps: original behaviour "
                         "(gap splits only). Default comes from run_vel3d.txt mseed_segmenting.")
-    p.add_argument("--min-piece-minutes", type=float, default=None,
-                   help="Skip writing MiniSEED for days whose median trace is shorter than "
-                        "this many minutes (heavily fragmented days; not submitted). Such "
-                        "days are listed in <mseed-dir>/../outlier/fragmented_days.csv.")
+    p.add_argument("--min-piece-seconds", type=float, default=None,
+                   help="Do not write MiniSEED traces shorter than this (fragments); longer "
+                        "traces on the same day are written. 60 caps a channel at 1440 "
+                        "files/day. Drops are logged to <mseed-dir>/../outlier/dropped_pieces.csv.")
     p.add_argument("--variability", action="store_true",
                    help="Also write the temporal_anomaly_investigator CSV row per day "
                         "(+ 4-panel figure on gap days) from the same pulled data — "
@@ -499,7 +495,7 @@ def main():
                                      skip_existing=not args.no_skip, stream=stream,
                                      source=args.source, variability=variability,
                                      segmenting=segmenting,
-                                     min_piece_minutes=args.min_piece_minutes)
+                                     min_piece_s=args.min_piece_seconds)
                 except GoldCopyMissingVariable as e:
                     print(f"  [{station}] skip stream {stream} — {e}")
                     break
