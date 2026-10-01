@@ -44,6 +44,15 @@ from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_da
                              NoDataError, GoldCopyMissingVariable)
 from plot_from_netcdf import find_nc_file, read_nc_day
 from gap_algorithms import detect_gaps
+# --variability: reuse the investigator's per-day timing QC on the data this
+# backfill already pulled, so each day is fetched once for both products.
+from temporal_anomaly_investigator import (
+    OUT_ROOT as TA_OUT_ROOT, compute_variability, make_per_day_figure,
+    write_stats, _row_from_stats, _no_data_row,
+    _append_row as _append_variability_row,
+    _metrics_csv_path as _variability_csv_path,
+    _load_existing_keys as _variability_keys,
+)
 
 PARAM_PATH       = os.path.join(REPO_ROOT, "param")
 DEFAULT_NC_DIR   = os.path.join(REPO_ROOT, "output", "temporal_anomaly", "netcdf")
@@ -187,9 +196,23 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
 
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
-                source="local"):
+                source="local", variability=None):
+    """variability: None, or {"csv": path, "done": set of (station, date)} —
+    also write the temporal_anomaly_investigator CSV row (+ figure when the
+    day has gaps) from the same pulled data. A day already in that CSV is
+    complete (row is written after the MiniSEED) and is skipped."""
     date_str = str(date)[:10]
     gap_algo_requested = gap_algo
+
+    def _variability_no_data(dep, sp_nom):
+        if variability is not None:
+            _append_variability_row(variability["csv"],
+                                    _no_data_row(station, date_str, dep, sp_nom))
+            variability["done"].add((station, date_str))
+
+    if variability is not None and (station, date_str) in variability["done"]:
+        print(f"  [{station}] {date_str}  skip — already in variability CSV")
+        return False
 
     if source == "local":
         nc_path = find_nc_file(nc_dir, station, date_str, stream=stream)
@@ -207,6 +230,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         dep_info = get_deployment_for_date(station, date, PARAM_PATH, stream=stream)
     except ValueError as e:
         print(f"  [{station}] {date_str}  skip — {e}")
+        _variability_no_data(0, 0)
         return False
     deployment = dep_info["deployment"]
     sp_nominal = dep_info["sp_nominal"]
@@ -259,6 +283,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 variables=[datatypes[c] for c in channels])
         except NoDataError as e:
             print(f"  [{station}] {date_str}  skip — {e}")
+            _variability_no_data(deployment, sp_nominal)
             return False
         except GoldCopyMissingVariable:
             raise                    # whole stream unusable — stop, don't skip day by day
@@ -269,6 +294,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
     if len(utc_trim) < 2:
         print(f"  [{station}] {date_str}  skip — only {len(utc_trim)} samples")
+        _variability_no_data(deployment, sp_nominal)
         fh.close()
         return False
 
@@ -285,6 +311,21 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         print(f"  [{station}] {date_str}  algo={actual_algo}  "
               f"n={len(utc_trim)}  segs={gap_result.n_segments}  "
               f"gaps={gap_result.n_gaps}  → {n_written} mseed files")
+
+        if variability is not None:
+            vs = compute_variability(t_sec, sp_nominal, utc_trim=utc_trim)
+            fig_generated = False
+            if vs["n_gaps"] > 0:          # investigator --only-gaps behaviour
+                tag = f"{station}_{stream}_{date_str}" if stream else f"{station}_{date_str}"
+                fig_dir = os.path.join(TA_OUT_ROOT, "figures", "per_day", tag)
+                make_per_day_figure(t_sec, vs, station, date_str, fig_dir)
+                write_stats(vs, station, date_str, fig_dir)
+                fig_generated = True
+            _append_variability_row(variability["csv"], _row_from_stats(
+                vs, station, date_str, deployment, fig_generated))
+            variability["done"].add((station, date_str))
+            print(f"      variability: Δt_true={vs['dt_true']:.6f}s  gaps={vs['n_gaps']}  "
+                  f"σ={vs['sigma_ms']:.3f}ms" + ("  (figure)" if fig_generated else ""))
 
         if append_stats:
             diag = gap_result.diagnostics
@@ -350,6 +391,11 @@ def main():
                         "straight from OOI's pre-built gold copy over OPeNDAP — no M2M "
                         "queue, nothing stored. Gold copy lacks VEL3D-C temperature "
                         "(vel3d_cd_system_data), so use local for that stream.")
+    p.add_argument("--variability", action="store_true",
+                   help="Also write the temporal_anomaly_investigator CSV row per day "
+                        "(+ 4-panel figure on gap days) from the same pulled data — "
+                        "one pull per day for both MiniSEED and timing QC. Days already "
+                        "in that CSV are skipped, so re-runs resume.")
     p.add_argument("--nc-dir",     default=DEFAULT_NC_DIR)
     p.add_argument("--mseed-dir",  default=DEFAULT_MSEED,
                    help=f"MiniSEED output root (default: {DEFAULT_MSEED})")
@@ -393,13 +439,17 @@ def main():
             sfx = f"_{stream}" if (stream and multi) else ""
             metrics_csv = os.path.join(args.metrics_dir,
                                        f"{station}{sfx}_vel3d_pipeline_stats.csv")
+            variability = None
+            if args.variability:
+                vcsv = _variability_csv_path(station, stream)
+                variability = {"csv": vcsv, "done": _variability_keys(vcsv)}
             for date in dates:
                 try:
                     ok = process_day(station, date, run, args.gap_algo,
                                      args.nc_dir, args.mseed_dir,
                                      metrics_csv, args.append_stats,
                                      skip_existing=not args.no_skip, stream=stream,
-                                     source=args.source)
+                                     source=args.source, variability=variability)
                 except GoldCopyMissingVariable as e:
                     print(f"  [{station}] skip stream {stream} — {e}")
                     break

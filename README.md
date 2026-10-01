@@ -101,10 +101,8 @@ velocity; the gold-copy VEL3D-C `system_data` files have no temperature, so the
 C-series `LKO` channel still comes from M2M (`--save-nc` + default `--source local`).
 
 ```
-python bin/temporal_anomaly_investigator.py --mode collect --source goldcopy \
-    --station CE02SHBP-LJ01D-07-VEL3DC108 --stream vel3d_cd_velocity_data \
-    --start 2014-09-10 --end 2026-06-16 --only-gaps --workers 4
-python bin/backfill_mseed_from_nc.py --source goldcopy \
+# one pull per day → MiniSEED + investigator CSV row (+ figure on gap days); re-runs resume
+python bin/backfill_mseed_from_nc.py --source goldcopy --variability \
     --station CE02SHBP-LJ01D-07-VEL3DC108 --stream vel3d_cd_velocity_data \
     --start 2014-09-10 --end 2026-06-16
 ```
