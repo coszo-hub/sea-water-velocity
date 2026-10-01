@@ -204,7 +204,8 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
 
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
-                source="local", variability=None, segmenting="timing"):
+                source="local", variability=None, segmenting="timing",
+                min_piece_minutes=None):
     """variability: None, or {"csv": path, "done": set of (station, date)} —
     also write the temporal_anomaly_investigator CSV row (+ figure when the
     day has gaps) from the same pulled data. A day already in that CSV is
@@ -311,6 +312,32 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         gap_result = detect_gaps(gap_algo, t_sec, sp_nominal=sp_nominal,
                                  req_duration=86400.0)
 
+        # Fragmented-day rule: if the day's typical (median) trace is shorter
+        # than --min-piece-minutes, write no MiniSEED (it would be thousands of
+        # tiny files and is not submitted); log the day instead. The
+        # variability CSV row is still written below.
+        if min_piece_minutes:
+            splits, _ = mseed_segments(segmenting, t_sec, gap_result)
+            piece_n = np.diff([0] + list(splits) + [len(t_sec)])
+            median_piece_s = float(np.median(piece_n)) * gap_result.sp
+            if median_piece_s < 60.0 * min_piece_minutes:
+                frag_log = os.path.join(os.path.dirname(os.path.abspath(mseed_dir)),
+                                        "outlier", "fragmented_days.csv")
+                os.makedirs(os.path.dirname(frag_log), exist_ok=True)
+                new = not os.path.exists(frag_log)
+                with open(frag_log, "a") as f:
+                    if new:
+                        f.write("station,stream,date,n_points,traces_per_channel,median_piece_s\n")
+                    f.write(f"{station},{stream},{date_str},{len(t_sec)},{len(piece_n)},{median_piece_s:.1f}\n")
+                print(f"  [{station}] {date_str}  skip MiniSEED — fragmented: {len(piece_n)} traces/ch, "
+                      f"median piece {median_piece_s:.0f}s < {min_piece_minutes:g} min (logged)")
+                if variability is not None:
+                    vs = compute_variability(t_sec, sp_nominal, utc_trim=utc_trim)
+                    _append_variability_row(variability["csv"], _row_from_stats(
+                        vs, station, date_str, deployment, False))
+                    variability["done"].add((station, date_str))
+                return False
+
         n_written = _write_mseed_segments(
             fh, utc_trim, t_raw, start_idx, end_idx, station,
             channels, datatypes, sta_param, run, gap_result, mseed_dir,
@@ -406,6 +433,10 @@ def main():
                         "timestamps leave the regular grid by > ½ sample, so every sample stays "
                         "within ½ sample of OOI's recorded time. gaps: original behaviour "
                         "(gap splits only). Default comes from run_vel3d.txt mseed_segmenting.")
+    p.add_argument("--min-piece-minutes", type=float, default=None,
+                   help="Skip writing MiniSEED for days whose median trace is shorter than "
+                        "this many minutes (heavily fragmented days; not submitted). Such "
+                        "days are listed in <mseed-dir>/../outlier/fragmented_days.csv.")
     p.add_argument("--variability", action="store_true",
                    help="Also write the temporal_anomaly_investigator CSV row per day "
                         "(+ 4-panel figure on gap days) from the same pulled data — "
@@ -467,7 +498,8 @@ def main():
                                      metrics_csv, args.append_stats,
                                      skip_existing=not args.no_skip, stream=stream,
                                      source=args.source, variability=variability,
-                                     segmenting=segmenting)
+                                     segmenting=segmenting,
+                                     min_piece_minutes=args.min_piece_minutes)
                 except GoldCopyMissingVariable as e:
                     print(f"  [{station}] skip stream {stream} — {e}")
                     break

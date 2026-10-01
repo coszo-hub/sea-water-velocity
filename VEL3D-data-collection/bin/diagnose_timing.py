@@ -519,6 +519,39 @@ _gc_catalog_cache = {}   # (station, stream) -> [(start, end, urlPath), ...]
 _gc_time_cache    = {}   # urlPath -> np.int64 Unix µs (small LRU: a day spans ≤2 files)
 
 
+# Some gold-copy files fail over OPeNDAP (THREDDS HTTP 500 / EOFException)
+# while the same file downloads fine from the fileServer endpoint. Those are
+# fetched once in full into this cache and read locally. Override location
+# with VEL3D_GOLDCOPY_CACHE; safe to delete when a run is finished.
+GOLDCOPY_CACHE = os.environ.get(
+    "VEL3D_GOLDCOPY_CACHE", os.path.join(REPO_ROOT, "output", "goldcopy_cache"))
+
+
+def _gc_open(url_path):
+    """Open a gold-copy file: OPeNDAP first, full-file download fallback."""
+    try:
+        return Dataset(f"{GOLDCOPY_THREDDS}/dodsC/{url_path}")
+    except OSError as e:
+        local = os.path.join(GOLDCOPY_CACHE, url_path.rsplit("/", 1)[-1])
+        if not os.path.exists(local):
+            print(f"  gold copy: OPeNDAP failed ({e}); downloading whole file → {local}")
+            os.makedirs(GOLDCOPY_CACHE, exist_ok=True)
+            tmp = local + ".part"
+            try:
+                with requests.get(f"{GOLDCOPY_THREDDS}/fileServer/{url_path}",
+                                  stream=True, timeout=300) as r:
+                    r.raise_for_status()
+                    with open(tmp, "wb") as f:
+                        for chunk in r.iter_content(chunk_size=1 << 22):
+                            f.write(chunk)
+                os.replace(tmp, local)       # only complete files get the real name
+            except BaseException:
+                if os.path.exists(tmp):
+                    os.remove(tmp)
+                raise
+        return Dataset(local)
+
+
 class GoldCopyMissingVariable(RuntimeError):
     """The gold-copy files for this stream lack a variable we need."""
 
@@ -593,7 +626,7 @@ def read_goldcopy_day(station, stream, date, run, variables=()):
     for f_start, f_end, url_path in goldcopy_files(station, stream):
         if f_start > end_dt or f_end < start_dt:
             continue
-        ds = Dataset(f"{GOLDCOPY_THREDDS}/dodsC/{url_path}")
+        ds = _gc_open(url_path)
         try:
             missing = [v for v in variables if v not in ds.variables]
             if missing:
