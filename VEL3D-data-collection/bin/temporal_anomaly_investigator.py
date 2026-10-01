@@ -53,6 +53,7 @@ from diagnose_timing import (
     load_credentials,
     get_deployment_for_date,
     fetch_nc_timestamps,
+    NoDataError,
 )
 
 # ── CSV schema ───────────────────────────────────────────────────────────────
@@ -480,9 +481,15 @@ def _process_day(station, date, run, fig_dir_base, csv_path, always_figure,
         _, t_sec, utc_trim, _ = fetch_nc_timestamps(
             station, date, date + 86400.0, deployment, run,
             save_nc_dir=save_nc_dir, stream=stream)
-    except Exception as e:
+    except NoDataError as e:
+        # OOI confirmed the gap: record it so collect mode never re-requests.
         print(f"    no data — {e}")
         _append_row(csv_path, _no_data_row(station, date_str, deployment, sp_nominal))
+        return False
+    except Exception as e:
+        # Transient/unknown (timeout, HTTP error, disk full, …): write no row,
+        # so the next collect run retries this day instead of skipping it.
+        print(f"    FAILED (will retry on next run) — {type(e).__name__}: {e}")
         return False
 
     if len(t_sec) < 2:

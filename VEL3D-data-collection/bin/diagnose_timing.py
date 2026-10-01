@@ -315,6 +315,12 @@ def get_deployment_for_date(station, date, param_path, stream=None):
 
 
 # ── Fetch OOI timestamps ─────────────────────────────────────────────────────
+class NoDataError(RuntimeError):
+    """OOI confirmed there is no data for the window (a real gap, not a
+    transient failure). Callers may record it as final; any other exception
+    from fetch_nc_timestamps means "unknown — worth retrying"."""
+
+
 def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
                         save_nc_dir=None, stream=None):
     """
@@ -377,7 +383,7 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     _check_server_up(resp)
 
     if "No data for request" in str(resp.json()):
-        raise RuntimeError("OOI returned 'No data for request'.")
+        raise NoDataError("OOI returned 'No data for request'.")
     if "allURLs" not in resp.json():
         raise RuntimeError(f"Unexpected response: {resp.json()}")
 
@@ -436,12 +442,18 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
         http_nc_url = "/".join([response_url, netCDF])
         local_nc = os.path.join(save_nc_dir, os.path.basename(netCDF))
         print(f"  Downloading NetCDF → {local_nc}")
-        with requests.get(http_nc_url, auth=(username, token), stream=True) as r:
-            r.raise_for_status()
-            with open(local_nc, "wb") as f:
-                for chunk in r.iter_content(chunk_size=1 << 20):
-                    if chunk:
-                        f.write(chunk)
+        try:
+            with requests.get(http_nc_url, auth=(username, token), stream=True) as r:
+                r.raise_for_status()
+                with open(local_nc, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=1 << 20):
+                        if chunk:
+                            f.write(chunk)
+        except BaseException:
+            # Don't leave a truncated .nc (e.g. disk full) for the backfill to find.
+            if os.path.exists(local_nc):
+                os.remove(local_nc)
+            raise
         print(f"  Saved {os.path.getsize(local_nc)} bytes")
 
     fh = Dataset(opendap_url)
@@ -454,6 +466,8 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
 
     t_raw    = np.array(t[start_idx:end_idx], dtype=float)
     utc_trim = utc_list[start_idx:end_idx]
+    if len(t_raw) == 0:
+        raise NoDataError("NetCDF has no samples inside the requested window.")
     print(f"  Trimmed to window: {len(t_raw)} samples  "
           f"({utc_trim[0]} → {utc_trim[-1]})")
 
