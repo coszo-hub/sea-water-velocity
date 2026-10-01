@@ -43,7 +43,7 @@ from read_param import read_param
 from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_day,
                              NoDataError, GoldCopyMissingVariable)
 from plot_from_netcdf import find_nc_file, read_nc_day
-from gap_algorithms import detect_gaps
+from gap_algorithms import detect_gaps, mseed_segments, SEGMENTING_MODES
 # --variability: reuse the investigator's per-day timing QC on the data this
 # backfill already pulled, so each day is fetched once for both products.
 from temporal_anomaly_investigator import (
@@ -124,16 +124,26 @@ def _append_metrics_row(csv_path, row):
 
 def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
                           channels, datatypes, net_sta_param, run,
-                          gap_result, mseed_dir):
+                          gap_result, mseed_dir, segmenting="timing"):
     """One MiniSEED file per (channel × contiguous segment). Mirrors the cron
-    pipeline's write block."""
+    pipeline's write block. `segmenting` picks where traces break — see
+    gap_algorithms.mseed_segments ('gaps' = original behaviour)."""
     mseed_ext    = run.get("mseed_file_ext", [".mseed"])[0]
     data_quality = run.get("data_quality", ["D"])[0]
     rec_len      = int(run["rec_len"][0])
     sr           = gap_result.sr
 
     utc_str  = np.array([str(x) for x in utc_trim], dtype=object)
-    segments = np.split(utc_str, gap_result.segment_splits)
+    t_sec    = np.asarray(t_raw, dtype=float) - float(t_raw[0])
+    splits, starts = mseed_segments(segmenting, t_sec, gap_result)
+    segments = np.split(utc_str, splits)
+    if segmenting == "gaps":                     # original: first/last timestamp
+        seg_times = [(ti[0], ti[-1]) for ti in segments]
+    else:                                        # grid-anchored start; end on the same grid
+        seg_times = []
+        for ti, st0 in zip(segments, starts):
+            t_start = utc_trim[0] + st0
+            seg_times.append((str(t_start), str(t_start + (len(ti) - 1) / sr)))
     ref_under = station.replace("-", "_")
 
     written = 0
@@ -153,12 +163,10 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
         conversion    = float(channel_param["conversion"][0])
 
         cursor = 0
-        for ti in segments:
+        for ti, (seg_start, seg_end) in zip(segments, seg_times):
             n_seg = len(ti)
             if n_seg == 0:
                 continue
-            seg_start = ti[0]
-            seg_end   = ti[-1]
             seg_data  = data_day[cursor:cursor + n_seg] / conversion
             cursor   += n_seg
 
@@ -196,7 +204,7 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
 
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
-                source="local", variability=None):
+                source="local", variability=None, segmenting="timing"):
     """variability: None, or {"csv": path, "done": set of (station, date)} —
     also write the temporal_anomaly_investigator CSV row (+ figure when the
     day has gaps) from the same pulled data. A day already in that CSV is
@@ -305,11 +313,13 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
 
         n_written = _write_mseed_segments(
             fh, utc_trim, t_raw, start_idx, end_idx, station,
-            channels, datatypes, sta_param, run, gap_result, mseed_dir)
+            channels, datatypes, sta_param, run, gap_result, mseed_dir,
+            segmenting=segmenting)
 
         actual_algo = gap_result.diagnostics.get("algorithm", gap_algo)
         print(f"  [{station}] {date_str}  algo={actual_algo}  "
               f"n={len(utc_trim)}  segs={gap_result.n_segments}  "
+              f"traces/ch={n_written // max(1, len(channels))} ({segmenting})  "
               f"gaps={gap_result.n_gaps}  → {n_written} mseed files")
 
         if variability is not None:
@@ -391,6 +401,11 @@ def main():
                         "straight from OOI's pre-built gold copy over OPeNDAP — no M2M "
                         "queue, nothing stored. Gold copy lacks VEL3D-C temperature "
                         "(vel3d_cd_system_data), so use local for that stream.")
+    p.add_argument("--segmenting", choices=SEGMENTING_MODES, default=None,
+                   help="Where MiniSEED traces break. timing (default): at gaps AND wherever "
+                        "timestamps leave the regular grid by > ½ sample, so every sample stays "
+                        "within ½ sample of OOI's recorded time. gaps: original behaviour "
+                        "(gap splits only). Default comes from run_vel3d.txt mseed_segmenting.")
     p.add_argument("--variability", action="store_true",
                    help="Also write the temporal_anomaly_investigator CSV row per day "
                         "(+ 4-panel figure on gap days) from the same pulled data — "
@@ -419,6 +434,8 @@ def main():
 
     stations = args.station if args.station else STATIONS
     run = read_param(os.path.join(PARAM_PATH, "run_vel3d.txt"))
+    segmenting = args.segmenting or run.get("mseed_segmenting", ["timing"])[0]
+    print(f"MiniSEED segmenting: {segmenting}")
 
     n_done = n_skipped = 0
     for station in stations:
@@ -449,7 +466,8 @@ def main():
                                      args.nc_dir, args.mseed_dir,
                                      metrics_csv, args.append_stats,
                                      skip_existing=not args.no_skip, stream=stream,
-                                     source=args.source, variability=variability)
+                                     source=args.source, variability=variability,
+                                     segmenting=segmenting)
                 except GoldCopyMissingVariable as e:
                     print(f"  [{station}] skip stream {stream} — {e}")
                     break

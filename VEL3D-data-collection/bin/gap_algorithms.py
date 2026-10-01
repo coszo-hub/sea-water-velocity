@@ -219,6 +219,79 @@ def detect_gaps_anomaly(
 
 
 # ════════════════════════════════════════════════════════════════════════════
+# MiniSEED segmentation — where to start a new trace
+# ════════════════════════════════════════════════════════════════════════════
+# A MiniSEED trace stores ONE start time + a rate; sample k sits at
+# start + k·sp. "gaps" (the original behaviour, kept selectable) starts a new
+# trace only at detected gaps, anchored on the segment's first timestamp. A
+# burst of late-delivered samples (stamped on arrival) or a clock step inside a
+# segment then shifts every later sample — measured up to ~2 s at 1 Hz on real
+# RCA days. "timing" also starts a new trace wherever the recorded timestamps
+# leave the regular grid by more than `tol`·sp, so every written sample stays
+# within ½ sample of the time OOI recorded. Exception: a lone glitched
+# timestamp whose neighbours stay on the grid is kept in its grid slot (the
+# neighbours fix its position better than its own bad stamp).
+SEGMENTING_MODES = ("timing", "gaps")
+
+
+def timing_segments(t_sec, sp, base_splits, tol=0.5, level_window=25, glitch_run=3):
+    """Refine gap-based segments so each trace follows its timestamps.
+
+    Returns (splits, starts): `splits` is a superset of `base_splits` for
+    np.split on the timestamp array; `starts[i]` is the start time of segment
+    i in the t_sec frame — the segment's robust grid level (median of
+    t_k − k·sp over its leading samples), not just its first timestamp.
+    """
+    t_sec = np.asarray(t_sec, dtype=float)
+    bounds = [0] + list(base_splits) + [len(t_sec)]
+    thr = tol * sp
+    splits, starts = [], []
+    for a, b in zip(bounds[:-1], bounds[1:]):
+        r = t_sec[a:b] - np.arange(b - a) * sp          # constant (± jitter) on a clean run
+        s = 0
+        while s < b - a:
+            # Level of the run starting at s: median over the leading samples
+            # that agree with r[s] (within thr). A short shifted run (e.g. 8
+            # samples stamped one period early) gets its own level instead of
+            # being judged against whatever follows it.
+            w = r[s:s + level_window]
+            off = np.flatnonzero(np.abs(w - w[0]) > thr)
+            lead = w[:off[0]] if len(off) else w
+            level = float(np.median(lead))
+            if len(lead) == 1 and len(w) > 1 and abs(w[1] - level) > thr:
+                # isolated leading sample (e.g. one burst sample after an
+                # outage): own one-sample trace at its timestamp
+                e = s + 1
+                seg_start = float(r[s])
+            else:
+                bad = np.flatnonzero(np.abs(r[s + 1:] - level) > thr) + s + 1
+                e = b - a
+                for k in bad:
+                    nxt = np.abs(r[k + 1:k + 1 + glitch_run] - level) > thr
+                    if len(nxt) == glitch_run and not nxt.any():
+                        continue                         # lone glitch: keep on grid
+                    e = int(k)
+                    break
+                seg_start = level
+            if a + s > 0:
+                splits.append(a + s)
+            starts.append(seg_start + s * sp)            # back to t_sec frame
+            s = e
+    return splits, starts
+
+
+def mseed_segments(mode, t_sec, gap_result, tol=0.5):
+    """(splits, starts) for the MiniSEED writer. mode='gaps' reproduces the
+    original behaviour exactly (gap splits, start = first timestamp)."""
+    if mode == "gaps":
+        splits = list(gap_result.segment_splits)
+        return splits, [float(t_sec[i]) for i in [0] + splits]
+    if mode == "timing":
+        return timing_segments(t_sec, gap_result.sp, gap_result.segment_splits, tol=tol)
+    raise ValueError(f"Unknown mseed segmenting {mode!r}; expected one of {SEGMENTING_MODES}")
+
+
+# ════════════════════════════════════════════════════════════════════════════
 # Selector
 # ════════════════════════════════════════════════════════════════════════════
 ALGORITHMS = {

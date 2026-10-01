@@ -25,3 +25,4 @@ deployment = 12
 auto_diag = 0                                                                           # DEPRECATED — auto-diagnostic figure no longer generated on cron; will be removed in Phase 4.
 deploy_warn_days = 30                                                                   # Number of days away from end of deployment
 gap_algo = anomaly                                                                      # Gap detection algorithm: legacy (median Δt + adaptive threshold) | anomaly (OLS Δt_true + true_missing). Flipped to anomaly 2026-04-29.
+mseed_segmenting = timing                                                               # MiniSEED trace breaks: timing (gaps + wherever timestamps leave the grid by > 1/2 sample; 2026-10-01) | gaps (original: gap splits only)

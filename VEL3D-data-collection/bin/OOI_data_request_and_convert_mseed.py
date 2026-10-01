@@ -16,7 +16,7 @@ from numpy.ma import MaskedArray
 from convert_utc import *
 from read_param import *
 from mail import *
-from gap_algorithms import detect_gaps
+from gap_algorithms import detect_gaps, mseed_segments
 
 # Send test email
 # sendmail('TEST EMAIL SEND FROM COSZO')
@@ -759,6 +759,20 @@ try:
                 # Result: data_split[i] = timestamps for segment i (as object array of strings)
                 # Number of segments = len(split_idx) + 1
 
+                # Trace breaks + start times (gap_algorithms.mseed_segments). 'gaps' =
+                # original: split at gaps, start/end = first/last timestamp. 'timing':
+                # also split where timestamps leave the regular grid by > 1/2 sample,
+                # start on the segment's robust grid level.
+                segmenting = run.get("mseed_segmenting", ["timing"])[0]
+                split_idx, seg_starts = mseed_segments(segmenting, t_sec, gap_result)
+                data_split = np.split(new_utc_arr, split_idx)
+                if segmenting == "gaps":
+                    seg_times = [(ti[0], ti[-1]) for ti in data_split]
+                else:
+                    seg_times = [(str(t0 + st0), str(t0 + st0 + (len(ti) - 1) / sr))
+                                 for ti, st0 in zip(data_split, seg_starts)]
+                print(f"[segmenting={segmenting}] {len(data_split)} trace(s) per channel")
+
             net_sta_param = read_param(os.path.join(param_path, reference_name_underscore + ".txt")) # Network/station param file
             
             # Get deployment number for selecting correct channel list from net_sta_param file.
@@ -852,8 +866,7 @@ try:
                 for s in range(len(data_split)):
 
                     ti = data_split[s]
-                    end_time_splt = ti[-1]
-                    start_time_splt = ti[0]
+                    start_time_splt, end_time_splt = seg_times[s]
 
                     data_i_point = data_point[l : l+ len(ti)] # Grab the data from the netCDF file within the data_split window
                     data = data_i_point

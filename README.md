@@ -163,6 +163,14 @@ splitting; the offline `temporal_anomaly_investigator.py` applies a stricter
 integer-step + wall-clock criterion for data-quality characterisation (it separates
 real gaps from timestamp jitter and records both `n_gaps_raw` and corrected `n_gaps`).
 
+**MiniSEED trace breaks** (`mseed_segmenting` in `param/run_vel3d.txt`, or `--segmenting` on the
+backfill): `timing` (default since 2026-10-01) starts a new trace at gaps *and* wherever the recorded
+timestamps leave the regular grid by more than ½ sample (late-delivered bursts after outages, clock
+steps, 1 s stretches stamped one sample off), so every written sample stays within ½ sample of OOI's
+recorded time; a lone glitched stamp whose neighbours are on the grid keeps its grid slot. `gaps` is
+the original behaviour (breaks at gaps only, start = first timestamp) and reproduces earlier output
+byte-for-byte; on a 68-day sample it left runs of samples ≥ ½ sample off on 27 days (up to ~2 s at 1 Hz).
+
 See `VEL3D-data-collection/README.md` for the full pipeline reference, credential
 setup, the offline diagnostic tools, and the `*_variability.csv` schema.
 
