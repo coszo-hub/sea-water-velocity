@@ -31,7 +31,7 @@ output/fix_chan_name_loc_code/*
 output/temporal_anomaly/netcdf/
 
 # full-file gold-copy downloads (OPeNDAP fallback) — scratch, safe to delete
-output/goldcopy_cache/
+output/goldcopy_cache
 
 # per-day timing figures live on the COSZO drive (symlink locally; ~670 MB, not tracked since 2026-10-02)
 output/temporal_anomaly/figures/per_day
