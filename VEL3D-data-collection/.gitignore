@@ -29,3 +29,6 @@ output/fix_chan_name_loc_code/*
 #output/temporal_anomaly/figures/per_day/*
 *.nc
 output/temporal_anomaly/netcdf/
+
+# full-file gold-copy downloads (OPeNDAP fallback) — scratch, safe to delete
+output/goldcopy_cache/
