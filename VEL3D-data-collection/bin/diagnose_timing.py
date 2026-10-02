@@ -425,6 +425,10 @@ def fetch_nc_timestamps(station, start_dt, end_dt, deployment, run,
     data_tag = status.json()
     complete = next((v for v in data_tag.values() if isinstance(v, str)), None)
     if complete != "complete":
+        # OOI's async job can finish with "All data removed by deployment mask"
+        # (window falls outside the deployment's valid span) — a confirmed gap.
+        if "deployment mask" in str(data_tag) or "No data" in str(data_tag):
+            raise NoDataError(f"OOI: {data_tag}")
         raise RuntimeError(f"Unexpected status: {data_tag}")
 
     # Locate NetCDF via NCML
