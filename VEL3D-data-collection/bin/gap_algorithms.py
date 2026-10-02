@@ -226,6 +226,45 @@ def detect_gaps_anomaly(
 # day has up to 2× the samples and the copies interleave. Left in, they shred
 # the timing analysis and the MiniSEED. Only applied when a day has clearly
 # more samples than its nominal rate allows, so normal days are untouched.
+def excess_samples(t_sec, sp_nominal, excess=1.02):
+    """True if the day holds clearly more samples than its nominal rate allows."""
+    t_sec = np.asarray(t_sec, dtype=float)
+    return bool(len(t_sec) > 1 and sp_nominal and
+                len(t_sec) > excess * ((t_sec[-1] - t_sec[0]) / sp_nominal + 1))
+
+
+def invalid_clock_mask(t_abs, internal_ts, sp_nominal, tol_s=1.0, min_good=0.4,
+                       phase_tol=0.2):
+    """Keep-mask dropping records whose instrument clock disagrees with time.
+
+    In the OOI VEL3D-C excess-sample periods the extra records (duplicate
+    copies, or foreign records interleaved from another time) carry a garbage
+    internal_timestamp (unset, ~1e9 s off) and sit OFF the regular sample grid,
+    while genuine records have internal_timestamp == time. A few genuine
+    records also have a garbage clock but sit ON the grid in an otherwise
+    empty slot — those are kept. Apply only on excess-sample days. Returns
+    (keep, n_dropped); no-op if fewer than `min_good` of the records agree
+    (then the instrument clock isn't a usable reference for this day).
+    """
+    t_abs = np.asarray(t_abs, dtype=float)
+    d = np.abs(t_abs - np.asarray(internal_ts, dtype=float))
+    good = np.isfinite(d) & (d <= tol_s)
+    if good.sum() < min_good * len(d) or good.all():
+        return np.ones(len(d), dtype=bool), 0
+    sp = float(sp_nominal)
+    g = t_abs[good]
+    phase0 = np.angle(np.mean(np.exp(2j * np.pi * (g % sp) / sp)))   # grid phase
+    keep = good.copy()
+    bad = np.flatnonzero(~good)
+    tb = t_abs[bad]
+    ph = np.angle(np.exp(1j * (2 * np.pi * (tb % sp) / sp - phase0))) / (2 * np.pi)
+    j = np.clip(np.searchsorted(g, tb), 1, len(g) - 1)
+    nearest = np.minimum(np.abs(tb - g[j - 1]), np.abs(g[j] - tb))
+    rescue = (np.abs(ph) <= phase_tol) & (nearest >= 0.5 * sp)   # on grid, empty slot
+    keep[bad[rescue]] = True
+    return keep, int((~keep).sum())
+
+
 def duplicate_mask(t_sec, cols, sp_nominal, window_s=30.0, excess=1.02, prefer=None):
     """Boolean keep-mask dropping duplicated records.
 

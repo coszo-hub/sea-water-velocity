@@ -43,7 +43,8 @@ from read_param import read_param
 from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_day, GoldCopyDay,
                              NoDataError, GoldCopyMissingVariable)
 from plot_from_netcdf import find_nc_file, read_nc_day
-from gap_algorithms import detect_gaps, mseed_segments, SEGMENTING_MODES, duplicate_mask
+from gap_algorithms import (detect_gaps, mseed_segments, SEGMENTING_MODES, duplicate_mask,
+                            excess_samples, invalid_clock_mask)
 # --variability: reuse the investigator's per-day timing QC on the data this
 # backfill already pulled, so each day is fetched once for both products.
 from temporal_anomaly_investigator import (
@@ -340,33 +341,45 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
     else:
         fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
 
-    # OOI double ingestion: drop duplicated records (identical values within
-    # 30 s, offset copy) before any timing analysis. No-op on normal days.
+    # OOI excess-sample periods (VEL3D-C): drop (1) records whose instrument
+    # clock (internal_timestamp) disagrees with time — duplicate copies and
+    # foreign records interleaved from another time both carry a garbage one —
+    # then (2) any remaining exact duplicates of the same record. Only on days
+    # with clearly more samples than the nominal rate allows; normal days are
+    # untouched. Done before any timing analysis.
     if len(utc_trim) >= 2 and sp_nominal:
-        def _col(v):
-            a = fh.variables[v][:][start_idx:end_idx]
-            if isinstance(a, MaskedArray):
-                return a.filled(b"") if a.dtype.kind == "S" else a.astype(float).filled(np.nan)
-            return np.asarray(a)
-        dvars = [datatypes[c] for c in channels if datatypes[c] in fh.variables]
-        keys = [k for k in DEDUP_KEYS.get(stream, []) if k in fh.variables] or dvars
         t_rel = np.asarray(t_raw, dtype=float) - float(t_raw[0])
-        prefer = None
-        if "internal_timestamp" in fh.variables:   # original copy: internal clock ≈ time
-            prefer = np.abs(np.asarray(t_raw, dtype=float)
-                            - np.asarray(_col("internal_timestamp"), dtype=float))
-            prefer = np.where(np.isfinite(prefer), prefer, np.inf)
-        keep, n_dup = duplicate_mask(t_rel, [_key_column(_col(k)) for k in keys], sp_nominal,
-                                     prefer=prefer)
-        if n_dup:
-            print(f"  [{station}] {date_str}  removed {n_dup} duplicated records "
-                  f"({100.0 * n_dup / len(keep):.1f}% — OOI double ingestion)")
-            cols = {v: _col(v) for v in dvars}
-            fh.close()
-            fh = GoldCopyDay({v: c[keep] for v, c in cols.items()})
-            t_raw = np.asarray(t_raw, dtype=float)[keep]
-            utc_trim = [u for u, k in zip(utc_trim, keep) if k]
-            start_idx, end_idx = 0, len(t_raw)
+        if excess_samples(t_rel, sp_nominal):
+            def _col(v):
+                a = fh.variables[v][:][start_idx:end_idx]
+                if isinstance(a, MaskedArray):
+                    return a.filled(b"") if a.dtype.kind == "S" else a.astype(float).filled(np.nan)
+                return np.asarray(a)
+            dvars = [datatypes[c] for c in channels if datatypes[c] in fh.variables]
+            keys = [k for k in DEDUP_KEYS.get(stream, []) if k in fh.variables] or dvars
+            keep = np.ones(len(t_rel), dtype=bool)
+            prefer, n_clock = None, 0
+            if "internal_timestamp" in fh.variables:
+                its = np.asarray(_col("internal_timestamp"), dtype=float)
+                keep, n_clock = invalid_clock_mask(np.asarray(t_raw, dtype=float), its, sp_nominal)
+                prefer = np.abs(np.asarray(t_raw, dtype=float) - its)
+                prefer = np.where(np.isfinite(prefer), prefer, np.inf)
+            idx = np.flatnonzero(keep)
+            kcols = [_key_column(_col(k))[idx] for k in keys]
+            k2, n_dup = duplicate_mask(t_rel[idx], kcols, sp_nominal,
+                                       prefer=None if prefer is None else prefer[idx])
+            keep[idx[~k2]] = False
+            n_out = int((~keep).sum())
+            if n_out:
+                print(f"  [{station}] {date_str}  removed {n_out} extra records "
+                      f"({100.0 * n_out / len(keep):.1f}%: {n_clock} with invalid instrument clock, "
+                      f"{n_dup} exact duplicates — OOI excess-sample period)")
+                cols = {v: _col(v) for v in dvars}
+                fh.close()
+                fh = GoldCopyDay({v: c[keep] for v, c in cols.items()})
+                t_raw = np.asarray(t_raw, dtype=float)[keep]
+                utc_trim = [u for u, k in zip(utc_trim, keep) if k]
+                start_idx, end_idx = 0, len(t_raw)
     if len(utc_trim) < 2:
         print(f"  [{station}] {date_str}  skip — only {len(utc_trim)} samples")
         _variability_no_data(deployment, sp_nominal)
