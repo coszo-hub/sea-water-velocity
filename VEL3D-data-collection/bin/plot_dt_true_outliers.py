@@ -22,6 +22,7 @@ import datetime
 import glob
 import math
 import os
+import sys
 from collections import defaultdict
 
 import matplotlib
@@ -54,15 +55,14 @@ def discover_streams():
     """One panel per per-stream variability CSV.
 
     Returns a list of (label, path), one per
-    output/temporal_anomaly/metrics/<STATION>_<stream>_variability.csv.
-    The label is "<STATION>_<stream>". VEL3D-C stations yield two CSVs
-    (8 Hz velocity + 1 Hz system) and therefore two panels — never pooled.
+    output/temporal_anomaly/metrics/<STATION>_<stream>_variability.csv, with
+    a readable label ('HYSB1 - VEL3D', 'CZSHF - temperature', …). VEL3D-C
+    stations yield two CSVs (8 Hz velocity + 1 Hz system) and therefore two
+    panels — never pooled.
     """
-    out = []
-    for path in sorted(glob.glob(os.path.join(METRICS_DIR, "*_variability.csv"))):
-        label = os.path.basename(path)[: -len("_variability.csv")]
-        out.append((label, path))
-    return out
+    sys.path.insert(0, os.path.join(REPO_ROOT, "bin"))
+    from temporal_anomaly_investigator import discover_series, series_label
+    return [(series_label(st, sm), path) for st, sm, path in discover_series()]
 
 
 def load_rows(path):

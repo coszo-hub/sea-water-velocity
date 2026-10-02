@@ -29,6 +29,7 @@ Three modes:
 import os
 import sys
 import csv
+import glob
 import argparse
 import datetime
 
@@ -730,21 +731,67 @@ def _to_float(s):
         return np.nan
 
 
+def series_label(station, stream=None):
+    """Readable panel title: '<STA> - VEL3D', '<STA> - temperature', '<STA> - PREST'.
+    <STA> is the SEED station code from the station param file."""
+    try:
+        sta = read_param(os.path.join(PARAM_PATH, station.replace("-", "_") + ".txt"))["sta"][0]
+    except Exception:
+        sta = station
+    if stream and "system_data" in stream:
+        kind = "temperature"
+    elif "VEL3D" in station:
+        kind = "VEL3D"
+    elif "PREST" in station:
+        kind = "PREST"
+    else:
+        kind = stream or ""
+    return f"{sta} - {kind}" if kind else sta
+
+
+def discover_series():
+    """Every metrics CSV as (station_refdes, stream_or_None, csv_path), ordered
+    single-stream / velocity series first, then temperature; stations in
+    STATIONS order within each."""
+    out = []
+    for path in glob.glob(os.path.join(OUT_ROOT, "metrics", "*_variability.csv")):
+        with open(path, newline="") as f:
+            first = next(csv.DictReader(f), None)
+        if not first:
+            continue
+        station = first["station"]
+        name = os.path.basename(path)[: -len("_variability.csv")]
+        stream = name.split("_", 1)[1] if "_" in name else None
+        rank = 2 if stream and "system_data" in stream else 0
+        out.append(((rank, STATIONS.index(station) if station in STATIONS else 99),
+                    station, stream, path))
+    return [(st, sm, p) for _, st, sm, p in sorted(out)]
+
+
 def plot_mode(args):
-    """Summary plots across collected variability metrics."""
-    stations = args.station if args.station else STATIONS
+    """Summary plots across collected variability metrics.
+
+    Default: the given --station(s) for one --stream (e.g. one instrument
+    group). --all-series: every metrics CSV in one figure per type, saved
+    as fig*_all.png."""
     summary_dir = os.path.join(OUT_ROOT, "figures", "summary")
     os.makedirs(summary_dir, exist_ok=True)
+    if getattr(args, "all_series", False):
+        series = [(st, sm) for st, sm, _ in discover_series()]
+        suffix = "_all"
+    else:
+        series = [(st, args.stream) for st in (args.station if args.station else STATIONS)]
+        suffix = ""
 
-    # Load per-station data
+    # Load per-series data, keyed by readable title
     data = {}
-    for st in stations:
-        rows = _load_metrics(st, args.stream)
+    for st, stream in series:
+        rows = _load_metrics(st, stream)
         rows = [r for r in rows if r["has_data"] == "True"]
         if not rows:
             continue
         dates  = [datetime.datetime.fromisoformat(r["date"]) for r in rows]
-        data[st] = {
+        data[series_label(st, stream)] = {
             "rows":    rows,
             "dates":   dates,
             "dt_true": np.array([_to_float(r["dt_true"])          for r in rows]),
@@ -779,7 +826,7 @@ def plot_mode(args):
         ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
     fig.suptitle("Fitted true sample interval per day", fontsize=14, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.97])
-    fig.savefig(os.path.join(summary_dir, "fig1_dt_true.png"), bbox_inches="tight")
+    fig.savefig(os.path.join(summary_dir, f"fig1_dt_true{suffix}.png"), bbox_inches="tight")
     plt.close(fig)
 
     # Fig 2 — jitter σ and max per day
@@ -797,7 +844,7 @@ def plot_mode(args):
         ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
     fig.suptitle("Timestamp jitter per day", fontsize=14, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.97])
-    fig.savefig(os.path.join(summary_dir, "fig2_jitter.png"), bbox_inches="tight")
+    fig.savefig(os.path.join(summary_dir, f"fig2_jitter{suffix}.png"), bbox_inches="tight")
     plt.close(fig)
 
     # Fig 3 — gap count per day
@@ -811,7 +858,7 @@ def plot_mode(args):
         ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
     fig.suptitle("Gap count per day", fontsize=14, fontweight="bold")
     fig.tight_layout(rect=[0, 0, 1, 0.97])
-    fig.savefig(os.path.join(summary_dir, "fig3_gap_count.png"), bbox_inches="tight")
+    fig.savefig(os.path.join(summary_dir, f"fig3_gap_count{suffix}.png"), bbox_inches="tight")
     plt.close(fig)
 
     print(f"Summary figures saved to {summary_dir}")
@@ -846,6 +893,9 @@ def main():
                              "no request queue; needs --stream; --save-nc is ignored. "
                              "Gold copy has VEL3D-C velocity and all VEL3D-B; C temperature "
                              "(vel3d_cd_system_data) timestamps exist there too.")
+    parser.add_argument("--all-series", action="store_true",
+                        help="plot mode: one figure per type with every metrics CSV "
+                             "(all stations and streams) as panels → fig*_all.png")
     parser.add_argument("--workers", type=int, default=1,
                         help="collect mode: number of days requested from OOI "
                              "in parallel (default 1 = serial).")
