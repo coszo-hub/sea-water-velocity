@@ -808,26 +808,29 @@ def plot_mode(args):
 
     n = len(data)
 
-    # Fig 1 — Δt_true per day
-    fig, axes = plt.subplots(n, 1, figsize=(14, 3.5 * n), dpi=140, squeeze=False)
-    for ax, (st, d) in zip(axes[:, 0], data.items()):
-        ax.scatter(d["dates"], d["dt_true"], s=16, color=C_POINTS, label="Δt_true (OLS slope)")
-        ax.scatter(d["dates"], d["dt_FG"],   s=12, color=C_FIT,    marker="x",
-                   label="Δt_FG (median)")
-        # Nominal reference
-        for sp in np.unique(d["sp_nom"][~np.isnan(d["sp_nom"])]):
-            ax.axhline(sp, color=C_NOMINAL, linestyle=":", linewidth=1,
-                       label=f"sp_nominal = {sp:.6f}s")
-        ax.set_title(f"{st}", fontweight="bold")
-        ax.set_ylabel("interval (s)")
-        ax.legend(loc="best", fontsize=9, framealpha=0.9)
-        ax.grid(alpha=0.3)
-        ax.xaxis.set_major_locator(mdates.AutoDateLocator())
-        ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
-    fig.suptitle("Fitted true sample interval per day", fontsize=14, fontweight="bold")
-    fig.tight_layout(rect=[0, 0, 1, 0.97])
-    fig.savefig(os.path.join(summary_dir, f"fig1_dt_true{suffix}.png"), bbox_inches="tight")
-    plt.close(fig)
+    # Fig 1 — Δt_true per day. Off by default (--plain-dt-true to draw it):
+    # bin/plot_dt_true_outliers.py draws the same panels with outlier days
+    # marked (fig1_dt_true_outliers.png), which is the one kept.
+    if getattr(args, "plain_dt_true", False):
+        fig, axes = plt.subplots(n, 1, figsize=(14, 3.5 * n), dpi=140, squeeze=False)
+        for ax, (st, d) in zip(axes[:, 0], data.items()):
+            ax.scatter(d["dates"], d["dt_true"], s=16, color=C_POINTS, label="Δt_true (OLS slope)")
+            ax.scatter(d["dates"], d["dt_FG"],   s=12, color=C_FIT,    marker="x",
+                       label="Δt_FG (median)")
+            # Nominal reference
+            for sp in np.unique(d["sp_nom"][~np.isnan(d["sp_nom"])]):
+                ax.axhline(sp, color=C_NOMINAL, linestyle=":", linewidth=1,
+                           label=f"sp_nominal = {sp:.6f}s")
+            ax.set_title(f"{st}", fontweight="bold")
+            ax.set_ylabel("interval (s)")
+            ax.legend(loc="best", fontsize=9, framealpha=0.9)
+            ax.grid(alpha=0.3)
+            ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+            ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(ax.xaxis.get_major_locator()))
+        fig.suptitle("Fitted true sample interval per day", fontsize=14, fontweight="bold")
+        fig.tight_layout(rect=[0, 0, 1, 0.97])
+        fig.savefig(os.path.join(summary_dir, f"fig1_dt_true{suffix}.png"), bbox_inches="tight")
+        plt.close(fig)
 
     # Fig 2 — jitter σ and max per day
     fig, axes = plt.subplots(n, 1, figsize=(14, 3.5 * n), dpi=140, squeeze=False)
@@ -893,6 +896,9 @@ def main():
                              "no request queue; needs --stream; --save-nc is ignored. "
                              "Gold copy has VEL3D-C velocity and all VEL3D-B; C temperature "
                              "(vel3d_cd_system_data) timestamps exist there too.")
+    parser.add_argument("--plain-dt-true", action="store_true",
+                        help="plot mode: also draw fig1_dt_true (without outlier marks); "
+                             "normally plot_dt_true_outliers.py provides that figure")
     parser.add_argument("--all-series", action="store_true",
                         help="plot mode: one figure per type with every metrics CSV "
                              "(all stations and streams) as panels → fig*_all.png")

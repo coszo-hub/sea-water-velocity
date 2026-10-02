@@ -46,12 +46,12 @@ Per-station deployment count and span, with sample rate. Full per-deployment epo
 
 Daily timing QC for every series (panels: `<station> - VEL3D` velocity, `<station> - temperature`
 for the VEL3D-C temperature stream), from `output/temporal_anomaly/metrics/*_variability.csv`.
-Regenerate with `python bin/temporal_anomaly_investigator.py --mode plot --all-series` and commit
+Regenerate with `python bin/temporal_anomaly_investigator.py --mode plot --all-series` and `python bin/plot_dt_true_outliers.py`, and commit
 the PNGs — this page always shows the committed versions.
 
-**Fitted true sample interval per day** (OLS Δt_true vs median first guess vs nominal)
+**Fitted true sample interval per day** (OLS Δt_true vs median first guess vs nominal; red lines = outlier days from `bin/find_dt_true_outliers.py` logic)
 
-![Fitted sample interval](VEL3D-data-collection/output/temporal_anomaly/figures/summary/fig1_dt_true_all.png)
+![Fitted sample interval](VEL3D-data-collection/output/temporal_anomaly/figures/summary/fig1_dt_true_outliers.png)
 
 **Timestamp jitter per day** (σ and max |residual|, ms)
 
