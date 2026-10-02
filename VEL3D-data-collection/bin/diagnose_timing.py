@@ -646,7 +646,9 @@ def read_goldcopy_day(station, stream, date, run, variables=()):
             parts_t.append((t_all[i0:i1], us_all[i0:i1]))
             for v in variables:
                 a = ds.variables[v][i0:i1]           # OPeNDAP fetches only this slice
-                a = a.filled(np.nan) if isinstance(a, np.ma.MaskedArray) else np.asarray(a)
+                # masked → NaN; cast first: int arrays (raw counts) can't hold NaN
+                a = (a.astype(float).filled(np.nan) if isinstance(a, np.ma.MaskedArray)
+                     else np.asarray(a))
                 parts_v[v].append(np.asarray(a, dtype=float))
         finally:
             ds.close()

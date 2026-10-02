@@ -162,7 +162,7 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
         data_full = fh.variables[data_var][:]
         data_day  = data_full[start_idx:end_idx]
         if isinstance(data_day, MaskedArray):
-            data_day = data_day.filled(np.nan)
+            data_day = data_day.astype(float).filled(np.nan)
 
         chan_file     = os.path.join(PARAM_PATH, f"{ref_under}_{cha_key}.txt")
         channel_param = read_param(chan_file)
@@ -229,7 +229,7 @@ DEDUP_KEYS = {
 def _key_column(a):
     """Numeric column for duplicate matching; char/string arrays → integer ids."""
     if isinstance(a, MaskedArray):
-        a = a.filled(b"" if a.dtype.kind == "S" else np.nan)
+        a = a.filled(b"") if a.dtype.kind == "S" else a.astype(float).filled(np.nan)
     a = np.asarray(a)
     if a.dtype.kind == "S" and a.ndim == 2:             # netCDF char array (n, strlen)
         a = np.ascontiguousarray(a).view(f"S{a.shape[1]}").ravel()
@@ -345,7 +345,9 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
     if len(utc_trim) >= 2 and sp_nominal:
         def _col(v):
             a = fh.variables[v][:][start_idx:end_idx]
-            return a.filled(np.nan) if isinstance(a, MaskedArray) else np.asarray(a)
+            if isinstance(a, MaskedArray):
+                return a.filled(b"") if a.dtype.kind == "S" else a.astype(float).filled(np.nan)
+            return np.asarray(a)
         dvars = [datatypes[c] for c in channels if datatypes[c] in fh.variables]
         keys = [k for k in DEDUP_KEYS.get(stream, []) if k in fh.variables] or dvars
         t_rel = np.asarray(t_raw, dtype=float) - float(t_raw[0])
