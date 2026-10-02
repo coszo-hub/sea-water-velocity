@@ -42,6 +42,25 @@ Per-station deployment count and span, with sample rate. Full per-deployment epo
 | `OO.HYS14` | B | 6 | 2014-09-09 | ongoing | 1 Hz |
 | `OO.AXBA1` | B | 3 | 2014-08-08 | ongoing | 1 Hz |
 
+## Timing summary
+
+Daily timing QC for every series (panels: `<station> - VEL3D` velocity, `<station> - temperature`
+for the VEL3D-C temperature stream), from `output/temporal_anomaly/metrics/*_variability.csv`.
+Regenerate with `python bin/temporal_anomaly_investigator.py --mode plot --all-series` and commit
+the PNGs — this page always shows the committed versions.
+
+**Fitted true sample interval per day** (OLS Δt_true vs median first guess vs nominal)
+
+![Fitted sample interval](VEL3D-data-collection/output/temporal_anomaly/figures/summary/fig1_dt_true_all.png)
+
+**Timestamp jitter per day** (σ and max |residual|, ms)
+
+![Timestamp jitter](VEL3D-data-collection/output/temporal_anomaly/figures/summary/fig2_jitter_all.png)
+
+**Gap count per day**
+
+![Gap count](VEL3D-data-collection/output/temporal_anomaly/figures/summary/fig3_gap_count_all.png)
+
 ## Layout
 
 ```
