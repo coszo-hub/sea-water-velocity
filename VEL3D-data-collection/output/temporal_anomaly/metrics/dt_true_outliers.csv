@@ -1,0 +1,1 @@
+date,station,deployment,stream,source_csv,dt_FG,dt_true,group_median_dt_true,group_mad_dt_true,group_n_days,robust_z,frac_dev_from_dt_FG,jitter_maxabs_ms,frac_maxabs,jitter_unstable,flag_reasons
