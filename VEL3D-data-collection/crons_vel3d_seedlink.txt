@@ -1,0 +1,40 @@
+# ======================================================================
+# VEL3D near-real-time (SeedLink) cron block — coszo VM
+#
+# The VM user has ONE crontab. Install this block TOGETHER with the PREST
+# block (absolute-seafloor-pressure/PREST-data-collection/crons_prest_seedlink.txt):
+#   crontab -l > ~/crontab.backup.$(date +%Y%m%d)        # keep the old one
+#   cat <PREST>/crons_prest_seedlink.txt <VEL3D>/crons_vel3d_seedlink.txt | crontab -
+#   crontab -l                                            # verify
+# Times are UTC (cron runs in UTC on the VM).
+#
+# Each daily job: bin/run_daily_seedlink.sh <REFDES> <STREAM> <goldcopy|m2m>
+#   produces every day from its cursor (run/endtime_*.txt) up to yesterday into
+#   output/mseed/ (flat) with the backfill rules, appends the timing CSV row,
+#   and advances the cursor. ringserver's MSeedScan serves output/mseed/.
+# ======================================================================
+SHELL=/usr/bin/bash
+PATH=/home/coszo/miniconda3/bin:/usr/local/bin:/usr/bin:/bin
+# VM agent: set to the actual clone path of coszo-hub/sea-water-velocity
+VEL3D=/home/coszo/sea-water-velocity/VEL3D-data-collection
+
+### Daily SeedLink jobs (staggered, 18:01–18:15 UTC) ###
+# VEL3D-B (1 Hz velocity + temperature, gold copy)
+1 18 * * *  $VEL3D/bin/run_daily_seedlink.sh RS01SLBS-MJ01A-12-VEL3DB101 vel3d_b_sample goldcopy >> $VEL3D/log/seedlink_HYSB1_$(/bin/date +\%Y\%m).log 2>&1
+3 18 * * *  $VEL3D/bin/run_daily_seedlink.sh RS01SUM1-LJ01B-12-VEL3DB104 vel3d_b_sample goldcopy >> $VEL3D/log/seedlink_HYS14_$(/bin/date +\%Y\%m).log 2>&1
+5 18 * * *  $VEL3D/bin/run_daily_seedlink.sh RS03AXBS-MJ03A-12-VEL3DB301 vel3d_b_sample goldcopy >> $VEL3D/log/seedlink_AXBA1_$(/bin/date +\%Y\%m).log 2>&1
+# VEL3D-C velocity (8 Hz, gold copy)
+7 18 * * *  $VEL3D/bin/run_daily_seedlink.sh CE02SHBP-LJ01D-07-VEL3DC108 vel3d_cd_velocity_data goldcopy >> $VEL3D/log/seedlink_CZSHF_velocity_$(/bin/date +\%Y\%m).log 2>&1
+9 18 * * *  $VEL3D/bin/run_daily_seedlink.sh CE04OSBP-LJ01C-07-VEL3DC107 vel3d_cd_velocity_data goldcopy >> $VEL3D/log/seedlink_CZOFF_velocity_$(/bin/date +\%Y\%m).log 2>&1
+# VEL3D-C temperature (1 Hz; not in the gold copy → OOI M2M)
+11 18 * * * $VEL3D/bin/run_daily_seedlink.sh CE02SHBP-LJ01D-07-VEL3DC108 vel3d_cd_system_data m2m >> $VEL3D/log/seedlink_CZSHF_temperature_$(/bin/date +\%Y\%m).log 2>&1
+15 18 * * * $VEL3D/bin/run_daily_seedlink.sh CE04OSBP-LJ01C-07-VEL3DC107 vel3d_cd_system_data m2m >> $VEL3D/log/seedlink_CZOFF_temperature_$(/bin/date +\%Y\%m).log 2>&1
+
+### Metadata check (18:25 UTC) — StationXML vs OOI deployment records ###
+25 18 * * * $VEL3D/bin/run_ooi_requests.sh all all seedlink > $VEL3D/log/OOI_metadata.log 2>&1
+### Stalled-job check (18:35 UTC) — emails if a run/endtime_*.txt cursor is >24 h old ###
+35 18 * * * $VEL3D/bin/detect.py > $VEL3D/log/system.log 2>&1
+### Push timing CSVs + regenerated summary figures to GitHub (18:45 UTC) ###
+45 18 * * * $VEL3D/bin/sync_metrics.sh
+### Housekeeping (19:00 UTC) — delete staged MiniSEED > 7 days, scratch NetCDF/cache ###
+0 19 * * *  $VEL3D/bin/cleanup_seedlink.sh

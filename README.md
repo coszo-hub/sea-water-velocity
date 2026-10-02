@@ -74,8 +74,7 @@ sea-water-velocity/
     ├── param/                     ← run_vel3d.txt, run_metadata.txt, station +
     │                                 per-channel params (c_start/c_end, rates, streams)
     ├── run/                       ← endtime_*.txt pipeline state
-    ├── crons_prest_seedlink_and_mseed2dmc.txt   ← inherited from PREST (VEL3D
-    │                                 conversion pending — see CONVERSION_TODO.md)
+    ├── crons_vel3d_seedlink.txt    ← VM cron block (daily SeedLink jobs, alerts, sync)
     ├── testk/                     ← smoke-test scripts
     └── output/                    ← runtime working tree
         ├── mseed/                  ← seedlink MiniSEEDs (contents NOT tracked)
@@ -95,15 +94,22 @@ sea-water-velocity/
 
 ### Live data — SeedLink path
 
-All operations run through wrapper scripts in `bin/` (`run_ooi_requests.sh` →
-`run_data_collection.sh`) that activate the conda env, load OOI credentials from
-`.ooi_env`, resolve cron-safe paths, and prevent concurrent runs. **Python scripts
-are never called directly from cron.** The VM clones this repo and runs the staggered
-SeedLink + metadata + latency + metrics-sync window, mirroring the PREST sibling.
+Daily on the coszo VM (cron block `VEL3D-data-collection/crons_vel3d_seedlink.txt`,
+installed together with the PREST block — see **`VM_SEEDLINK_SETUP.md`**), one job per
+series runs `bin/run_daily_seedlink.sh <REFDES> <STREAM> <goldcopy|m2m>`: it produces
+every day from its cursor (`run/endtime_<REFDES>_<STREAM>.txt`) up to yesterday with the
+**same code and rules as the backfill** (timing segmenting, OOI extra-record cleanup,
+60 s minimum trace, timing-CSV row), writing flat into `output/mseed/`, which
+ringserver's MSeedScan loads into the ring for EarthScope's SeedLink client. Source: the
+OOI gold copy (velocity, VEL3D-B), M2M for VEL3D-C temperature. Days already in the CSV
+are skipped, so failed days retry automatically.
 
-> The current `crons_*.txt` is still the inherited PREST crontab (PREST stations /
-> `Tidal-Seafloor-Pressure` paths). Converting it to the five VEL3D references is a
-> pending task — see `VEL3D-data-collection/CONVERSION_TODO.md`.
+Alerts: `bin/daily_alerts.py` emails (via `bin/mail.py`) only when something needs
+attention — crash, failed or no-data days, sample-rate deviation, OOI duplicate/foreign
+records, heavy fragmentation, deployment ending, or an OOI deployment missing from the
+params; `bin/detect.py` emails if a cursor stops moving. Housekeeping:
+`bin/cleanup_seedlink.sh` (staged MiniSEED kept 7 days); `bin/sync_metrics.sh` pushes
+the CSVs, cursors and regenerated summary figures daily (README figures stay current).
 
 ### Historical — local backfill
 

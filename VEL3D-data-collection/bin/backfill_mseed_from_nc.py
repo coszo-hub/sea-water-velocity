@@ -41,6 +41,7 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "bin"))
 
 from read_param import read_param
 from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_day, GoldCopyDay,
+                             fetch_nc_timestamps,
                              NoDataError, GoldCopyMissingVariable)
 from plot_from_netcdf import find_nc_file, read_nc_day
 from gap_algorithms import (detect_gaps, mseed_segments, SEGMENTING_MODES, duplicate_mask,
@@ -127,7 +128,8 @@ def _append_metrics_row(csv_path, row):
 
 def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
                           channels, datatypes, net_sta_param, run,
-                          gap_result, mseed_dir, segmenting="timing", min_piece_s=None):
+                          gap_result, mseed_dir, segmenting="timing", min_piece_s=None,
+                          flat=False):
     """One MiniSEED file per (channel × contiguous segment). Mirrors the cron
     pipeline's write block. `segmenting` picks where traces break — see
     gap_algorithms.mseed_segments ('gaps' = original behaviour). Traces
@@ -204,7 +206,7 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
                 f"{time.strptime(seg_end[0:10], '%Y-%m-%d').tm_yday:03d}."
                 f"{seg_end[11:23].replace(':', '.')}{mseed_ext}"
             )
-            year_dir = os.path.join(mseed_dir, seg_start[0:4])
+            year_dir = mseed_dir if flat else os.path.join(mseed_dir, seg_start[0:4])
             os.makedirs(year_dir, exist_ok=True)
             write_path = os.path.join(year_dir, mseed_name)
             st.write(write_path, format="MSEED", reclen=rec_len)
@@ -244,7 +246,7 @@ def _key_column(a):
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
                 source="local", variability=None, segmenting="timing",
-                min_piece_s=None):
+                min_piece_s=None, flat=False, recent_retry_days=0):
     """variability: None, or {"csv": path, "done": set of (station, date)} —
     also write the temporal_anomaly_investigator CSV row (+ figure when the
     day has gaps) from the same pulled data. A day already in that CSV is
@@ -253,6 +255,11 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
     gap_algo_requested = gap_algo
 
     def _variability_no_data(dep, sp_nom):
+        # Near-real-time: OOI may not have published the last few days yet —
+        # don't record those as gaps (no CSV row → retried on the next run).
+        if recent_retry_days and date >= UTCDateTime() - recent_retry_days * 86400.0 - 86400.0:
+            print(f"  [{station}] {date_str}  not available yet — will retry")
+            return
         if variability is not None:
             _append_variability_row(variability["csv"],
                                     _no_data_row(station, date_str, dep, sp_nom))
@@ -341,6 +348,24 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             print(f"  [{station}] {date_str}  FAILED (re-run to retry) — {type(e).__name__}: {e}")
             return False
     else:
+        if source == "m2m":
+            # OOI M2M async request for this day; the NetCDF is saved to
+            # nc_dir and then processed exactly like a local file (one pass:
+            # MiniSEED + timing CSV with the same cleanup rules).
+            try:
+                fetch_nc_timestamps(station, date, date + 86400.0, deployment, run,
+                                    save_nc_dir=nc_dir, stream=stream)
+            except NoDataError as e:
+                print(f"  [{station}] {date_str}  skip — {e}")
+                _variability_no_data(deployment, sp_nominal)
+                return False
+            except Exception as e:
+                print(f"  [{station}] {date_str}  FAILED (re-run to retry) — {type(e).__name__}: {e}")
+                return False
+            nc_path = find_nc_file(nc_dir, station, date_str, stream=stream)
+            if nc_path is None:
+                print(f"  [{station}] {date_str}  FAILED (re-run to retry) — M2M NetCDF not found after download")
+                return False
         fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
 
     # OOI excess-sample periods (VEL3D-C): drop (1) records whose instrument
@@ -396,7 +421,7 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
         n_written, n_drop, s_drop = _write_mseed_segments(
             fh, utc_trim, t_raw, start_idx, end_idx, station,
             channels, datatypes, sta_param, run, gap_result, mseed_dir,
-            segmenting=segmenting, min_piece_s=min_piece_s)
+            segmenting=segmenting, min_piece_s=min_piece_s, flat=flat)
         if n_drop:
             # Log fragments not written: <mseed-dir>/../outlier/dropped_pieces.csv
             drop_log = os.path.join(os.path.dirname(os.path.abspath(mseed_dir)),
@@ -492,11 +517,19 @@ def main():
     p.add_argument("--gap-algo", choices=["legacy", "anomaly"], default="anomaly",
                    help="Gap detection algorithm. Default: anomaly "
                         "(matches param/run_vel3d.txt).")
-    p.add_argument("--source", choices=["local", "goldcopy"], default="local",
+    p.add_argument("--recent-retry-days", type=int, default=0,
+                   help="Near-real-time: a day within this many days of today that has no "
+                        "data yet is NOT recorded as a gap (retried next run). 0 = off.")
+    p.add_argument("--flat", action="store_true",
+                   help="Write MiniSEED directly into --mseed-dir (no <YEAR>/ subfolders) — "
+                        "for the SeedLink staging dir output/mseed/ scanned by ringserver.")
+    p.add_argument("--source", choices=["local", "goldcopy", "m2m"], default="local",
                    help="local: saved NetCDFs in --nc-dir (default). goldcopy: read "
                         "straight from OOI's pre-built gold copy over OPeNDAP — no M2M "
                         "queue, nothing stored. Gold copy lacks VEL3D-C temperature "
-                        "(vel3d_cd_system_data), so use local for that stream.")
+                        "(vel3d_cd_system_data), so use local or m2m for that stream. "
+                        "m2m: OOI async request per day, NetCDF saved to --nc-dir, then "
+                        "processed like local in the same pass.")
     p.add_argument("--segmenting", choices=SEGMENTING_MODES, default=None,
                    help="Where MiniSEED traces break. timing (default): at gaps AND wherever "
                         "timestamps leave the regular grid by > ½ sample, so every sample stays "
@@ -568,7 +601,9 @@ def main():
                                      skip_existing=not args.no_skip, stream=stream,
                                      source=args.source, variability=variability,
                                      segmenting=segmenting,
-                                     min_piece_s=args.min_piece_seconds)
+                                     min_piece_s=args.min_piece_seconds,
+                                     flat=args.flat,
+                                     recent_retry_days=args.recent_retry_days)
                 except GoldCopyMissingVariable as e:
                     print(f"  [{station}] skip stream {stream} — {e}")
                     break

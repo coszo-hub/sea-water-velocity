@@ -1,49 +1,67 @@
 #!/usr/bin/env bash
-# sync_metrics.sh — daily git push of the cron's per-day stats CSVs and
-# per-event diagnostic logs to coszo-hub/Tidal-Seafloor-Pressure.
-# Triggered by a separate cron entry (~18:35 UTC).
+# sync_metrics.sh — daily git push of the near-real-time QC outputs, so the
+# GitHub front page (README "Timing summary") stays current.
+# Triggered by its own cron entry after the daily SeedLink jobs (~18:45 UTC).
 #
-# The cron pipeline writes to (relative to PREST-data-collection/):
-#   output/metrics/<station>_<run>_pipeline_stats.csv
-#   output/diagnostics/<event>_<station>_<run>.txt
+# Commits (relative to this instrument folder, e.g. VEL3D-data-collection/):
+#   output/temporal_anomaly/metrics/*.csv    timing CSV rows appended by the daily jobs
+#   output/temporal_anomaly/figures/summary/ summary figures, regenerated here
+#   output/metrics/, output/diagnostics/     pipeline stats / diagnostics (if any)
+#   run/endtime_*.txt                        daily-job cursors
 #
-# Both paths are git-tracked inside the monorepo (no top-level mirror).
-# This script just pulls, stages those two paths, commits, and pushes.
-#
-# Auth: a deploy key on the VM with write access to
-#       coszo-hub/Tidal-Seafloor-Pressure only.
-# Override the clone location via env: TSP_CLONE=/path/to/Tidal-Seafloor-Pressure
+# Works in either repo (sea-water-velocity / absolute-seafloor-pressure): the
+# git clone is the parent of this instrument folder.
+# Auth: a deploy key on the VM with write access to this repo.
 
 set -u
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-# After the repo migration this code lives at <Tidal-Seafloor-Pressure>/
-# PREST-data-collection/, so its parent IS the monorepo root.
-TSP_CLONE="${TSP_CLONE:-$(cd "$REPO_ROOT/.." && pwd)}"
+INSTR="$(basename "$REPO_ROOT")"                  # VEL3D-data-collection | PREST-data-collection
+CLONE="${SYNC_CLONE:-$(cd "$REPO_ROOT/.." && pwd)}"
+CONDA="${CONDA:-$(command -v conda || true)}"
 LOG_FILE="$REPO_ROOT/log/sync_metrics.log"
 
 mkdir -p "$(dirname "$LOG_FILE")"
 exec >> "$LOG_FILE" 2>&1
 
 echo "============================================================"
-echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)  sync_metrics start"
-echo "  repo:        $REPO_ROOT"
-echo "  TSP clone:   $TSP_CLONE"
+echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)  sync_metrics start  ($CLONE / $INSTR)"
 
-if [ ! -d "$TSP_CLONE/.git" ]; then
-    echo "ERROR: $TSP_CLONE is not a git clone. Aborting."
+if [ ! -d "$CLONE/.git" ]; then
+    echo "ERROR: $CLONE is not a git clone. Aborting."
     exit 1
 fi
 
-# Pull latest first (rebase to keep history linear; autostash for safety in
-# case the cron pipeline is mid-write to output/metrics/ or output/diagnostics/)
-if ! ( cd "$TSP_CLONE" && git pull --rebase --autostash ); then
+# Pull first (rebase keeps history linear; autostash protects files the
+# daily jobs may be writing).
+if ! ( cd "$CLONE" && git pull --rebase --autostash ); then
     echo "WARN: git pull --rebase failed; continuing with local state"
 fi
 
-cd "$TSP_CLONE"
-git add PREST-data-collection/output/metrics/ \
-        PREST-data-collection/output/diagnostics/
+# Regenerate the summary figures from the updated CSVs (same file names, so
+# the README embeds pick them up).
+if [ -n "$CONDA" ] && [ -x "$CONDA" ]; then
+    cd "$REPO_ROOT"
+    if [ "$INSTR" = "VEL3D-data-collection" ]; then
+        "$CONDA" run -n ooi_env python bin/temporal_anomaly_investigator.py --mode plot --all-series \
+            || echo "WARN: summary plot failed"
+    else
+        "$CONDA" run -n ooi_env python bin/temporal_anomaly_investigator.py --mode plot \
+            || echo "WARN: summary plot failed"
+    fi
+    "$CONDA" run -n ooi_env python bin/plot_dt_true_outliers.py || echo "WARN: outlier plot failed"
+else
+    echo "WARN: conda not found — figures not regenerated"
+fi
+
+cd "$CLONE"
+git add "$INSTR/output/temporal_anomaly/metrics/" "$INSTR/run/" 2>/dev/null
+git add -f "$INSTR"/output/temporal_anomaly/figures/summary/*.png \
+           "$INSTR"/output/temporal_anomaly/figures/summary/*/*.png \
+           "$INSTR"/output/temporal_anomaly/figures/summary/*/*/*.png 2>/dev/null
+for d in output/metrics output/diagnostics; do
+    [ -d "$INSTR/$d" ] && git add "$INSTR/$d/" 2>/dev/null
+done
 
 if git diff --cached --quiet; then
     echo "  no changes — skipping commit/push"
