@@ -263,7 +263,9 @@ def make_per_day_figure(t_sec, s, station, date_str, out_dir):
     iqr      = q75 - q25
     bin_w    = 2 * iqr * (len(e_ms) ** (-1 / 3)) if iqr > 0 else None
     if bin_w and bin_w > 0:
-        nbins = max(20, int((e_ms.max() - e_ms.min()) / bin_w))
+        # Cap: a day with clock steps has a residual range of seconds while the
+        # Freedman–Diaconis width is ~0.1 ms → 100k+ bars, minutes to draw.
+        nbins = min(500, max(20, int((e_ms.max() - e_ms.min()) / bin_w)))
     else:
         nbins = 60
     ax.hist(e_ms, bins=nbins, color=C_HIST, edgecolor="black", linewidth=0.3)

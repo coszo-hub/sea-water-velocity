@@ -219,6 +219,63 @@ def detect_gaps_anomaly(
 
 
 # ════════════════════════════════════════════════════════════════════════════
+# Duplicate records — OOI double ingestion
+# ════════════════════════════════════════════════════════════════════════════
+# Some OOI VEL3D-C periods hold every record twice: identical values (and
+# ensemble counter) with the second copy offset by a drifting ~0.6–0.8 s, so a
+# day has up to 2× the samples and the copies interleave. Left in, they shred
+# the timing analysis and the MiniSEED. Only applied when a day has clearly
+# more samples than its nominal rate allows, so normal days are untouched.
+def duplicate_mask(t_sec, cols, sp_nominal, window_s=30.0, excess=1.02, prefer=None):
+    """Boolean keep-mask dropping duplicated records.
+
+    A sample duplicates another if ALL its values in `cols` (list of equal-
+    length arrays, e.g. the three velocity components) are identical and the
+    two are within `window_s`. Of each pair, keep the original: if `prefer`
+    is given (e.g. |time − instrument internal_timestamp|; the duplicate copy
+    carries a garbage internal timestamp) keep the copy with the smaller
+    value; otherwise keep the copy whose time phase (t mod sp) matches the
+    day's regular stream (circular-mean phase of non-duplicated samples). Returns
+    (keep, n_dropped). No-op unless n > excess · (span / sp_nominal + 1).
+    """
+    t_sec = np.asarray(t_sec, dtype=float)
+    n = len(t_sec)
+    keep = np.ones(n, dtype=bool)
+    if n < 2 or not cols or not sp_nominal:
+        return keep, 0
+    if n <= excess * ((t_sec[-1] - t_sec[0]) / sp_nominal + 1):
+        return keep, 0
+    vals = np.column_stack([np.asarray(c, dtype=float) for c in cols])
+    _, inv = np.unique(vals, axis=0, return_inverse=True)
+    inv = inv.ravel()
+    order = np.lexsort((t_sec, inv))                 # group by key, then time
+    same = (inv[order][1:] == inv[order][:-1]) & \
+           (np.diff(t_sec[order]) <= window_s)
+    pairs = [(order[i], order[i + 1]) for i in np.flatnonzero(same)]
+    if not pairs:
+        return keep, 0
+    in_pair = np.zeros(n, dtype=bool)
+    for a, b in pairs:
+        in_pair[a] = in_pair[b] = True
+    ref = t_sec[~in_pair] if (~in_pair).sum() >= 10 else t_sec
+    ang = 2 * np.pi * (ref % sp_nominal) / sp_nominal
+    phase0 = np.angle(np.mean(np.exp(1j * ang)))    # dominant stream phase
+
+    def off(i):
+        d = 2 * np.pi * (t_sec[i] % sp_nominal) / sp_nominal - phase0
+        return abs(np.angle(np.exp(1j * d)))
+
+    for a, b in pairs:                              # a is the earlier copy
+        if not (keep[a] and keep[b]):
+            continue
+        if prefer is not None and prefer[a] != prefer[b]:
+            keep[b if prefer[a] < prefer[b] else a] = False
+        else:
+            keep[b if off(a) <= off(b) else a] = False
+    return keep, int((~keep).sum())
+
+
+# ════════════════════════════════════════════════════════════════════════════
 # MiniSEED segmentation — where to start a new trace
 # ════════════════════════════════════════════════════════════════════════════
 # A MiniSEED trace stores ONE start time + a rate; sample k sits at
@@ -264,14 +321,20 @@ def timing_segments(t_sec, sp, base_splits, tol=0.5, level_window=25, glitch_run
                 e = s + 1
                 seg_start = float(r[s])
             else:
-                bad = np.flatnonzero(np.abs(r[s + 1:] - level) > thr) + s + 1
+                # Scan forward in growing chunks (not the whole remainder each
+                # time — that is quadratic on days with many traces).
                 e = b - a
-                for k in bad:
-                    nxt = np.abs(r[k + 1:k + 1 + glitch_run] - level) > thr
-                    if len(nxt) == glitch_run and not nxt.any():
-                        continue                         # lone glitch: keep on grid
-                    e = int(k)
-                    break
+                lo, chunk, found = s + 1, 256, False
+                while lo < b - a and not found:
+                    hi = min(b - a, lo + chunk)
+                    bad = np.flatnonzero(np.abs(r[lo:hi] - level) > thr) + lo
+                    for k in bad:
+                        nxt = np.abs(r[k + 1:k + 1 + glitch_run] - level) > thr
+                        if len(nxt) == glitch_run and not nxt.any():
+                            continue                     # lone glitch: keep on grid
+                        e, found = int(k), True
+                        break
+                    lo, chunk = hi, min(chunk * 4, 1 << 20)
                 seg_start = level
             if a + s > 0:
                 splits.append(a + s)

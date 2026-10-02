@@ -40,10 +40,10 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(REPO_ROOT, "bin"))
 
 from read_param import read_param
-from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_day,
+from diagnose_timing import (STATIONS, get_deployment_for_date, read_goldcopy_day, GoldCopyDay,
                              NoDataError, GoldCopyMissingVariable)
 from plot_from_netcdf import find_nc_file, read_nc_day
-from gap_algorithms import detect_gaps, mseed_segments, SEGMENTING_MODES
+from gap_algorithms import detect_gaps, mseed_segments, SEGMENTING_MODES, duplicate_mask
 # --variability: reuse the investigator's per-day timing QC on the data this
 # backfill already pulled, so each day is fetched once for both products.
 from temporal_anomaly_investigator import (
@@ -210,6 +210,34 @@ def _write_mseed_segments(fh, utc_trim, t_raw, start_idx, end_idx, station,
     return written, n_drop, s_drop
 
 
+# Variables that identify one instrument record, per stream, for duplicate
+# removal. VEL3D-C velocity: the raw (L0) counts + ensemble counter — the two
+# copies of a double-ingested record match exactly there, while the L1
+# velocities differ by ~1e-6 m/s (declination is evaluated at each copy's own
+# timestamp). Other streams fall back to the written data variables.
+DEDUP_KEYS = {
+    "vel3d_cd_velocity_data": ["ensemble_counter", "turbulent_velocity_east",
+                               "turbulent_velocity_north", "turbulent_velocity_vertical"],
+    # 1 Hz system record: the instrument's own clock string is unique per
+    # second and identical in both copies (internal_timestamp is NOT).
+    "vel3d_cd_system_data": ["date_time_string", "temperature_centidegree",
+                             "heading_decidegree", "pitch_decidegree",
+                             "roll_decidegree", "sound_speed_dms"],
+}
+
+
+def _key_column(a):
+    """Numeric column for duplicate matching; char/string arrays → integer ids."""
+    if isinstance(a, MaskedArray):
+        a = a.filled(b"" if a.dtype.kind == "S" else np.nan)
+    a = np.asarray(a)
+    if a.dtype.kind == "S" and a.ndim == 2:             # netCDF char array (n, strlen)
+        a = np.ascontiguousarray(a).view(f"S{a.shape[1]}").ravel()
+    if a.dtype.kind in "SUO":
+        return np.unique(a, return_inverse=True)[1].ravel().astype(float)
+    return a.astype(float)
+
+
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
                 source="local", variability=None, segmenting="timing",
@@ -295,9 +323,11 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
 
     if source == "goldcopy":
         try:
+            want = [datatypes[c] for c in channels]
             fh, utc_trim, t_raw, start_idx, end_idx = read_goldcopy_day(
                 station, stream, date, run,
-                variables=[datatypes[c] for c in channels])
+                variables=want + [k for k in DEDUP_KEYS.get(stream, []) + ["internal_timestamp"]
+                                  if k not in want])
         except NoDataError as e:
             print(f"  [{station}] {date_str}  skip — {e}")
             _variability_no_data(deployment, sp_nominal)
@@ -309,6 +339,32 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             return False
     else:
         fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
+
+    # OOI double ingestion: drop duplicated records (identical values within
+    # 30 s, offset copy) before any timing analysis. No-op on normal days.
+    if len(utc_trim) >= 2 and sp_nominal:
+        def _col(v):
+            a = fh.variables[v][:][start_idx:end_idx]
+            return a.filled(np.nan) if isinstance(a, MaskedArray) else np.asarray(a)
+        dvars = [datatypes[c] for c in channels if datatypes[c] in fh.variables]
+        keys = [k for k in DEDUP_KEYS.get(stream, []) if k in fh.variables] or dvars
+        t_rel = np.asarray(t_raw, dtype=float) - float(t_raw[0])
+        prefer = None
+        if "internal_timestamp" in fh.variables:   # original copy: internal clock ≈ time
+            prefer = np.abs(np.asarray(t_raw, dtype=float)
+                            - np.asarray(_col("internal_timestamp"), dtype=float))
+            prefer = np.where(np.isfinite(prefer), prefer, np.inf)
+        keep, n_dup = duplicate_mask(t_rel, [_key_column(_col(k)) for k in keys], sp_nominal,
+                                     prefer=prefer)
+        if n_dup:
+            print(f"  [{station}] {date_str}  removed {n_dup} duplicated records "
+                  f"({100.0 * n_dup / len(keep):.1f}% — OOI double ingestion)")
+            cols = {v: _col(v) for v in dvars}
+            fh.close()
+            fh = GoldCopyDay({v: c[keep] for v, c in cols.items()})
+            t_raw = np.asarray(t_raw, dtype=float)[keep]
+            utc_trim = [u for u, k in zip(utc_trim, keep) if k]
+            start_idx, end_idx = 0, len(t_raw)
     if len(utc_trim) < 2:
         print(f"  [{station}] {date_str}  skip — only {len(utc_trim)} samples")
         _variability_no_data(deployment, sp_nominal)
