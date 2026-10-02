@@ -48,6 +48,7 @@ from gap_algorithms import (detect_gaps, mseed_segments, SEGMENTING_MODES, dupli
 # --variability: reuse the investigator's per-day timing QC on the data this
 # backfill already pulled, so each day is fetched once for both products.
 from temporal_anomaly_investigator import (
+    _ensure_trailing_newline,
     OUT_ROOT as TA_OUT_ROOT, compute_variability, make_per_day_figure,
     write_stats, _row_from_stats, _no_data_row,
     _append_row as _append_variability_row,
@@ -116,6 +117,7 @@ def _load_existing_keys(csv_path):
 def _append_metrics_row(csv_path, row):
     new_file = not os.path.exists(csv_path)
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    _ensure_trailing_newline(csv_path)
     with open(csv_path, "a", newline="") as f:
         w = csv.DictWriter(f, fieldnames=METRICS_FIELDS)
         if new_file:

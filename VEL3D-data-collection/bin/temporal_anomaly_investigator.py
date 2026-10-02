@@ -399,9 +399,20 @@ def _load_existing_keys(csv_path):
     return keys
 
 
+def _ensure_trailing_newline(path):
+    """Appending to a CSV whose last line lacks a newline glues the new row
+    onto it (seen in PREST CSVs: 2020-02-15, 2026-05-01). Fix that first."""
+    if os.path.exists(path) and os.path.getsize(path) > 0:
+        with open(path, "rb+") as fb:
+            fb.seek(-1, os.SEEK_END)
+            if fb.read(1) != b"\n":
+                fb.write(b"\n")
+
+
 def _append_row(csv_path, row):
     exists = os.path.exists(csv_path)
     os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+    _ensure_trailing_newline(csv_path)
     with open(csv_path, "a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
         if not exists:
