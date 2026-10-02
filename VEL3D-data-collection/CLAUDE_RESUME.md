@@ -95,21 +95,24 @@ processing host, "no Dip" — all obsolete).
 2026-05-02 → 2026-09-30 done with the ported new code: MiniSEED
 `/Volumes/COSZO/PREST/mseed2dmc/2026/` (914 files, 492 MB); 152 rows appended per station
 CSV (565aa38); summary figures force-tracked (PREST .gitignore ignores *.png).
-**Dropoff**: `bin/dropoff_earthscope.sh` ready (archive-only-on-full-success fix;
-DROPOFF_CONCURRENCY default 16; finds `es` in conda env `earthscope`); `es login` done
-on this Mac as seismic@uw.edu.
+**EarthScope upload DONE 2026-10-02** (Dropoff authorized that day):
+- VEL3D StationXML (5 files, incl. dep 13; CZOFF loc 21) → `vel3d/stationxml/`, AUTHORIZED.
+- VEL3D MiniSEED: all **517,242 files (159 GB, 2014 → 2026-09-30)** → `vel3d/mseed/<YEAR>/`;
+  every year's server count verified = local count (AUTHORIZED/ACCEPTED, 0 FAILED). Files
+  moved to `/Volumes/COSZO/VEL3D/mseed2dmc_sent/` (staging `mseed2dmc/` now empty).
+- PREST 2026-05-02 → 09-30: 914 files → `prest/mseed/2026/`, all AUTHORIZED; moved to
+  `/Volumes/COSZO/PREST/mseed2dmc_sent/`. PREST StationXML NOT resent (already at EarthScope).
+- `bin/dropoff_earthscope.sh mseed [YEAR] --archive`: per-year batches with per-year locks
+  (run years in parallel — each `es` process is capped at 10 S3 connections ≈ 12–24 files/s;
+  4 in parallel ≈ 50 files/s); `find -H` (staging is a symlink); `--part-concurrency`.
+  The `es` CLI crashes a whole batch on one transient error (NoSuchUpload, IncompleteBody,
+  ExpiredToken) — just re-run; finished files are skipped (state in ~/.earthscope/default/dropoff).
+  Never kill a batch mid-upload without deleting its incomplete state files.
+  PREST repo has its own copy (7bece8a; `DROPOFF_MSEED_DIR=/Volumes/COSZO/PREST/mseed2dmc`).
 **SeedLink repo side** (VEL3D 3be35e9, PREST f0b3983): see section 6.
 
 ## 5. TODO
-1. **EarthScope Dropoff authorization** — account seismic@uw.edu NOT authorized
-   ("You are not authorized to perform this action"; token scope offline_access only).
-   User emailed data-submission@earthscope.org on 2026-10-01. When they reply:
-   `cd VEL3D-data-collection && bin/dropoff_earthscope.sh xml && bin/dropoff_earthscope.sh status`
-   then `bin/dropoff_earthscope.sh mseed --dry-run` / `mseed --archive`
-   (staging = /Volumes/COSZO/VEL3D/mseed2dmc via symlink; ~500k files → slow, concurrency 16).
-   PREST 2026-05-02→09-30 MiniSEED (/Volumes/COSZO/PREST/mseed2dmc) needs uploading too
-   (PREST repo has no dropoff script yet — copy VEL3D's or use DROPOFF_PREFIX + --dir).
-   VEL3D StationXML must go first.
+1. (DONE 2026-10-02) EarthScope upload — see section 4.
 2. **VM SeedLink setup** — the VM agent follows `VM_SEEDLINK_SETUP.md` (repo root of
    sea-water-velocity). Then: EarthScope must add the new VEL3D streams to their SeedLink
    client (after StationXML is in).
