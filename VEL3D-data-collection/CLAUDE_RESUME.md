@@ -91,7 +91,9 @@ processing host, "no Dip" — all obsolete).
   Per-day figures (8,506 files) on RAID, untracked.
 - README "Timing summary" section on both GitHub front pages embeds the 3 figures
   (fig1_dt_true_outliers, fig2_jitter[_all], fig3_gap_count[_all]).
-**PREST**: already processed & SENT through 2026-05-01 (old code — do NOT change).
+**PREST**: at EarthScope 2014 → **2025-05-01** (old code — do NOT change); **2025-05-02 →
+2026-05-01 was never sent** (only its investigator CSVs exist) — to be made from the gold copy
+(new code) + uploaded; see PREST `CLAUDE_RESUME.md` TODO 2.
 2026-05-02 → 2026-09-30 done with the ported new code: MiniSEED
 `/Volumes/COSZO/PREST/mseed2dmc/2026/` (914 files, 492 MB); 152 rows appended per station
 CSV (565aa38); summary figures force-tracked (PREST .gitignore ignores *.png).
