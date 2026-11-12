@@ -68,7 +68,7 @@ fi
 log "new data: $n_pending MiniSEED file(s) pending"
 
 # ---------- 2. figures + CSVs → GitHub ----------
-sync_start=$(wc -l < log/sync_metrics.log 2>/dev/null || echo 0)
+sync_start=0; [[ -f log/sync_metrics.log ]] && sync_start=$(wc -l < log/sync_metrics.log)
 bin/sync_metrics.sh
 sync_out="$(tail -n +"$((sync_start + 1))" log/sync_metrics.log 2>/dev/null)"
 if grep -q "WARN" <<<"$sync_out"; then

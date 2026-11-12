@@ -53,9 +53,14 @@ fi
 
 cd "$CLONE"
 git add "$INSTR/output/temporal_anomaly/metrics/" "$INSTR/run/" 2>/dev/null
-git add -f "$INSTR"/output/temporal_anomaly/figures/summary/*.png \
-           "$INSTR"/output/temporal_anomaly/figures/summary/*/*.png \
-           "$INSTR"/output/temporal_anomaly/figures/summary/*/*/*.png 2>/dev/null
+# summary PNGs are *.png-ignored → force-add. One git add with an unmatched
+# pattern adds nothing at all, so expand with nullglob first.
+shopt -s nullglob
+pngs=("$INSTR"/output/temporal_anomaly/figures/summary/*.png
+      "$INSTR"/output/temporal_anomaly/figures/summary/*/*.png
+      "$INSTR"/output/temporal_anomaly/figures/summary/*/*/*.png)
+shopt -u nullglob
+[ ${#pngs[@]} -gt 0 ] && git add -f -- "${pngs[@]}"
 for d in output/metrics output/diagnostics; do
     [ -d "$INSTR/$d" ] && git add "$INSTR/$d/" 2>/dev/null
 done
