@@ -35,3 +35,7 @@ output/goldcopy_cache
 
 # per-day timing figures live on the COSZO drive (symlink locally; ~670 MB, not tracked since 2026-10-02)
 output/temporal_anomaly/figures/per_day
+
+# near-real-time staging (daily_pipeline.sh) and dropped-fragment logs
+output/mseed_pending/*
+output/outlier/*

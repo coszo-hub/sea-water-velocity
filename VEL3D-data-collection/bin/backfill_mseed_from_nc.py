@@ -28,6 +28,7 @@ Usage:
 import argparse
 import csv
 import os
+import shutil
 import sys
 import time
 from datetime import datetime, timedelta
@@ -243,10 +244,22 @@ def _key_column(a):
     return a.astype(float)
 
 
+# Near-real-time M2M: request this much past the end of the day. Data after
+# 24:00 proves OOI has the whole day (see --complete-grace-hours).
+M2M_TAIL_S = 600.0
+
+
+def _m2m_day_dir(nc_dir, station, stream, date_str):
+    """Per-day folder for the M2M NetCDF, so a request that runs past
+    midnight can never be picked up as the next day's file."""
+    return os.path.join(nc_dir, f"m2m_{station}_{stream or 'main'}_{date_str}")
+
+
 def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 metrics_csv, append_stats, skip_existing, stream=None,
                 source="local", variability=None, segmenting="timing",
-                min_piece_s=None, flat=False, recent_retry_days=0):
+                min_piece_s=None, flat=False, recent_retry_days=0,
+                complete_grace_h=0.0):
     """variability: None, or {"csv": path, "done": set of (station, date)} —
     also write the temporal_anomaly_investigator CSV row (+ figure when the
     day has gaps) from the same pulled data. A day already in that CSV is
@@ -352,9 +365,12 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             # OOI M2M async request for this day; the NetCDF is saved to
             # nc_dir and then processed exactly like a local file (one pass:
             # MiniSEED + timing CSV with the same cleanup rules).
+            day_nc_dir = _m2m_day_dir(nc_dir, station, stream, date_str)
+            shutil.rmtree(day_nc_dir, ignore_errors=True)    # stale file from an earlier try
+            tail = M2M_TAIL_S if complete_grace_h else 0.0
             try:
-                fetch_nc_timestamps(station, date, date + 86400.0, deployment, run,
-                                    save_nc_dir=nc_dir, stream=stream)
+                fetch_nc_timestamps(station, date, date + 86400.0 + tail, deployment, run,
+                                    save_nc_dir=day_nc_dir, stream=stream)
             except NoDataError as e:
                 print(f"  [{station}] {date_str}  skip — {e}")
                 _variability_no_data(deployment, sp_nominal)
@@ -362,11 +378,22 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             except Exception as e:
                 print(f"  [{station}] {date_str}  FAILED (re-run to retry) — {type(e).__name__}: {e}")
                 return False
-            nc_path = find_nc_file(nc_dir, station, date_str, stream=stream)
+            nc_path = find_nc_file(day_nc_dir, station, date_str, stream=stream)
             if nc_path is None:
                 print(f"  [{station}] {date_str}  FAILED (re-run to retry) — M2M NetCDF not found after download")
                 return False
         fh, utc_trim, t_raw, start_idx, end_idx = read_nc_day(nc_path, date, run)
+        if source == "m2m" and complete_grace_h:
+            # Complete-day guard: only write the day once OOI has data AFTER it
+            # ends (the request runs M2M_TAIL_S past 24:00). Otherwise leave no
+            # CSV row / MiniSEED so the next run retries. After the grace period
+            # a short day is accepted as a real outage.
+            n_total = len(fh.variables[run["data_time"][0]])
+            if end_idx >= n_total and UTCDateTime() < date + 86400.0 + complete_grace_h * 3600.0:
+                print(f"  [{station}] {date_str}  not complete yet in OOI M2M "
+                      f"(no data after the day ends) — will retry")
+                fh.close()
+                return False
 
     # OOI excess-sample periods (VEL3D-C): drop (1) records whose instrument
     # clock (internal_timestamp) disagrees with time — duplicate copies and
@@ -544,6 +571,14 @@ def main():
                         "(+ 4-panel figure on gap days) from the same pulled data — "
                         "one pull per day for both MiniSEED and timing QC. Days already "
                         "in that CSV are skipped, so re-runs resume.")
+    p.add_argument("--complete-grace-hours", type=float, default=0.0,
+                   help="m2m near-real-time: write a day only once OOI has data after it ends "
+                        "(request runs 10 min past 24:00); otherwise skip it so the next run "
+                        "retries. After this many hours past the day's end a short day is "
+                        "accepted (real outage). 0 = off (historical backfills).")
+    p.add_argument("--delete-nc", action="store_true",
+                   help="m2m: delete the downloaded NetCDF after the day is processed "
+                        "(an 8 Hz VEL3D-C day is ~280 MB).")
     p.add_argument("--nc-dir",     default=DEFAULT_NC_DIR)
     p.add_argument("--mseed-dir",  default=DEFAULT_MSEED,
                    help=f"MiniSEED output root (default: {DEFAULT_MSEED})")
@@ -603,10 +638,15 @@ def main():
                                      segmenting=segmenting,
                                      min_piece_s=args.min_piece_seconds,
                                      flat=args.flat,
-                                     recent_retry_days=args.recent_retry_days)
+                                     recent_retry_days=args.recent_retry_days,
+                                     complete_grace_h=args.complete_grace_hours)
                 except GoldCopyMissingVariable as e:
                     print(f"  [{station}] skip stream {stream} — {e}")
                     break
+                finally:
+                    if args.delete_nc and args.source == "m2m":
+                        shutil.rmtree(_m2m_day_dir(args.nc_dir, station, stream, str(date)[:10]),
+                                      ignore_errors=True)
                 if ok:
                     n_done += 1
                 else:

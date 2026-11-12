@@ -5,10 +5,11 @@
 # (UTC) with the SAME code and rules as the historical backfill
 # (bin/backfill_mseed_from_nc.py: timing segmenting, excess-record cleanup,
 # 60 s minimum trace, timing-CSV row per day), written flat into
-# output/mseed/ — the folder ringserver's MSeedScan watches and serves over
-# SeedLink.
+# output/mseed_pending/. bin/daily_pipeline.sh runs this for every series, pushes
+# the CSVs/figures, then moves the files to output/mseed/ — the folder
+# ringserver's MSeedScan watches and serves over SeedLink.
 #
-# Usage (from cron):
+# Usage (normally via bin/daily_pipeline.sh):
 #   bin/run_daily_seedlink.sh <REFDES> <STREAM|-> <goldcopy|m2m>
 #     REFDES   OOI reference designator, dashes (e.g. RS01SUM1-LJ01B-12-VEL3DB104)
 #     STREAM   OOI stream, or "-" for single-stream instruments (PREST)
@@ -36,6 +37,9 @@ REFDES="${1:?usage: run_daily_seedlink.sh <REFDES> <STREAM|-> <goldcopy|m2m>}"
 STREAM="${2:?missing STREAM (use - for single-stream instruments)}"
 SOURCE="${3:?missing SOURCE (goldcopy|m2m)}"
 LOOKBACK_DAYS="${LOOKBACK_DAYS:-7}"
+# m2m: hours after a day ends during which a day without data past 24:00 is
+# treated as "not complete yet" (retried) rather than a short day.
+COMPLETE_GRACE_HOURS="${COMPLETE_GRACE_HOURS:-36}"
 CONDA_ENV="${CONDA_ENV:-ooi_env}"
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -47,7 +51,7 @@ RUN_NAME="$(basename "$REPO_ROOT" | cut -d- -f1 | tr '[:upper:]' '[:lower:]')"
 if [[ "$STREAM" != "-" ]]; then TAG="${REFDES}_${STREAM}"; else TAG="${REFDES}_${RUN_NAME}"; fi
 CURSOR="run/endtime_${TAG}.txt"
 LOCK="run/.lock_${TAG}"
-mkdir -p log run output/mseed output/temporal_anomaly/netcdf
+mkdir -p log run output/mseed output/mseed_pending output/temporal_anomaly/netcdf
 
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$TAG] $*"; }
 
@@ -94,9 +98,14 @@ STREAM_ARGS=()
 [[ "$STREAM" != "-" ]] && STREAM_ARGS=(--stream "$STREAM")
 
 RUN_LOG="log/.last_run_${TAG}.log"
+# MiniSEED goes to output/mseed_pending/ (NOT the ringserver folder): bin/daily_pipeline.sh
+# releases it to output/mseed/ only after the CSVs + figures are pushed to GitHub.
+# m2m: a day is written only once OOI has data after it ends (--complete-grace-hours);
+# the downloaded NetCDF is deleted after processing.
 "${PY[@]}" bin/backfill_mseed_from_nc.py \
     --source "$SOURCE" --variability --min-piece-seconds 60 --flat --recent-retry-days 3 \
-    --mseed-dir output/mseed --nc-dir output/temporal_anomaly/netcdf \
+    --complete-grace-hours "$COMPLETE_GRACE_HOURS" --delete-nc \
+    --mseed-dir output/mseed_pending --nc-dir output/temporal_anomaly/netcdf \
     --station "$REFDES" ${STREAM_ARGS[@]+"${STREAM_ARGS[@]}"} --start "$START" --end "$END" 2>&1 | tee "$RUN_LOG"
 rc=${PIPESTATUS[0]}
 

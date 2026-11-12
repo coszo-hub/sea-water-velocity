@@ -13,7 +13,7 @@ def sendmail(subject,body=""):
     root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
 
     from_addr  = 'coszo@uw.edu'
-    recipients = 'usherm42@uw.edu'
+    recipients = 'seismic@uw.edu'
 
     subject   = str(subject)
     body      = str(body)

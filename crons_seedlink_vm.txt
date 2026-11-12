@@ -1,0 +1,39 @@
+# ======================================================================
+# coszo VM crontab — near-real-time (SeedLink) path for PREST + VEL3D
+#
+# This file IS the whole crontab (replaces the per-instrument blocks
+# VEL3D-data-collection/crons_vel3d_seedlink.txt + PREST-data-collection/
+# crons_prest_seedlink.txt). Install:
+#   crontab -l > ~/crontab.backup.$(date +%Y%m%d)
+#   crontab ~/sea-water-velocity/crons_seedlink_vm.txt
+#   crontab -l
+# Times are UTC (the VM runs cron in UTC).
+#
+# Daily chain (bin/daily_pipeline.sh in each repo), PREST then VEL3D under one
+# flock so they never overlap:
+#   1. each series: OOI M2M request for yesterday — processed only once M2M has
+#      data after 24:00 (day complete); else retried at the next hourly run
+#   2. timing CSV row (temporal_anomaly_investigator) → summary figures →
+#      commit + push to GitHub (README "Timing summary")
+#   3. MiniSEED moved output/mseed_pending/ → output/mseed/ → ringserver → SeedLink
+# Hourly 01:00–12:00 UTC; runs with nothing new exit in seconds.
+# ======================================================================
+SHELL=/usr/bin/bash
+PATH=/home/coszo/miniconda3/bin:/usr/local/bin:/usr/bin:/bin
+PREST=/home/coszo/absolute-seafloor-pressure/PREST-data-collection
+VEL3D=/home/coszo/sea-water-velocity/VEL3D-data-collection
+
+### Daily chain: PREST → VEL3D (hourly until yesterday is complete in M2M) ###
+0 1-12 * * * /usr/bin/flock -n /home/coszo/.seedlink_chain.lock -c "$PREST/bin/daily_pipeline.sh; $VEL3D/bin/daily_pipeline.sh"
+
+### Metadata check — StationXML vs OOI deployment records (13:00 / 13:05 UTC) ###
+0 13 * * *  $PREST/bin/run_ooi_requests.sh all all seedlink > $PREST/log/OOI_metadata.log 2>&1
+5 13 * * *  $VEL3D/bin/run_ooi_requests.sh all all seedlink > $VEL3D/log/OOI_metadata.log 2>&1
+
+### Stalled-job check — emails if a run/endtime_*.txt cursor is > 24 h old (13:15 / 13:20 UTC) ###
+15 13 * * * $PREST/bin/detect.py > $PREST/log/system.log 2>&1
+20 13 * * * $VEL3D/bin/detect.py > $VEL3D/log/system.log 2>&1
+
+### Housekeeping — staged MiniSEED > 7 days, scratch NetCDF/cache, old logs (13:30 / 13:35 UTC) ###
+30 13 * * * $PREST/bin/cleanup_seedlink.sh
+35 13 * * * $VEL3D/bin/cleanup_seedlink.sh

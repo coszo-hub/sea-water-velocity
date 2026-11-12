@@ -1,0 +1,9 @@
+# Series run by bin/daily_pipeline.sh, in order.
+# label                 refdes                          stream                    source
+HYSB1                   RS01SLBS-MJ01A-12-VEL3DB101     vel3d_b_sample            m2m
+HYS14                   RS01SUM1-LJ01B-12-VEL3DB104     vel3d_b_sample            m2m
+AXBA1                   RS03AXBS-MJ03A-12-VEL3DB301     vel3d_b_sample            m2m
+CZSHF_velocity          CE02SHBP-LJ01D-07-VEL3DC108     vel3d_cd_velocity_data    m2m
+CZOFF_velocity          CE04OSBP-LJ01C-07-VEL3DC107     vel3d_cd_velocity_data    m2m
+CZSHF_temperature       CE02SHBP-LJ01D-07-VEL3DC108     vel3d_cd_system_data      m2m
+CZOFF_temperature       CE04OSBP-LJ01C-07-VEL3DC107     vel3d_cd_system_data      m2m
