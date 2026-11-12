@@ -27,6 +27,7 @@ Usage:
 """
 import argparse
 import csv
+import glob
 import os
 import shutil
 import sys
@@ -297,6 +298,11 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
     try:
         dep_info = get_deployment_for_date(station, date, PARAM_PATH, stream=stream)
     except ValueError as e:
+        if complete_grace_h:
+            # near-real-time: a missing deployment means the params need updating —
+            # keep retrying instead of recording the day as a permanent gap
+            print(f"  [{station}] {date_str}  FAILED (re-run to retry) — {e}")
+            return False
         print(f"  [{station}] {date_str}  skip — {e}")
         _variability_no_data(0, 0)
         return False
@@ -367,7 +373,12 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             # MiniSEED + timing CSV with the same cleanup rules).
             day_nc_dir = _m2m_day_dir(nc_dir, station, stream, date_str)
             shutil.rmtree(day_nc_dir, ignore_errors=True)    # stale file from an earlier try
-            tail = M2M_TAIL_S if complete_grace_h else 0.0
+            tail = 0.0
+            if complete_grace_h:
+                # look past 24:00 by at least M2M_TAIL_S, more on later retries, so
+                # an outage spanning midnight does not block the day (max 6 h)
+                since_end = UTCDateTime() - (date + 86400.0)
+                tail = min(max(M2M_TAIL_S, since_end - 900.0), 6 * 3600.0)
             try:
                 fetch_nc_timestamps(station, date, date + 86400.0 + tail, deployment, run,
                                     save_nc_dir=day_nc_dir, stream=stream)
@@ -378,7 +389,13 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
             except Exception as e:
                 print(f"  [{station}] {date_str}  FAILED (re-run to retry) — {type(e).__name__}: {e}")
                 return False
-            nc_path = find_nc_file(day_nc_dir, station, date_str, stream=stream)
+            ncs = sorted(glob.glob(os.path.join(day_nc_dir, "*.nc")))
+            if len(ncs) > 1:
+                print(f"  [{station}] {date_str}  FAILED (re-run to retry) — M2M returned "
+                      f"{len(ncs)} NetCDF files (deployment change?): "
+                      + ", ".join(os.path.basename(n) for n in ncs))
+                return False
+            nc_path = ncs[0] if ncs else None
             if nc_path is None:
                 print(f"  [{station}] {date_str}  FAILED (re-run to retry) — M2M NetCDF not found after download")
                 return False

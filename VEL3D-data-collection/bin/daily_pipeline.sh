@@ -27,16 +27,17 @@ mkdir -p log run output/mseed output/mseed_pending
 exec >> "log/daily_pipeline_$(date -u +%Y%m).log" 2>&1
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$INSTR] $*"; }
 
-LOCK="run/.lock_daily_pipeline"
-if ! mkdir "$LOCK" 2>/dev/null; then
-    log "another daily_pipeline run holds $LOCK — exiting"
+# flock (not a lock dir): released automatically if the process dies or the VM reboots
+exec 9> "run/.lock_daily_pipeline"
+if ! flock -n 9; then
+    log "another daily_pipeline run is active — exiting"
     exit 0
 fi
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
 notify() {   # subject body — via bin/mail.py (recipient set there)
     [[ -n "$CONDA" ]] || return 0
-    "$CONDA" run -n ooi_env python - "$1" "$2" <<'EOF' || log "WARN: email failed"
+    # --no-capture-output: plain `conda run` does not pass stdin to python
+    "$CONDA" run --no-capture-output -n ooi_env python - "$1" "$2" <<'EOF' || log "WARN: email failed"
 import sys; sys.path.insert(0, "bin")
 from mail import sendmail
 sendmail(sys.argv[1], sys.argv[2])
@@ -51,13 +52,16 @@ before="$(csv_state)"
 # ---------- 1. produce every series (one after another) ----------
 while read -r label refdes stream source _; do
     [[ -z "${label:-}" || "$label" == \#* ]] && continue
-    bin/run_daily_seedlink.sh "$refdes" "$stream" "$source" \
+    # hard cap per series so one hung OOI request cannot block the chain
+    timeout -k 5m "${SERIES_TIMEOUT:-90m}" bin/run_daily_seedlink.sh "$refdes" "$stream" "$source" \
         >> "log/seedlink_${label}_$(date -u +%Y%m).log" 2>&1 \
-        || log "WARN: $label exited non-zero (see log/seedlink_${label}_*.log)"
+        || log "WARN: $label exited non-zero or timed out (see log/seedlink_${label}_*.log)"
 done < "$SERIES_FILE"
 
 n_pending=$(find output/mseed_pending -maxdepth 1 -type f -name '*.mseed' | wc -l | tr -d ' ')
-if [[ "$(csv_state)" == "$before" && "$n_pending" -eq 0 ]]; then
+# commits left unpushed by an earlier failed push also trigger a sync
+n_unpushed=$(git -C .. rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
+if [[ "$(csv_state)" == "$before" && "$n_pending" -eq 0 && "$n_unpushed" -eq 0 ]]; then
     log "nothing new — done"
     exit 0
 fi

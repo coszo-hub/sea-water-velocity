@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # sync_metrics.sh — daily git push of the near-real-time QC outputs, so the
 # GitHub front page (README "Timing summary") stays current.
-# Triggered by its own cron entry after the daily SeedLink jobs (~18:45 UTC).
+# Called by bin/daily_pipeline.sh after the series have run (before the SeedLink release).
 #
 # Commits (relative to this instrument folder, e.g. VEL3D-data-collection/):
 #   output/temporal_anomaly/metrics/*.csv    timing CSV rows appended by the daily jobs
@@ -32,11 +32,8 @@ if [ ! -d "$CLONE/.git" ]; then
     exit 1
 fi
 
-# Pull first (rebase keeps history linear; autostash protects files the
-# daily jobs may be writing).
-if ! ( cd "$CLONE" && git pull --rebase --autostash ); then
-    echo "WARN: git pull --rebase failed; continuing with local state"
-fi
+# (git pull happens after the local commit below, so a conflict can never
+#  leave stash markers inside the CSVs.)
 
 # Regenerate the summary figures from the updated CSVs (same file names, so
 # the README embeds pick them up).
@@ -63,19 +60,26 @@ for d in output/metrics output/diagnostics; do
     [ -d "$INSTR/$d" ] && git add "$INSTR/$d/" 2>/dev/null
 done
 
+commit_msg="metrics: sync $(date -u +%Y-%m-%d)"
 if git diff --cached --quiet; then
-    echo "  no changes — skipping commit/push"
-else
-    commit_msg="metrics: sync $(date -u +%Y-%m-%d)"
-    if git commit -m "$commit_msg"; then
-        if git push origin main; then
-            echo "  pushed: $commit_msg"
+    echo "  no new changes to commit"
+elif ! git commit -q -m "$commit_msg"; then
+    echo "WARN: git commit failed"
+fi
+# Rebase local commits (incl. any earlier unpushed ones) onto origin, then push.
+if git fetch -q origin main && git rebase -q --autostash origin/main; then
+    if [ "$(git rev-list --count origin/main..HEAD)" -gt 0 ]; then
+        if git push -q origin HEAD:main; then
+            echo "  pushed: $(git log -1 --format=%s)"
         else
             echo "WARN: git push failed; will retry next run"
         fi
     else
-        echo "WARN: git commit failed"
+        echo "  no changes — nothing to push"
     fi
+else
+    git rebase --abort 2>/dev/null
+    echo "WARN: git fetch/rebase onto origin/main failed (conflict?) — not pushed; fix by hand"
 fi
 
 echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)  sync_metrics end"

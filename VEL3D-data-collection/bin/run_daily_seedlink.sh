@@ -56,11 +56,12 @@ mkdir -p log run output/mseed output/mseed_pending output/temporal_anomaly/netcd
 log() { echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) [$TAG] $*"; }
 
 # ---------- single instance per station/stream ----------
-if ! mkdir "$LOCK" 2>/dev/null; then
+# flock: released automatically if the process dies or the VM reboots
+exec 9> "$LOCK"
+if ! flock -n 9; then
     log "another run holds $LOCK — exiting"
     exit 0
 fi
-trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
 # ---------- conda ----------
 CONDA="${CONDA:-$(command -v conda || true)}"
@@ -110,8 +111,13 @@ RUN_LOG="log/.last_run_${TAG}.log"
 rc=${PIPESTATUS[0]}
 
 # ---------- email alerts (one email per job, only when something needs attention) ----------
-"${PY[@]}" bin/daily_alerts.py "$REFDES" "$STREAM" "$START" "$END" "$RUN_LOG" "$rc" \
-    || log "WARN: alert step failed"
+# Hourly retries: alert only when this run produced a new day, crashed, or — for
+# a day that keeps failing — once, on the last retry hour (>= 12 UTC).
+if [[ $rc -ne 0 ]] || grep -qE "Converted: [1-9]" "$RUN_LOG" \
+   || { [[ "$(date -u +%H)" -ge 12 ]] && grep -q "FAILED" "$RUN_LOG"; }; then
+    "${PY[@]}" bin/daily_alerts.py "$REFDES" "$STREAM" "$START" "$END" "$RUN_LOG" "$rc" \
+        || log "WARN: alert step failed"
+fi
 
 # ---------- advance cursor to the first day still missing ----------
 "${PY[@]}" - "$REFDES" "$STREAM" "$START" "$END" "$CURSOR" <<'EOF'

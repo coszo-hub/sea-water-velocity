@@ -23,6 +23,10 @@ PATH=/home/coszo/miniconda3/bin:/usr/local/bin:/usr/bin:/bin
 PREST=/home/coszo/absolute-seafloor-pressure/PREST-data-collection
 VEL3D=/home/coszo/sea-water-velocity/VEL3D-data-collection
 
+### ringserver (SeedLink, port 18000) — start after a reboot. Its MSeedScan state files
+### (~/ring/scan_*.state) make it pick up files released while it was down. ###
+@reboot     sleep 30 && /home/coszo/ringserver/ringserver /home/coszo/conf/ring.conf -STDERR >> /home/coszo/ring/ringserver.log 2>&1
+
 ### Daily chain: PREST → VEL3D (hourly until yesterday is complete in M2M) ###
 0 1-12 * * * /usr/bin/flock -n /home/coszo/.seedlink_chain.lock -c "$PREST/bin/daily_pipeline.sh; $VEL3D/bin/daily_pipeline.sh"
 

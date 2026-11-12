@@ -39,3 +39,4 @@ output/temporal_anomaly/figures/per_day
 # near-real-time staging (daily_pipeline.sh) and dropped-fragment logs
 output/mseed_pending/*
 output/outlier/*
+run/.lock_*
