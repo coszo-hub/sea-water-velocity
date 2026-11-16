@@ -79,9 +79,22 @@ folders) and the cursor moved to today. Also check that email works on the VM:
 `echo test | mailx -s "coszo seedlink test" -r coszo@uw.edu <recipient in bin/mail.py>`.
 
 ### 4. ringserver: scan both staging folders
-The VM already has `~/ringserver`, `~/conf/ring.conf`, `~/ring/`, `~/start_ringserver`.
-In `ring.conf`, the MSeedScan line(s) currently point at the old PREST folder. Replace
-them with one line per instrument (adjust paths to step 1):
+ringserver is built from source in `~/ringserver` (EarthScope/ringserver, **v4.5.6** —
+4.1.x ignores the start time of multi-station SeedLink time-window requests):
+```bash
+git clone https://github.com/EarthScope/ringserver.git ~/ringserver
+cd ~/ringserver && git checkout v4.5.6 && make
+```
+Its config and starter are tracked in this repo under `vm/`; the VM uses them via symlinks:
+```bash
+mkdir -p ~/conf ~/ring ~/tlog
+ln -s ~/sea-water-velocity/vm/ring.conf ~/conf/ring.conf
+ln -s ~/sea-water-velocity/vm/start_ringserver ~/start_ringserver
+```
+`vm/start_ringserver` is idempotent (does nothing if ringserver is already running); cron
+calls it at boot and every 5 min as a watchdog (step 5).
+In `ring.conf`, the MSeedScan lines point at the two staging folders, one per instrument
+(adjust paths to step 1):
 ```
 MSeedScan /home/coszo/<PREST clone>/PREST-data-collection/output/mseed/ StateFile=/home/coszo/ring/scan_prest.state InitCurrentState=y
 MSeedScan /home/coszo/sea-water-velocity/VEL3D-data-collection/output/mseed/ StateFile=/home/coszo/ring/scan_vel3d.state InitCurrentState=y
@@ -92,21 +105,23 @@ as seen. **Restart ringserver BEFORE the dry-run files exist**, or temporarily u
 Check `RingSize` — VEL3D-C adds ~20 MB/day per 8 Hz station; the ring should hold at
 least several days of all streams (≥ 1 GB is comfortable).
 
-Restart with the existing `~/start_ringserver` (stop the running instance first), then:
+Restart: stop the running instance (`kill <pid>`, it saves the ring on SIGTERM), then run
+`~/start_ringserver` (or wait ≤ 5 min for the cron watchdog). Then:
 ```bash
 ~/slinktool/slinktool -Q localhost:18000 | grep -E 'OO +(HYSB1|HYS14|AXBA1|CZSHF|CZOFF)'
 ```
 VEL3D streams should appear (e.g. `OO HYS14 20 LOE D`, `OO CZOFF 21 MOU D`).
 
-### 5. Cron (one crontab holds both blocks)
-Edit the path variable at the top of each block (`VEL3D=…`, `PREST=…`), then:
+### 5. Cron
+The whole VM crontab is `crons_seedlink_vm.txt` (repo root) — see its header for the
+schedule. It also starts ringserver at boot and runs the 5-min watchdog. Install:
 ```bash
-cat <PREST clone>/PREST-data-collection/crons_prest_seedlink.txt \
-    ~/sea-water-velocity/VEL3D-data-collection/crons_vel3d_seedlink.txt | crontab -
+crontab -l > ~/crontab.backup.$(date +%Y%m%d)
+crontab ~/sea-water-velocity/crons_seedlink_vm.txt
 crontab -l
 ```
-Schedule (UTC): PREST 17:50–17:55, VEL3D 18:01–18:15, metadata checks, `detect.py`,
-`sync_metrics.sh` (18:40 PREST / 18:45 VEL3D), cleanup 19:00.
+(cron rather than a systemd user unit: starting user units at boot needs
+`loginctl enable-linger`, which requires root on this VM.)
 
 ### 6. Git push from the VM
 `bin/sync_metrics.sh` commits the timing CSVs, cursors and regenerated summary figures

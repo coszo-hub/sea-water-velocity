@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+# Start ringserver (SeedLink/DataLink/HTTP on port 18000) if it is not already running.
+# Idempotent: safe to call from cron @reboot and every few minutes as a watchdog.
+RS=/home/coszo/ringserver/ringserver
+CONF=/home/coszo/conf/ring.conf
+LOG=/home/coszo/ring/ringserver.log
+LOCK=/home/coszo/.ringserver_start.lock
+
+exec 9>"$LOCK"
+flock -n 9 || exit 0
+
+if pgrep -u "$(id -u)" -f "^$RS $CONF" >/dev/null; then
+    exit 0
+fi
+
+echo "$(date -u '+%a %b %e %T %Y') - [watchdog] ringserver not running, starting it" >> "$LOG"
+setsid nohup "$RS" "$CONF" -STDERR >> "$LOG" 2>&1 < /dev/null 9>&- &
+sleep 5
+if pgrep -u "$(id -u)" -f "^$RS $CONF" >/dev/null; then
+    echo "$(date -u '+%a %b %e %T %Y') - [watchdog] ringserver started (pid $(pgrep -u "$(id -u)" -f "^$RS $CONF" | head -1))" >> "$LOG"
+else
+    echo "$(date -u '+%a %b %e %T %Y') - [watchdog] ERROR: ringserver failed to start" >> "$LOG"
+    exit 1
+fi
