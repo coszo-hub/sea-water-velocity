@@ -38,6 +38,6 @@ VEL3D=/home/coszo/sea-water-velocity/VEL3D-data-collection
 15 13 * * * $PREST/bin/detect.py > $PREST/log/system.log 2>&1
 20 13 * * * $VEL3D/bin/detect.py > $VEL3D/log/system.log 2>&1
 
-### Housekeeping — staged MiniSEED > 7 days, scratch NetCDF/cache, old logs (13:30 / 13:35 UTC) ###
-30 13 * * * $PREST/bin/cleanup_seedlink.sh
-35 13 * * * $VEL3D/bin/cleanup_seedlink.sh
+### Housekeeping — staged MiniSEED > 30 days, scratch NetCDF/cache, old logs (13:30 / 13:35 UTC) ###
+30 13 * * * KEEP_MSEED_DAYS=30 $PREST/bin/cleanup_seedlink.sh
+35 13 * * * KEEP_MSEED_DAYS=30 $VEL3D/bin/cleanup_seedlink.sh
