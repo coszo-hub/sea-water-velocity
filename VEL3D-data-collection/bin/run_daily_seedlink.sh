@@ -114,7 +114,7 @@ rc=${PIPESTATUS[0]}
 # Hourly retries: alert only when this run produced a new day, crashed, or — for
 # a day that keeps failing — once, on the last retry hour (>= 12 UTC).
 if [[ $rc -ne 0 ]] || grep -qE "Converted: [1-9]" "$RUN_LOG" \
-   || { [[ "$(date -u +%H)" -ge 12 ]] && grep -q "FAILED" "$RUN_LOG"; }; then
+   || { [[ "$(date -u +%-H)" -ge 12 ]] && grep -q "FAILED" "$RUN_LOG"; }; then
     "${PY[@]}" bin/daily_alerts.py "$REFDES" "$STREAM" "$START" "$END" "$RUN_LOG" "$rc" \
         || log "WARN: alert step failed"
 fi
