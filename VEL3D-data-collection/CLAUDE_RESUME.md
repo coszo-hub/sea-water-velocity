@@ -85,9 +85,10 @@ processing host, "no Dip" — all obsolete).
 - 7 timing CSVs complete, no missing/duplicate days (commit cc24fc1). C-temperature
   doubled-day rows recomputed with dedupe (27 CZSHF, 7 CZOFF).
 - dt_true outliers: 0 (worst day 0.07% off nominal) → nothing to segregate.
-- Summary figures (committed): `figures/summary/VEL3D-B/`, `VEL3D-C/{velocity,temp}/`
-  (fig2/fig3 per group), all-series `fig2_jitter_all.png`, `fig3_gap_count_all.png`,
-  `fig1_dt_true_outliers.png` (the plain fig1 is no longer made; `--plain-dt-true` to force).
+- Summary figures (committed, regenerated daily by bin/sync_metrics.sh): all-series
+  `fig2_jitter_all.png`, `fig3_gap_count_all.png`, `fig1_dt_true_outliers.png`
+  (per-group fig2/fig3 under VEL3D-B/ and VEL3D-C/ were removed 2026-11-18: not
+  regenerated daily, so they went stale) (the plain fig1 is no longer made; `--plain-dt-true` to force).
   Per-day figures (8,506 files) on RAID, untracked.
 - README "Timing summary" section on both GitHub front pages embeds the 3 figures
   (fig1_dt_true_outliers, fig2_jitter[_all], fig3_gap_count[_all]).
