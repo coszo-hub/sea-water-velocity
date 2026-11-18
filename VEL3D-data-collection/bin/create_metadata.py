@@ -33,16 +33,18 @@ from datetime import datetime  # MT
 from read_param import read_param
 
 # Get arguments.
-if len(sys.argv) != 2:
-    print("Need to pass 'reference_name argument (with underscores not dashes)'")
-    sys.exit()
+# Optional 2nd arg: output directory (default output/xml). OOI_metadata.py uses it
+# to build into a temp dir and only replace output/xml files whose content changed.
+if len(sys.argv) not in (2, 3):
+    print("Need to pass 'reference_name argument (with underscores not dashes)' [output_dir]")
+    sys.exit(2)
 
 reference_name_underscore = sys.argv[1]
 
 root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../"))
 param_path = os.path.join(root_path, "param")
 bin_path = os.path.join(root_path, "bin")
-output_path = os.path.join(root_path, "output", "xml")
+output_path = sys.argv[2] if len(sys.argv) == 3 else os.path.join(root_path, "output", "xml")
 os.makedirs(output_path, exist_ok=True)
 
 net_sta_param = read_param(os.path.join(param_path, reference_name_underscore + ".txt"))
