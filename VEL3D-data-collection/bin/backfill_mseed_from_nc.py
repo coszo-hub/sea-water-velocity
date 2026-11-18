@@ -496,8 +496,10 @@ def process_day(station, date, run, gap_algo, nc_dir, mseed_dir,
                 make_per_day_figure(t_sec, vs, station, date_str, fig_dir)
                 write_stats(vs, station, date_str, fig_dir)
                 fig_generated = True
-            _append_variability_row(variability["csv"], _row_from_stats(
-                vs, station, date_str, deployment, fig_generated))
+            vrow = _row_from_stats(vs, station, date_str, deployment, fig_generated)
+            # Per channel, as in dropped_pieces.csv (same count for every channel).
+            vrow["mseed_samples_dropped"] = int(s_drop)
+            _append_variability_row(variability["csv"], vrow)
             variability["done"].add((station, date_str))
             print(f"      variability: Δt_true={vs['dt_true']:.6f}s  gaps={vs['n_gaps']}  "
                   f"σ={vs['sigma_ms']:.3f}ms" + ("  (figure)" if fig_generated else ""))

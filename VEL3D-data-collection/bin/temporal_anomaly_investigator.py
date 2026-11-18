@@ -74,6 +74,10 @@ CSV_COLUMNS = [
     "jitter_unstable",
     "max_abs_epsilon",
     "figure_generated",
+    # Samples left out of the MiniSEED because they fell in a piece shorter than
+    # --min-piece-seconds (backfill_mseed_from_nc.py). Written by the SeedLink
+    # pipeline only; blank = not known (standalone runs, older rows).
+    "mseed_samples_dropped",
 ]
 
 # ── Colours ─────────────────────────────────────────────────────────────────
