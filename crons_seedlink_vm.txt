@@ -36,6 +36,9 @@ VEL3D=/home/coszo/sea-water-velocity/VEL3D-data-collection
 ### Metadata check — StationXML vs OOI deployment records (13:00 / 13:05 UTC) ###
 0 13 * * *  $PREST/bin/run_ooi_requests.sh all all seedlink > $PREST/log/OOI_metadata.log 2>&1
 5 13 * * *  $VEL3D/bin/run_ooi_requests.sh all all seedlink > $VEL3D/log/OOI_metadata.log 2>&1
+### Retry — only if the 13:00 check failed on OOI request errors alone (marker file); emails if it fails again ###
+0 14 * * *  [ -f $PREST/log/.metadata_retry_pending ] && $PREST/bin/run_ooi_requests.sh all all seedlink >> $PREST/log/OOI_metadata.log 2>&1
+5 14 * * *  [ -f $VEL3D/log/.metadata_retry_pending ] && $VEL3D/bin/run_ooi_requests.sh all all seedlink >> $VEL3D/log/OOI_metadata.log 2>&1
 
 ### Stalled-job check — emails if a run/endtime_*.txt cursor is > 24 h old (13:15 / 13:20 UTC) ###
 15 13 * * * $PREST/bin/detect.py > $PREST/log/system.log 2>&1

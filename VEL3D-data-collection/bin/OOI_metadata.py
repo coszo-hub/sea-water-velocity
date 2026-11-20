@@ -20,6 +20,7 @@ Exit status is 1 if anything needs attention, else 0.
 # 2025-09-23 Mika: This script has been reformatted to be compatible with Python 3.10.
 # 2026-11-18: Replaced the disabled comparison with a real check; XML is only
 #             rewritten when its content changes.
+# 2026-11-20: Request-only errors are retried once at 14:00 UTC before emailing.
 
 import ast
 import datetime as dt
@@ -213,10 +214,28 @@ if errors:
     lines.append("Errors:")
     lines += [f"  - {e}" for e in errors]
 
+# OOI request errors are often transient. On the first run of the day, if errors are
+# the only problem, skip the email and leave a marker; the 14:00 UTC cron re-runs the
+# check only when that marker exists, and that second run emails if it still fails.
+retry_marker = os.path.join(root_path, "log", ".metadata_retry_pending")
+today = dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%d")
+is_retry = False
+if os.path.exists(retry_marker):
+    with open(retry_marker) as f:
+        is_retry = f.read().strip() == today
+    os.remove(retry_marker)
+
 print("===============================")
 if lines:
     body = "\n".join(lines)
     print(body)
+    if errors and not mismatches and not changed and not is_retry:
+        with open(retry_marker, "w") as f:
+            f.write(today + "\n")
+        print("Only request errors; no email yet. Retrying at 14:00 UTC.")
+        sys.exit(1)
+    if is_retry:
+        body = "Failed again on the 14:00 UTC retry (first attempt at 13:00 UTC also failed).\n\n" + body
     subject = f"OOI metadata check ({repo}): " + ", ".join(
         s for s, on in (("MISMATCH", mismatches), ("XML changed", changed), ("errors", errors)) if on)
     sendmail(subject, body)
